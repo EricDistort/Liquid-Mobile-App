@@ -94,13 +94,15 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // 🎨 GOLD FOUNDRY GRADIENT
+  const THEME_GRADIENT = ['#FFD700', '#B8860B'];
+
   const navigateToApp = (userData: any) => {
     setUser(userData);
     navigation.replace('Main');
   };
 
   const handleLogin = async () => {
-    // 🛑 KEYBOARD COLLAPSE ADDED HERE
     Keyboard.dismiss(); 
 
     if (!accountNumber.trim() || !password.trim())
@@ -152,12 +154,13 @@ export default function Login() {
 
   return (
     <ScreenWrapper>
-      <StatusBar barStyle="light-content" backgroundColor="#050505" />
+      <StatusBar barStyle="light-content" backgroundColor="#000" />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.mainContainer}>
-          {/* Ambient Background Glows */}
+          
+          {/* 🎨 Ambient Gold Background Glows */}
           <LinearGradient
-            colors={['rgba(123, 0, 148, 0.4)', 'transparent']}
+            colors={['rgba(184, 134, 11, 0.3)', 'transparent']}
             style={styles.topGlow}
           />
           <View style={styles.bottomGlow} />
@@ -190,7 +193,7 @@ export default function Login() {
                     <Text style={styles.titleOutline}>Welcome</Text>
                     <Text style={styles.titleFilled}>Back</Text>
                     <Text style={styles.subtitle}>
-                      Sign in to access your portfolio.
+                      Sign in to access your vault.
                     </Text>
                   </View>
 
@@ -230,7 +233,7 @@ export default function Login() {
                       style={{ width: '100%' }}
                     >
                       <LinearGradient
-                        colors={['#7b0094ff', '#ff00d4ff']}
+                        colors={THEME_GRADIENT}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 0 }}
                         style={styles.gradientButton}
@@ -265,7 +268,7 @@ export default function Login() {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#050505',
+    backgroundColor: '#000',
   },
   scrollContent: {
     flexGrow: 1,
@@ -288,7 +291,7 @@ const styles = StyleSheet.create({
     width: s(200),
     height: s(200),
     borderRadius: s(100),
-    backgroundColor: '#ff00d4',
+    backgroundColor: '#B8860B', // Bronze glow
     opacity: 0.08,
     transform: [{ scale: 1.5 }],
   },
@@ -314,7 +317,7 @@ const styles = StyleSheet.create({
     fontSize: ms(42),
     fontWeight: '300',
     color: 'transparent',
-    textShadowColor: 'rgba(255,255,255,0.3)',
+    textShadowColor: 'rgba(255,215,0,0.3)', // Gold glow
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 1,
     letterSpacing: 2,
@@ -340,8 +343,8 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: ms(10),
-    fontWeight: '700',
-    color: '#ff00d4',
+    fontWeight: '800',
+    color: '#FFD700', // Metallic Gold
     marginBottom: vs(8),
     letterSpacing: 1,
     textTransform: 'uppercase',
@@ -354,7 +357,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: ms(16),
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
+    borderColor: 'rgba(255, 215, 0, 0.1)', // Gold tint border
   },
   spacer: {
     height: vs(10),
@@ -364,15 +367,15 @@ const styles = StyleSheet.create({
     borderRadius: ms(25),
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#ff00d4',
+    shadowColor: '#FFD700',
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.4,
+    shadowOpacity: 0.2,
     shadowRadius: 15,
     elevation: 10,
     width: '100%',
   },
   btnText: {
-    color: '#fff',
+    color: '#000', // High contrast text on gold button
     fontSize: ms(16),
     fontWeight: '900',
     letterSpacing: 2,
@@ -387,7 +390,7 @@ const styles = StyleSheet.create({
     fontSize: ms(14),
   },
   registerHighlight: {
-    color: '#fff',
+    color: '#FFD700',
     fontWeight: '700',
   },
 });

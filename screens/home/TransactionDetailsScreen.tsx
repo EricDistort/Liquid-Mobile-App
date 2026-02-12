@@ -28,7 +28,9 @@ export default function TransactionDetailsScreen() {
   if (!transaction) return null;
 
   const isSent = transaction.sender_acc === user.account_number;
-  const THEME_GRADIENT = ['#7b0094ff', '#ff00d4ff'];
+  
+  // 🎨 CHANGED: Gold Foundry Palette
+  const THEME_GRADIENT = ['#FFD700', '#B8860B']; 
 
   // Formatted Data
   const formattedDate = new Date(transaction.created_at).toLocaleDateString();
@@ -43,89 +45,96 @@ export default function TransactionDetailsScreen() {
 
   return (
     <ScreenWrapper>
-      <StatusBar
-        barStyle="light-content"
-        translucent
-        backgroundColor="transparent"
-      />
-      <View style={styles.container}>
-        {/* 1️⃣ TOP CONTAINER (60%) - Animation Only */}
-        <View style={styles.topContainer}>
-          <LinearGradient
-            colors={['rgba(123, 0, 148, 0.4)', 'transparent']}
-            style={styles.glowBackground}
-            start={{ x: 0.5, y: 0.5 }}
-            end={{ x: 0.5, y: 1 }}
-          />
-          <LottieView
-            source={require('../homeMedia/Success.json')}
-            autoPlay
-            loop
-            style={styles.lottie}
-            resizeMode="contain"
-          />
-        </View>
+      {/* 🌑 Screen Background: Deep Bronze/Black */}
+      <LinearGradient
+        colors={['#000000', '#1a1005', '#241808']}
+        style={{ flex: 1 }}
+      >
+        <StatusBar
+          barStyle="light-content"
+          translucent
+          backgroundColor="transparent"
+        />
+        <View style={styles.container}>
+          {/* 1️⃣ TOP CONTAINER (Animation Only) */}
+          <View style={styles.topContainer}>
+            <LinearGradient
+              colors={['rgba(212, 175, 55, 0.2)', 'transparent']}
+              style={styles.glowBackground}
+              start={{ x: 0.5, y: 0.5 }}
+              end={{ x: 0.5, y: 1 }}
+            />
+            <LottieView
+              source={require('../homeMedia/Success.json')}
+              autoPlay
+              loop
+              style={styles.lottie}
+              resizeMode="contain"
+            />
+          </View>
 
-        {/* 2️⃣ BOTTOM CONTAINER (40%) - All Text Info */}
-        <View style={styles.bottomContainer}>
-          {/* Top Border Line */}
-          <LinearGradient
-            colors={THEME_GRADIENT}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.gradientLine}
-          />
+          {/* 2️⃣ BOTTOM CONTAINER (Text Info) */}
+          <View style={styles.bottomContainer}>
+            {/* Top Border Line */}
+            <LinearGradient
+              colors={THEME_GRADIENT}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={styles.gradientLine}
+            />
 
-          <View style={styles.textWrapper}>
-            {/* Main Status & Amount */}
-            <View style={styles.headerTextContainer}>
-              <Text style={styles.statusText}>TRANSACTION SUCCESSFUL</Text>
-              <Text
-                style={[
-                  styles.amountText,
-                  { color: isSent ? '#ff4d4d' : '#00ff88' },
-                ]}
-              >
-                {isSent ? '-' : '+'}${Math.abs(transaction.amount).toFixed(2)}
-              </Text>
-            </View>
-
-            {/* Details Grid */}
-            <View style={styles.detailsGrid}>
-              {/* Row 1: Sender & Receiver */}
-              <View style={styles.row}>
-                <View style={styles.colLeft}>
-                  <Text style={styles.label}>Reciever</Text>
-                  <Text style={styles.value}>
-                    {isSent ? 'You' : transaction.sender?.username}
-                  </Text>
-                </View>
-
-                <View style={styles.colRight}>
-                  <Text style={styles.label}>Sender</Text>
-                  <Text style={styles.value}>
-                    {!isSent ? 'You' : transaction.receiver?.username}
-                  </Text>
-                </View>
+            <View style={styles.textWrapper}>
+              {/* Main Status & Amount */}
+              <View style={styles.headerTextContainer}>
+                <Text style={styles.statusText}>TRANSACTION SUCCESSFUL</Text>
+                <Text
+                  style={[
+                    styles.amountText,
+                    // 🎨 CHANGED: Using theme colors for amount
+                    { color: isSent ? '#FF4500' : '#00ff88' },
+                  ]}
+                >
+                  {isSent ? '-' : '+'}${Math.abs(transaction.amount).toFixed(2)}
+                </Text>
               </View>
 
-              {/* Row 2: Date & Ref ID */}
-              <View style={[styles.row, { marginTop: vs(15) }]}>
-                <View style={styles.colLeft}>
-                  <Text style={styles.label}>Date & Time</Text>
-                  <Text style={styles.value}>{formattedDate}</Text>
-                  <Text style={styles.subValue}>{formattedTime}</Text>
+              {/* Details Grid */}
+              <View style={styles.detailsGrid}>
+                {/* Row 1: Sender & Receiver */}
+                <View style={styles.row}>
+                  <View style={styles.colLeft}>
+                    <Text style={styles.label}>Receiver</Text>
+                    <Text style={styles.value}>
+                      {isSent ? 'You' : transaction.sender?.username}
+                    </Text>
+                  </View>
+
+                  <View style={styles.colRight}>
+                    <Text style={styles.label}>Sender</Text>
+                    <Text style={styles.value}>
+                      {!isSent ? 'You' : transaction.receiver?.username}
+                    </Text>
+                  </View>
                 </View>
 
-                <View style={styles.colRight}>
-                  <Text style={styles.label}>Ref ID</Text>
-                  <Text style={styles.valueMono}>{transaction.id}</Text>
+                {/* Row 2: Date & Ref ID */}
+                <View style={[styles.row, { marginTop: vs(15) }]}>
+                  <View style={styles.colLeft}>
+                    <Text style={styles.label}>Date & Time</Text>
+                    <Text style={styles.value}>{formattedDate}</Text>
+                    <Text style={styles.subValue}>{formattedTime}</Text>
+                  </View>
+
+                  <View style={styles.colRight}>
+                    <Text style={styles.label}>Ref ID</Text>
+                    <Text style={styles.valueMono}>{transaction.id}</Text>
+                  </View>
                 </View>
               </View>
             </View>
           </View>
         </View>
-      </View>
+      </LinearGradient>
     </ScreenWrapper>
   );
 }
@@ -133,12 +142,12 @@ export default function TransactionDetailsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000', // Deep black background
+    backgroundColor: 'transparent',
   },
 
   /* ---------------- TOP CONTAINER (60%) ---------------- */
   topContainer: {
-    height: '50%', // Slightly increased to fit animation better
+    height: '50%',
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -146,13 +155,13 @@ const styles = StyleSheet.create({
   },
   glowBackground: {
     position: 'absolute',
-    width: width * 0.85, // Responsive Width
-    height: width * 0.85, // Aspect Ratio 1:1
+    width: width * 0.85,
+    height: width * 0.85,
     borderRadius: (width * 0.85) / 2,
     opacity: 0.3,
   },
   lottie: {
-    width: width * 0.85, // Responsive Width
+    width: width * 0.85,
     height: width * 0.85,
   },
 
@@ -160,10 +169,12 @@ const styles = StyleSheet.create({
   bottomContainer: {
     height: '40%',
     width: '100%',
-    backgroundColor: '#000000ff', // Fixed potential alpha issue, nice dark grey
+    backgroundColor: '#0a0a0a', // Deep Obsidian
     borderTopLeftRadius: ms(30),
     borderTopRightRadius: ms(30),
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.1)',
   },
   gradientLine: {
     height: vs(3),
@@ -182,7 +193,7 @@ const styles = StyleSheet.create({
     marginBottom: vs(25),
   },
   statusText: {
-    color: '#888',
+    color: '#D4AF37', // Gold text
     fontSize: ms(12),
     fontWeight: '700',
     letterSpacing: 2,
@@ -216,7 +227,7 @@ const styles = StyleSheet.create({
 
   /* Typography */
   label: {
-    color: 'rgba(255,255,255,0.5)',
+    color: 'rgba(255,255,255,0.4)',
     fontSize: ms(11),
     textTransform: 'uppercase',
     fontWeight: '600',
@@ -228,14 +239,14 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   valueMono: {
-    color: '#fff',
+    color: '#FFD700', // Gold Ref ID
     fontSize: ms(14),
-    fontFamily: 'Courier', // Monospace for IDs
+    //fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
     fontWeight: '600',
     letterSpacing: 0.5,
   },
   subValue: {
-    color: '#666',
+    color: '#888',
     fontSize: ms(12),
     marginTop: vs(1),
   },

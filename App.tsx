@@ -48,28 +48,26 @@ const StoreStack = createNativeStackNavigator();
 const FeedStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// Theme Constants
-const THEME_GRADIENT = ['#7b0094ff', '#ff00d4ff'];
+// 🎨 CHANGED: Gold Foundry Theme Gradient
+const THEME_GRADIENT = ['#FFD700', '#b8670b'];
 
-// 1️⃣ FORCE PURE BLACK THEME
+// 1️⃣ UPDATED THEME FOR GOLD ACCENTS
 const MyDarkTheme = {
   ...NavigationDarkTheme,
   colors: {
     ...NavigationDarkTheme.colors,
-    background: '#000000', // Absolute Black
+    background: '#000000',
     card: '#000000',
     text: '#ffffff',
-    border: '#000000',
-    notification: '#ff00d4',
+    border: '#1a1005',
+    notification: '#FFD700', // Gold notifications
   },
 };
 
-// 2️⃣ SHARED SCREEN OPTIONS (Apply to ALL Stacks)
 const globalScreenOptions = {
   headerShown: false,
-  // This sets the background of the screen container to black immediately
   contentStyle: { backgroundColor: '#000000' },
-  animation: 'slide_from_right' as const, // Smooth slide prevents some flickering
+  animation: 'slide_from_right' as const,
 };
 
 // --- CUSTOM POP TAB BUTTON ---
@@ -177,7 +175,7 @@ function MainTabs() {
     <View style={styles.tabContainer}>
       <Tab.Navigator
         initialRouteName="Home"
-        sceneContainerStyle={{ backgroundColor: '#000000' }} // IMPORTANT: Tab scene background
+        sceneContainerStyle={{ backgroundColor: '#000000' }}
         screenOptions={{
           headerShown: false,
           tabBarShowLabel: false,
@@ -186,7 +184,7 @@ function MainTabs() {
             <LinearGradient
               colors={THEME_GRADIENT}
               start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
+              end={{ x: 0, y: 1 }}
               style={styles.gradientBackground}
             />
           ),
@@ -273,15 +271,12 @@ export default function App() {
 
   return (
     <UserProvider>
-      {/* 3️⃣ StatusBar must match background */}
       <StatusBar backgroundColor="#000000" barStyle="light-content" />
-
-      {/* 4️⃣ Root View Background */}
       <View style={{ flex: 1, backgroundColor: '#000000' }}>
         <NavigationContainer theme={MyDarkTheme}>
           <RootStack.Navigator
             initialRouteName="Onboarding"
-            screenOptions={globalScreenOptions} // Apply global black options
+            screenOptions={globalScreenOptions}
           >
             <RootStack.Screen name="Onboarding" component={OnboardingScreen} />
             <RootStack.Screen name="Login" component={LoginScreen} />
@@ -298,7 +293,7 @@ export default function App() {
 const styles = StyleSheet.create({
   tabContainer: {
     flex: 1,
-    backgroundColor: '#000000', // Ensure absolute black
+    backgroundColor: '#000000',
   },
   tabBar: {
     position: 'absolute',
@@ -318,15 +313,12 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: ms(35),
     elevation: 10,
-    shadowColor: '#ff00d4',
+    shadowColor: '#B8860B', // Bronze shadow
   },
   tabBtnContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-   
-    
-   
   },
   iconContainer: {
     alignItems: 'center',
@@ -334,32 +326,23 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     gap: vs(4),
-    
-    
-    //top: vs(10),
   },
   icon: {
     width: s(27),
     height: s(27),
-    
-    //marginBottom: vs(4),
   },
   activeIcon: {
     width: s(32),
     height: s(32),
-    tintColor: '#fff',
+    tintColor: '#000', // Black icon on gold background looks more premium
   },
   inactiveIcon: {
-    tintColor: 'rgba(255, 255, 255, 0.5)',
+    tintColor: 'rgba(0, 0, 0, 0.4)', // Dark semi-transparent icons for inactive
   },
   activeDot: {
-    //bottom: vs(8),
     width: s(15),
     height: s(4),
     borderRadius: s(2.5),
-    //marginTop: vs(7),
-    backgroundColor: '#fff',
-
- 
+    backgroundColor: '#000', // Black dot on gold
   },
 });

@@ -19,9 +19,9 @@ import ScreenWrapper from '../utils/ScreenWrapper';
 
 const { width } = Dimensions.get('window');
 
-// Theme Colors
-const NEON_CYAN = '#00c6ff';
-const NEON_MAGENTA = '#ff00ff';
+// 🎨 CHANGED: Gold Foundry Theme Colors
+const GOLD_METALLIC = '#FFD700';
+const BRONZE_DARK = '#B8860B';
 
 const slides = [
   {
@@ -103,58 +103,64 @@ export default function OnboardingScreen({ navigation }: any) {
 
   return (
     <ScreenWrapper>
-      <View style={styles.container}>
-        <View style={{ flex: 1 }}>
-          <FlatList
-            data={slides}
-            ref={flatListRef}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <View style={styles.slide}>
-                <View style={styles.imageContainer}>
-                  <Image
-                    source={item.image}
-                    style={styles.image}
-                    resizeMode="contain"
-                  />
+      {/* 🌑 Background: Gold Foundry Gradient */}
+      <LinearGradient
+        colors={['#000000', '#1a1005', '#241808']}
+        style={{ flex: 1 }}
+      >
+        <View style={styles.container}>
+          <View style={{ flex: 1 }}>
+            <FlatList
+              data={slides}
+              ref={flatListRef}
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <View style={styles.slide}>
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={item.image}
+                      style={styles.image}
+                      resizeMode="contain"
+                    />
+                  </View>
+                  <Text style={styles.title}>{item.title}</Text>
+                  <Text style={styles.desc}>{item.desc}</Text>
                 </View>
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.desc}>{item.desc}</Text>
-              </View>
-            )}
-            keyExtractor={item => item.id}
-            onViewableItemsChanged={onViewableItemsChanged.current}
-            viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
-          />
-        </View>
-
-        {/* Pagination dots */}
-        <View style={styles.dots}>
-          {slides.map((_, index) => (
-            <View
-              key={index}
-              style={[styles.dot, currentIndex === index && styles.activeDot]}
+              )}
+              keyExtractor={item => item.id}
+              onViewableItemsChanged={onViewableItemsChanged.current}
+              viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
             />
-          ))}
-        </View>
+          </View>
 
-        {/* Buttons Container */}
-        <View style={styles.buttonContainer}>
-          {/* Continue Button with Pop Effect */}
-          <PopButton onPress={() => navigation.replace('Login')}>
-            <LinearGradient
-              colors={['#7b0094ff', '#ff00d4ff']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.continueBtn}
-            >
-              <Text style={styles.buttonText}>Get Started</Text>
-            </LinearGradient>
-          </PopButton>
+          {/* Pagination dots */}
+          <View style={styles.dots}>
+            {slides.map((_, index) => (
+              <View
+                key={index}
+                style={[styles.dot, currentIndex === index && styles.activeDot]}
+              />
+            ))}
+          </View>
+
+          {/* Buttons Container */}
+          <View style={styles.buttonContainer}>
+            {/* Continue Button with Pop Effect */}
+            <PopButton onPress={() => navigation.replace('Login')}>
+              <LinearGradient
+                colors={[GOLD_METALLIC, BRONZE_DARK]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.continueBtn}
+              >
+                <Text style={styles.buttonText}>Get Started</Text>
+              </LinearGradient>
+            </PopButton>
+          </View>
         </View>
-      </View>
+      </LinearGradient>
     </ScreenWrapper>
   );
 }
@@ -162,7 +168,7 @@ export default function OnboardingScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: 'transparent',
   },
   slide: {
     width: width,
@@ -182,7 +188,8 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   title: {
-    color: '#ff25c8ff',
+    // 🎨 CHANGED: Title Color to Gold
+    color: GOLD_METALLIC,
     fontSize: ms(28),
     fontWeight: 'bold',
     marginBottom: vs(12),
@@ -208,7 +215,8 @@ const styles = StyleSheet.create({
     marginHorizontal: s(6),
   },
   activeDot: {
-    backgroundColor: NEON_MAGENTA,
+    // 🎨 CHANGED: Active Dot to Gold
+    backgroundColor: GOLD_METALLIC,
     width: ms(24),
     height: ms(8),
     borderRadius: ms(4),
@@ -226,7 +234,7 @@ const styles = StyleSheet.create({
   continueBtn: {
     width: s(280),
     height: vs(50),
-    borderRadius: ms(20),
+    borderRadius: ms(25),
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
@@ -234,7 +242,8 @@ const styles = StyleSheet.create({
 
   buttonText: {
     textAlign: 'center',
-    color: 'white',
+    // 🎨 CHANGED: Button Text to Black for contrast against Gold
+    color: 'black',
     fontWeight: 'bold',
     fontSize: ms(18),
   },

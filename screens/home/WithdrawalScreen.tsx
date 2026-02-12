@@ -78,7 +78,8 @@ export default function WithdrawalScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const THEME_GRADIENT = ['#7b0094ff', '#ff00d4ff'];
+  // 🎨 CHANGED: Gold Foundry Gradient
+  const THEME_GRADIENT = ['#FFD700', '#B8860B'];
 
   const fetchUserBalance = async () => {
     if (!user?.id) return;
@@ -172,9 +173,9 @@ export default function WithdrawalScreen() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'approved': return '#00e676';
-      case 'pending': return '#ffb300';
-      case 'rejected': return '#ff4d4d';
+      case 'approved': return '#00ff88'; // Green
+      case 'pending': return '#FFD700'; // Gold
+      case 'rejected': return '#FF4500'; // Red
       default: return '#aaa';
     }
   };
@@ -221,7 +222,7 @@ export default function WithdrawalScreen() {
             </Text>
           </View>
           <View style={styles.iconContainer}>
-             <Text style={styles.currencyIcon}>$</Text>
+              <Text style={styles.currencyIcon}>$</Text>
           </View>
         </View>
       </LinearGradient>
@@ -273,7 +274,7 @@ export default function WithdrawalScreen() {
             style={styles.submitBtn}
           >
             {loading ? (
-              <ActivityIndicator color="#fff" size="small" />
+              <ActivityIndicator color="#000" size="small" />
             ) : (
               <Text style={styles.btnText}>CONFIRM WITHDRAWAL</Text>
             )}
@@ -290,57 +291,63 @@ export default function WithdrawalScreen() {
 
   return (
     <ScreenWrapper>
-      <StatusBar barStyle="light-content" />
-      <SafeAreaView style={styles.safeArea}>
-        
-        {showSuccess && (
-          <View style={styles.successOverlay}>
-            <LottieView
-              source={require('../homeMedia/Success.json')}
-              autoPlay
-              loop={false}
-              onAnimationFinish={() => setShowSuccess(false)}
-              style={styles.successLottie}
-              resizeMode="contain"
-            />
-          </View>
-        )}
-
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          style={styles.container}
-        >
-          <FlatList
-            data={withdrawals}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={renderHistoryItem}
-            contentContainerStyle={styles.listContent}
-            showsVerticalScrollIndicator={false}
-            
-            ListHeaderComponent={renderHeader()} 
-            
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-                tintColor="#ff00d4"
-                colors={['#ff00d4', '#7b0094']}
-                progressBackgroundColor="#1a1a1a"
+      <StatusBar barStyle="light-content" backgroundColor="#000" />
+      {/* 🌑 Background: Deep Bronze/Black Gradient */}
+      <LinearGradient
+        colors={['#000000', '#1a1005', '#241808']}
+        style={{ flex: 1 }}
+      >
+        <SafeAreaView style={styles.safeArea}>
+          
+          {showSuccess && (
+            <View style={styles.successOverlay}>
+              <LottieView
+                source={require('../homeMedia/Success.json')}
+                autoPlay
+                loop={false}
+                onAnimationFinish={() => setShowSuccess(false)}
+                style={styles.successLottie}
+                resizeMode="contain"
               />
-            }
-            
-            ListEmptyComponent={
-              !loadingWithdrawals ? (
-                <View style={styles.emptyState}>
-                  <Text style={styles.emptyText}>No transactions found</Text>
-                </View>
-              ) : (
-                <ActivityIndicator color="#ff00d4" style={{ marginTop: 20 }} />
-              )
-            }
-          />
-        </KeyboardAvoidingView>
-      </SafeAreaView>
+            </View>
+          )}
+
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            style={styles.container}
+          >
+            <FlatList
+              data={withdrawals}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={renderHistoryItem}
+              contentContainerStyle={styles.listContent}
+              showsVerticalScrollIndicator={false}
+              
+              ListHeaderComponent={renderHeader()} 
+              
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  tintColor="#FFD700"
+                  colors={['#FFD700', '#B8860B']}
+                  progressBackgroundColor="#1a1a1a"
+                />
+              }
+              
+              ListEmptyComponent={
+                !loadingWithdrawals ? (
+                  <View style={styles.emptyState}>
+                    <Text style={styles.emptyText}>No transactions found</Text>
+                  </View>
+                ) : (
+                  <ActivityIndicator color="#FFD700" style={{ marginTop: 20 }} />
+                )
+              }
+            />
+          </KeyboardAvoidingView>
+        </SafeAreaView>
+      </LinearGradient>
     </ScreenWrapper>
   );
 }
@@ -366,19 +373,21 @@ const styles = StyleSheet.create({
     marginBottom: vs(10),
     paddingTop: vs(10),
   },
+  // 🎨 CHANGED: Title Color
   pageTitle: {
     fontSize: ms(24),
     fontWeight: '900',
-    color: '#fff',
+    color: '#FFD700',
     marginBottom: vs(15),
     letterSpacing: 0.5,
     marginTop: vs(15),
   },
+  // 🎨 CHANGED: Shadow Color
   balanceCard: {
     borderRadius: ms(35),
     padding: s(20),
     marginBottom: vs(20),
-    shadowColor: '#ff00d4',
+    shadowColor: '#B8860B',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.3,
     shadowRadius: 12,
@@ -389,28 +398,32 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  // 🎨 CHANGED: Text Color
   balanceLabel: {
-    color: 'rgba(255,255,255,0.8)',
+    color: 'rgba(0,0,0,0.6)', // Darker text on Gold card for readability
     fontSize: ms(12),
-    fontWeight: '600',
+    fontWeight: '700',
     marginBottom: vs(4),
     textTransform: 'uppercase',
   },
+  // 🎨 CHANGED: Text Color
   balanceValue: {
-    color: '#fff',
+    color: '#000', // Black text on Gold card
     fontSize: ms(32),
     fontWeight: '800',
   },
+  // 🎨 CHANGED: Icon bg
   iconContainer: {
     width: s(40),
     height: s(40),
     borderRadius: s(20),
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: 'rgba(0,0,0,0.1)',
     justifyContent: 'center',
     alignItems: 'center',
   },
+  // 🎨 CHANGED: Icon Color
   currencyIcon: {
-    color: '#fff',
+    color: '#000',
     fontSize: ms(20),
     fontWeight: 'bold',
   },
@@ -421,38 +434,42 @@ const styles = StyleSheet.create({
   inputWrapper: {
     width: '100%',
   },
+  // 🎨 CHANGED: Input Colors & Borders
   input: {
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#000',
     borderRadius: ms(20),
     height: vs(50),
     paddingHorizontal: s(15),
-    color: '#fff',
+    color: '#FFD700',
     fontSize: ms(15),
-    
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.2)',
   },
   amountInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#000',
     borderRadius: ms(20),
-   
     height: vs(50),
-    paddingRight: 0, // Removed padding right as it's handled by margin in button
+    paddingRight: 0,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.2)',
   },
+  // 🎨 CHANGED: Max Button Colors
   maxText: {
-    color: '#ff00d4',
+    color: '#FFD700',
     fontWeight: '800',
     fontSize: ms(12),
-    backgroundColor: 'rgba(255, 0, 212, 0.1)',
+    backgroundColor: 'rgba(255, 215, 0, 0.1)',
     paddingHorizontal: s(10),
     paddingVertical: vs(5),
     borderRadius: ms(14),
     borderWidth: 0.5,
-    borderColor: '#ff00d4',
+    borderColor: '#FFD700',
   },
   submitBtnContainer: {
     marginTop: vs(5),
-    shadowColor: '#ff00d4',
+    shadowColor: '#FFD700',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 5,
@@ -466,8 +483,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
+  // 🎨 CHANGED: Button Text Color
   btnText: {
-    color: '#fff',
+    color: '#000', // Black text on Gold Button
     fontSize: ms(14),
     fontWeight: '900',
     letterSpacing: 1,
@@ -477,10 +495,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: vs(10),
   },
+  // 🎨 CHANGED: Section Title Color
   sectionTitle: {
     fontSize: ms(16),
     fontWeight: '700',
-    color: '#fff',
+    color: '#FFD700',
     marginRight: s(10),
   },
   line: {
@@ -491,6 +510,7 @@ const styles = StyleSheet.create({
   listContent: {
     paddingBottom: vs(20),
   },
+  // 🎨 CHANGED: Card Background/Border
   historyCard: {
     marginBottom: vs(12),
     marginHorizontal: s(20),
@@ -498,7 +518,7 @@ const styles = StyleSheet.create({
     borderRadius: ms(20),
     padding: s(12),
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.05)',
+    borderColor: 'rgba(255, 215, 0, 0.1)',
   },
   historyRow: {
     flexDirection: 'row',

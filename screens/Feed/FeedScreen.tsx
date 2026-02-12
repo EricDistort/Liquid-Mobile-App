@@ -13,7 +13,7 @@ import {
   Animated,
   Pressable,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // 1️⃣ Import Navigation
+import { useNavigation } from '@react-navigation/native';
 import { supabase } from '../../utils/supabaseClient';
 import ScreenWrapper from '../../utils/ScreenWrapper';
 import {
@@ -58,10 +58,13 @@ const PopCard = ({ children, style }: any) => {
 };
 
 export default function FeedScreen() {
-  const navigation = useNavigation<any>(); // 2️⃣ Initialize Navigation
+  const navigation = useNavigation<any>();
   const [feeds, setFeeds] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+
+  // 🎨 GOLD FOUNDRY GRADIENT
+  const THEME_GRADIENT = ['#FFD700', '#B8860B'];
 
   const fetchFeeds = async () => {
     setLoading(true);
@@ -95,6 +98,7 @@ export default function FeedScreen() {
 
     return (
       <PopCard style={styles.cardContainer}>
+        {/* 🎨 Shadow color adjusted to Bronze */}
         <View style={styles.cardShadow} />
         <View style={styles.card}>
           <View style={styles.mediaContainer}>
@@ -115,7 +119,7 @@ export default function FeedScreen() {
               />
             )}
             <LinearGradient
-              colors={['transparent', 'rgba(0,0,0,0.8)', '#0a0a0a']}
+              colors={['transparent', 'rgba(0,0,0,0.8)', '#000']}
               start={{ x: 0, y: 0.4 }}
               end={{ x: 0, y: 1 }}
               style={styles.gradientOverlay}
@@ -130,8 +134,9 @@ export default function FeedScreen() {
             </View>
           </View>
           <View style={styles.contentContainer}>
+            {/* 🎨 Accent line updated to Gold Gradient */}
              <LinearGradient 
-                colors={['#7b0094', '#ff00d4']}
+                colors={THEME_GRADIENT}
                 start={{x:0, y:0}} end={{x:1, y:0}}
                 style={styles.accentLine}
              />
@@ -146,50 +151,55 @@ export default function FeedScreen() {
 
   return (
     <ScreenWrapper>
-      <StatusBar barStyle="light-content" />
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.container}>
-          
-          {/* 3️⃣ Updated Header with Webinar Button */}
-          <View style={styles.header}>
-            <Text style={styles.mainTitle}>Trending News</Text>
+      <StatusBar barStyle="light-content" backgroundColor="#000" />
+      {/* 🌑 Background: Gold Foundry Gradient */}
+      <LinearGradient
+        colors={['#000000', '#1a1005', '#241808']}
+        style={{ flex: 1 }}
+      >
+        <SafeAreaView style={styles.safeArea}>
+          <View style={styles.container}>
             
-            <PopButton onPress={() => navigation.navigate('WebinarScreen')}>
-              <LinearGradient
-                colors={['#7b0094', '#ff00d4']}
-                start={{x:0, y:0}} end={{x:1, y:0}}
-                style={styles.webinarButton}
-              >
-                
-                <Text style={styles.webinarText}>Live Webinar</Text>
-              </LinearGradient>
-            </PopButton>
-          </View>
-
-          {loading && !refreshing ? (
-            <View style={styles.loaderContainer}>
-              <ActivityIndicator size="large" color="#ff00d4" />
+            {/* Header */}
+            <View style={styles.header}>
+              <Text style={styles.mainTitle}>Trending News</Text>
+              
+              <PopButton onPress={() => navigation.navigate('WebinarScreen')}>
+                <LinearGradient
+                  colors={THEME_GRADIENT}
+                  start={{x:0, y:0}} end={{x:1, y:0}}
+                  style={styles.webinarButton}
+                >
+                  <Text style={styles.webinarText}>Live Webinar</Text>
+                </LinearGradient>
+              </PopButton>
             </View>
-          ) : (
-            <FlatList
-              data={feeds}
-              keyExtractor={item => item.id.toString()}
-              renderItem={renderItem}
-              showsVerticalScrollIndicator={false}
-              refreshControl={
-                <RefreshControl 
-                  refreshing={refreshing} 
-                  onRefresh={onRefresh} 
-                  tintColor="#ff00d4" 
-                  colors={['#ff00d4', '#7b0094']}
-                  progressBackgroundColor="#1a1a1a"
-                />
-              }
-              contentContainerStyle={styles.listContent}
-            />
-          )}
-        </View>
-      </SafeAreaView>
+
+            {loading && !refreshing ? (
+              <View style={styles.loaderContainer}>
+                <ActivityIndicator size="large" color="#FFD700" />
+              </View>
+            ) : (
+              <FlatList
+                data={feeds}
+                keyExtractor={item => item.id.toString()}
+                renderItem={renderItem}
+                showsVerticalScrollIndicator={false}
+                refreshControl={
+                  <RefreshControl 
+                    refreshing={refreshing} 
+                    onRefresh={onRefresh} 
+                    tintColor="#FFD700" 
+                    colors={['#FFD700', '#B8860B']}
+                    progressBackgroundColor="#1a1a1a"
+                  />
+                }
+                contentContainerStyle={styles.listContent}
+              />
+            )}
+          </View>
+        </SafeAreaView>
+      </LinearGradient>
     </ScreenWrapper>
   );
 }
@@ -210,12 +220,12 @@ const styles = StyleSheet.create({
   header: {
     marginTop: vs(30),
     marginBottom: vs(15),
-    flexDirection: 'row', // Align title and button
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   mainTitle: {
-    fontSize: ms(28), // Slightly smaller to fit button
+    fontSize: ms(28),
     fontWeight: '800',
     color: '#fff',
     letterSpacing: -1,
@@ -227,20 +237,15 @@ const styles = StyleSheet.create({
     paddingVertical: vs(6),
     paddingHorizontal: s(12),
     borderRadius: ms(20),
-    shadowColor: '#ff00d4',
+    shadowColor: '#FFD700',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.3,
     shadowRadius: 5,
     elevation: 5,
   },
-  webinarIcon: {
-    fontSize: ms(14),
-    marginRight: s(6),
-    color: '#fff'
-  },
   webinarText: {
-    color: '#fff',
-    fontWeight: '700',
+    color: '#000', // Black text on Gold background
+    fontWeight: '800',
     fontSize: ms(12),
   },
 
@@ -258,16 +263,18 @@ const styles = StyleSheet.create({
     left: s(15),
     right: s(15),
     bottom: -vs(5),
-    backgroundColor: '#ff00d4',
+    backgroundColor: '#B8860B', // Updated shadow to Bronze
     borderRadius: ms(24),
     opacity: 0.15, 
     transform: [{ scale: 0.95 }],
   },
   card: {
-    backgroundColor: '#121212', 
+    backgroundColor: '#0a0a0a', 
     borderRadius: ms(24),
     overflow: 'hidden',
     elevation: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.1)',
   },
 
   /* Media Section */
@@ -293,15 +300,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: s(15),
     right: s(15),
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: 'rgba(0,0,0,0.7)',
     paddingVertical: vs(6),
     paddingHorizontal: s(12),
     borderRadius: ms(20),
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
+    borderColor: 'rgba(255,215,0,0.3)',
   },
   dateText: {
-    color: '#fff',
+    color: '#FFD700',
     fontSize: ms(12),
     fontWeight: '700',
   },
@@ -329,7 +336,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     padding: s(20),
     paddingTop: vs(10),
-    backgroundColor: '#121212',
+    backgroundColor: '#0a0a0a',
   },
   accentLine: {
     width: s(40),

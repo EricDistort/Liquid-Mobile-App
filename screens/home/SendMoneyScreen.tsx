@@ -3,15 +3,15 @@ import {
   View,
   Text,
   StyleSheet,
-  Alert,
-  ScrollView,
   ActivityIndicator,
   SafeAreaView,
   Dimensions,
   Animated,
   Pressable,
+  StatusBar,
+  ScrollView,
+  Easing,
 } from 'react-native';
-import { LineChart } from 'react-native-chart-kit';
 import LinearGradient from 'react-native-linear-gradient';
 import { supabase } from '../../utils/supabaseClient';
 import { useUser } from '../../utils/UserContext';
@@ -22,64 +22,149 @@ import {
   moderateScale as ms,
 } from 'react-native-size-matters';
 
-const screenWidth = Dimensions.get('window').width;
+const { width: screenWidth } = Dimensions.get('window');
 
-// --- POP BUTTON COMPONENT ---
-const PopButton = ({ onPress, children, style, disabled }: any) => {
-  const scaleValue = useRef(new Animated.Value(1)).current;
+// --- ⚛️ NEW ANIMATION: QUANTUM SMELTER ---
+const QuantumSmelter = () => {
+  const spin1 = useRef(new Animated.Value(0)).current;
+  const spin2 = useRef(new Animated.Value(0)).current;
+  const pulse = useRef(new Animated.Value(1)).current;
 
-  const handlePressIn = () => {
-    Animated.spring(scaleValue, {
-      toValue: 0.95,
-      useNativeDriver: true,
-    }).start();
-  };
+  useEffect(() => {
+    // Ring 1 Rotation
+    Animated.loop(
+      Animated.timing(spin1, {
+        toValue: 1,
+        duration: 4000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    ).start();
 
-  const handlePressOut = () => {
-    Animated.spring(scaleValue, {
-      toValue: 1,
-      friction: 4,
-      tension: 40,
-      useNativeDriver: true,
-    }).start();
-  };
+    // Ring 2 Rotation (Counter-clockwise)
+    Animated.loop(
+      Animated.timing(spin2, {
+        toValue: 1,
+        duration: 7000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    ).start();
+
+    // Core Pulse
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulse, {
+          toValue: 1.2,
+          duration: 1500,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulse, {
+          toValue: 1,
+          duration: 1500,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, []);
+
+  const rotate1 = spin1.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] });
+  const rotate2 = spin2.interpolate({ inputRange: [0, 1], outputRange: ['360deg', '0deg'] });
 
   return (
+    <View style={styles.animContainer}>
+      {/* Background Glow */}
+      <View style={styles.animGlow} />
+
+      {/* Orbit Ring 1 */}
+      <Animated.View style={[styles.orbitRing, { width: s(180), height: s(180), transform: [{ rotate: rotate1 }] }]}>
+        <View style={styles.orbitDot} />
+        <LinearGradient
+           colors={['transparent', '#FFD700', 'transparent']}
+           style={styles.ringGradient}
+        />
+      </Animated.View>
+
+      {/* Orbit Ring 2 */}
+      <Animated.View style={[styles.orbitRing, { width: s(130), height: s(130), transform: [{ rotate: rotate2 }, { scaleX: 0.9 }] }]}>
+         <View style={[styles.orbitDot, { bottom: -4, top: undefined }]} />
+         <LinearGradient
+           colors={['transparent', '#B8860B', 'transparent']}
+           style={styles.ringGradient}
+        />
+      </Animated.View>
+
+      {/* Central Core */}
+      <Animated.View style={[styles.core, { transform: [{ scale: pulse }] }]}>
+        <LinearGradient
+          colors={['#FFF700', '#FFA500', '#B8860B']}
+          style={styles.coreGradient}
+        />
+        <View style={styles.coreInnerHighlight} />
+      </Animated.View>
+    </View>
+  );
+};
+
+// --- 🧪 LIQUID PROGRESS BAR ---
+const LiquidProgress = ({ progress }: { progress: number }) => (
+  <View style={styles.liquidTrack}>
+    <LinearGradient
+      colors={['#FFD700', '#B8860B']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 0 }}
+      style={[styles.liquidFill, { width: `${progress}%` }]}
+    />
+    {/* Shine on top of liquid */}
+    <LinearGradient
+      colors={[
+        'rgba(255,255,255,0.1)',
+        'rgba(255,255,255,0.4)',
+        'rgba(255,255,255,0.1)',
+      ]}
+      style={[styles.liquidShine, { width: `${progress}%` }]}
+    />
+  </View>
+);
+
+// --- 🔘 POP BUTTON ---
+const PopButton = ({ onPress, children, style }: any) => {
+  const scale = useRef(new Animated.Value(1)).current;
+  return (
     <Pressable
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
+      onPressIn={() =>
+        Animated.spring(scale, { toValue: 0.96, useNativeDriver: true }).start()
+      }
+      onPressOut={() =>
+        Animated.spring(scale, { toValue: 1, useNativeDriver: true }).start()
+      }
       onPress={onPress}
-      disabled={disabled}
       style={style}
     >
-      <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
+      <Animated.View style={{ transform: [{ scale }] }}>
         {children}
       </Animated.View>
     </Pressable>
   );
 };
 
-export default function TradesScreen() {
+export default function FoundryMiningScreen() {
   const { user, setUser } = useUser();
-  const [trades, setTrades] = useState<any[]>([]);
+  const [investments, setInvestments] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [endingTrade, setEndingTrade] = useState<number | null>(null);
-  const [chartData, setChartData] = useState<number[]>([
-    100, 102, 101, 103, 105,
-  ]);
 
   const fetchUserData = async () => {
     const { data, error } = await supabase
       .from('users')
-      .select(
-        'withdrawal_amount, profileImage, username, account_number, level_income, subscription_bonus',
-      )
+      .select('withdrawal_amount, level_income')
       .eq('id', user.id)
       .single();
     if (!error && data) setUser({ ...user, ...data });
   };
 
-  const fetchTrades = async () => {
+  const fetchInvestments = async () => {
     if (!user?.id) return;
     setLoading(true);
     const { data, error } = await supabase
@@ -89,361 +174,481 @@ export default function TradesScreen() {
       .eq('status', 'approved')
       .eq('trade_status', 'running')
       .order('created_at', { ascending: false });
-    if (error) Alert.alert('Error', error.message);
-    else {
+
+    if (!error) {
       const initialized = (data || []).map(t => ({
         ...t,
-        liveAmount: t.amount,
-        trend: 'up',
+        currentValue: t.amount,
+        progress: Math.random() * 100,
+        temp: Math.floor(Math.random() * (2000 - 1500) + 1500),
       }));
-      setTrades(initialized);
+      setInvestments(initialized);
     }
     setLoading(false);
   };
 
   useEffect(() => {
     fetchUserData();
-    fetchTrades();
+    fetchInvestments();
   }, [user?.id]);
 
-  // 1️⃣ Chart Animation: Only runs if there are active trades
-  const hasActiveTrades = trades.length > 0;
-
+  // Animation Loop
+  const hasActive = investments.length > 0;
   useEffect(() => {
-    if (!hasActiveTrades) return; // Stop animation if no trades
-
+    if (!hasActive) return;
     const interval = setInterval(() => {
-      setChartData(prev => {
-        const next = [...prev.slice(-29)];
-        const last = prev[prev.length - 1] || 100;
-        const change = (Math.random() * 2 - 1).toFixed(2);
-        next.push(Math.max(50, last + Number(change)));
-        return next;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [hasActiveTrades]); // Dependency ensures toggle based on trade existence
-
-  // 2️⃣ Trade Value Simulation
-  useEffect(() => {
-    if (!hasActiveTrades) return;
-
-    const interval = setInterval(() => {
-      setTrades(prev =>
-        prev.map(t => {
-          const change = (Math.random() * 20 - 10).toFixed(2);
-          const newAmount = Math.max(0, t.liveAmount + Number(change));
-          return {
-            ...t,
-            liveAmount: newAmount,
-            trend: Number(change) >= 0 ? 'up' : 'down',
-          };
-        }),
+      setInvestments(prev =>
+        prev.map(t => ({
+          ...t,
+          currentValue: t.currentValue + 0.002,
+          progress: (t.progress + 0.8) % 100,
+        })),
       );
-    }, 1000);
+    }, 500); // Faster update for smooth liquid look
     return () => clearInterval(interval);
-  }, [hasActiveTrades]);
-
-  const endTrade = (tradeId: number) => {
-    Alert.alert(
-      'Restricted Action',
-      'Trades are live can not be closed at this moment',
-    );
-  };
+  }, [hasActive]);
 
   return (
     <ScreenWrapper>
-      <SafeAreaView style={styles.safeArea}>
-        {/* Removed refreshControl prop */}
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={styles.container}>
-            {/* 1️⃣ Chart Section */}
-            <View style={styles.middleContainer}>
-              <LinearGradient
-                colors={['rgba(123, 0, 148, 0)', 'rgba(0,0,0,0)']}
-                style={styles.chartBackground}
-              >
-                <LineChart
-                  data={{
-                    labels: [],
-                    datasets: [{ data: chartData }],
-                  }}
-                  width={screenWidth}
-                  height={220}
-                  withDots={false}
-                  withInnerLines={false}
-                  withOuterLines={false}
-                  withVerticalLines={false}
-                  withHorizontalLabels={true}
-                  yAxisInterval={1}
-                  chartConfig={{
-                    backgroundGradientFrom: '#000',
-                    backgroundGradientFromOpacity: 0,
-                    backgroundGradientTo: '#000',
-                    backgroundGradientToOpacity: 0,
-                    fillShadowGradientFrom: '#ff00d4',
-                    fillShadowGradientTo: '#7b0094',
-                    fillShadowGradientOpacity: 0.6,
-                    color: (opacity = 1) => `rgba(255, 0, 212, ${opacity})`, // Neon Pink Line
-                    labelColor: (opacity = 1) =>
-                      `rgba(255, 255, 255, ${opacity})`,
-                    strokeWidth: 2,
-                    propsForBackgroundLines: {
-                      stroke: 'transparent',
-                    },
-                  }}
-                  bezier
-                  style={{
-                    paddingRight: 0,
-                    paddingLeft: 0,
-                  }}
-                />
-              </LinearGradient>
-
-              {/* 🟩 Horizontal Info Containers */}
-              <View style={styles.infoRow}>
-                {/* Level Income */}
-                <View style={styles.infoCard}>
-                  <Text style={styles.infoTitle}>Level Income</Text>
-                  <Text style={styles.infoValue}>
-                    ${user?.level_income || 0}
-                  </Text>
-                </View>
-
-                {/* Total Profit */}
-                <View style={styles.infoCard}>
-                  <Text style={styles.infoTitle}>Total Profit</Text>
-                  <Text style={styles.infoValue}>
-                    ${user?.withdrawal_amount || 0}
-                  </Text>
-                </View>
-              </View>
-            </View>
-
-            {/* 2️⃣ Running Trades Section */}
-            <View style={styles.thirdContainer}>
-              <View style={styles.sectionHeader}>
-                <Text style={styles.transactionsTitle}>Running Trades</Text>
-                {/* Indicator only shows if trades are active */}
-                {hasActiveTrades && <View style={styles.liveIndicator} />}
-              </View>
-
-              {loading ? (
-                <ActivityIndicator size="large" color="#ff00d4" />
-              ) : trades.length === 0 ? (
-                <View style={styles.emptyContainer}>
-                  <Text style={styles.noTrades}>No Active Trades</Text>
-                </View>
-              ) : (
-                <ScrollView
-                  style={{ width: '100%', height: vs(300) }}
-                  // Added padding to contentContainerStyle to prevent tab bar overlap
-                  contentContainerStyle={{ paddingBottom: vs(200) }}
-                  showsVerticalScrollIndicator={false}
-                >
-                  {trades.map(trade => (
-                    <LinearGradient
-                      key={trade.id}
-                      colors={[
-                        'rgba(20, 20, 30, 0.8)',
-                        'rgba(123, 0, 148, 0.2)',
-                      ]}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 0 }}
-                      style={styles.tradeCard}
-                    >
-                      <View>
-                        <Text style={styles.amount}>USDT {trade.amount}</Text>
-                        <View style={styles.trendContainer}>
-                          <Text
-                            style={[
-                              styles.liveAmount,
-                              {
-                                color:
-                                  trade.trend === 'up'
-                                    ? '#48ff00ff'
-                                    : '#00eeff',
-                              },
-                            ]}
-                          >
-                            {trade.trend === 'up' ? '▲' : '▼'} $
-                            {trade.liveAmount.toFixed(2)}
-                          </Text>
-                        </View>
-                      </View>
-
-                      {/* Close Button with Pop Effect */}
-                      <PopButton
-                        onPress={() => endTrade(trade.id)}
-                        disabled={endingTrade === trade.id}
-                      >
-                        <LinearGradient
-                          colors={['#7b0094', '#ff00d4']}
-                          start={{ x: 0, y: 0 }}
-                          end={{ x: 1, y: 0 }}
-                          style={[
-                            styles.endButton,
-                            endingTrade === trade.id && { opacity: 0.6 },
-                          ]}
-                        >
-                          <Text style={styles.endText}>
-                            {endingTrade === trade.id
-                              ? 'Closing...'
-                              : 'Close Trade'}
-                          </Text>
-                        </LinearGradient>
-                      </PopButton>
-                    </LinearGradient>
-                  ))}
-                </ScrollView>
-              )}
+      <StatusBar barStyle="light-content" backgroundColor="#000" />
+      <LinearGradient
+        colors={['#000000', '#1a1005', '#241808']} // Deep Bronze/Black
+        style={styles.background}
+      >
+        <SafeAreaView style={styles.safeArea}>
+          {/* 1️⃣ TOP CONTAINER: THE FURNACE (New Animation) */}
+          <View style={styles.topContainer}>
+            <View style={styles.furnaceWindow}>
+              {/* 👇 REPLACED ANIMATION HERE 👇 */}
+              <QuantumSmelter />
             </View>
           </View>
-        </ScrollView>
-      </SafeAreaView>
+
+          {/* 2️⃣ MIDDLE CONTAINER: THE LEDGER (Two Incomes) */}
+          <View style={styles.statsRow}>
+            {/* Card 1: Profit */}
+            <View style={styles.glassCard}>
+              <LinearGradient
+                colors={['rgba(255,255,255,0.08)', 'rgba(0,0,0,0.5)']}
+                style={styles.cardGradient}
+              >
+                <View style={styles.iconBox}>
+                  <Text style={styles.icon}>🏆</Text>
+                </View>
+                <Text style={styles.statLabel}>Total Mined</Text>
+                <Text style={styles.statValue}>
+                  ${user?.withdrawal_amount || '0.00'}
+                </Text>
+              </LinearGradient>
+              {/* Gold Border Highlight */}
+              <View style={styles.cardBorder} />
+            </View>
+
+            {/* Card 2: Level Income */}
+            <View style={styles.glassCard}>
+              <LinearGradient
+                colors={['rgba(255,255,255,0.08)', 'rgba(0,0,0,0.5)']}
+                style={styles.cardGradient}
+              >
+                <View style={styles.iconBox}>
+                  <Text style={styles.icon}>🔱</Text>
+                </View>
+                <Text style={styles.statLabel}>Network Share</Text>
+                <Text style={styles.statValue}>
+                  ${user?.level_income || '0.00'}
+                </Text>
+              </LinearGradient>
+              <View style={styles.cardBorder} />
+            </View>
+          </View>
+
+          {/* 3️⃣ BOTTOM CONTAINER: ACTIVE RIGS (Scrollable) */}
+          <View style={styles.bottomContainer}>
+            <View style={styles.listHeader}>
+              <Text style={styles.listTitle}>ACTIVE CRUCIBLES</Text>
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>{investments.length}</Text>
+              </View>
+            </View>
+
+            {loading ? (
+              <ActivityIndicator
+                size="large"
+                color="#FFD700"
+                style={{ marginTop: 50 }}
+              />
+            ) : !hasActive ? (
+              <View style={styles.emptyState}>
+                <Text style={styles.emptyText}>Foundry Inactive</Text>
+              </View>
+            ) : (
+              <ScrollView
+                contentContainerStyle={styles.scrollContent}
+                showsVerticalScrollIndicator={false}
+              >
+                {investments.map((item, index) => (
+                  <View key={item.id} style={styles.rigCard}>
+                    {/* Background Glow */}
+                    <LinearGradient
+                      colors={['#1c140d', '#000000']}
+                      style={styles.rigInner}
+                    >
+                      {/* Header */}
+                      <View style={styles.rigHeader}>
+                        <View style={styles.rigIdBox}>
+                          <Text style={styles.rigIdText}>{index + 1}</Text>
+                        </View>
+                        <View style={{ flex: 1, paddingLeft: 10 }}>
+                          <Text style={styles.rigName}>
+                            Smelter Unit-{100 + index}
+                          </Text>
+                          <Text style={styles.rigTemp}>
+                            {item.temp}°F • Molten
+                          </Text>
+                        </View>
+                        <Text style={styles.investedAmt}>${item.amount}</Text>
+                      </View>
+
+                      {/* Liquid Progress */}
+                      <View style={styles.progressSection}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            marginBottom: 5,
+                          }}
+                        >
+                          <Text style={styles.progressLabel}>Chamber Fill</Text>
+                          <Text style={styles.progressValue}>
+                            {item.progress.toFixed(0)}%
+                          </Text>
+                        </View>
+                        <LiquidProgress progress={item.progress} />
+                      </View>
+
+                      {/* Footer */}
+                      <View style={styles.rigFooter}>
+                        <View>
+                          <Text style={styles.yieldLabel}>GOLD VALUE</Text>
+                          <Text style={styles.yieldValue}>
+                            ${item.currentValue.toFixed(4)}
+                          </Text>
+                        </View>
+                        <PopButton style={styles.actionBtn}>
+                          <Text style={styles.actionBtnText}>EXTRACT</Text>
+                        </PopButton>
+                      </View>
+                    </LinearGradient>
+                  </View>
+                ))}
+              </ScrollView>
+            )}
+          </View>
+        </SafeAreaView>
+      </LinearGradient>
     </ScreenWrapper>
   );
 }
 
 /* --------------------------- STYLES --------------------------- */
 const styles = StyleSheet.create({
+  background: { flex: 1 },
   safeArea: { flex: 1 },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    paddingVertical: vs(5),
-  },
 
-  /* Chart + Info Section */
-  middleContainer: {
+  /* --- 1️⃣ TOP: THE FURNACE --- */
+  topContainer: {
+    height: vs(260),
     width: '100%',
-    alignItems: 'center',
-    marginTop: vs(30),
-  },
-  chartBackground: {
-    width: '100%',
-    alignItems: 'center',
-    paddingBottom: vs(10),
-  },
-
-  /* Horizontal Info Row */
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '92%',
-    marginTop: vs(-20), // Pull up to overlap chart slightly
-    zIndex: 10,
-  },
-  infoCard: {
-    flex: 1,
-    borderRadius: ms(25),
-    paddingVertical: vs(8),
-    marginHorizontal: s(6),
-    alignItems: 'center',
-    backgroundColor: 'rgba(163, 0, 155, 0.14)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 0, 170, 0.43)', // Pink border
-  },
-  infoTitle: {
-    color: '#rgba(255,255,255,0.7)',
-    fontSize: ms(12),
-    fontWeight: '500',
-    letterSpacing: 0.5,
-    marginBottom: vs(4),
-  },
-  infoValue: {
-    color: '#fff',
-    fontSize: ms(22),
-    fontWeight: '800',
-  },
-
-  /* Bottom Trades Section */
-  thirdContainer: {
-    width: '92%',
-    flex: 1,
-    marginTop: vs(25),
-    // Removed general paddingBottom here, added to the inner ScrollView instead
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: vs(15),
     justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: vs(10),
   },
-  transactionsTitle: {
-    fontSize: ms(20),
-    fontWeight: '800',
-    color: '#fff',
-    letterSpacing: 0.5,
+  furnaceWindow: {
+    width: s(220),
+    height: s(220),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  liveIndicator: {
-    width: ms(8),
-    height: ms(8),
-    borderRadius: ms(4),
-    backgroundColor: '#00ff88',
-    marginLeft: s(8),
-    shadowColor: '#00ff88',
+  
+  /* ⚡ NEW ANIMATION STYLES */
+  animContainer: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  animGlow: {
+    position: 'absolute',
+    width: s(120),
+    height: s(120),
+    borderRadius: s(60),
+    backgroundColor: '#FFD700',
+    opacity: 0.1,
+    transform: [{scale: 1.8}],
+  },
+  orbitRing: {
+    position: 'absolute',
+    borderRadius: s(100),
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  ringGradient: {
+    width: '100%',
+    height: '100%',
+    borderRadius: s(100),
+    opacity: 0.5,
+  },
+  orbitDot: {
+    position: 'absolute',
+    top: -4,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#FFD700',
+    shadowColor: '#FFF',
     shadowOpacity: 1,
     shadowRadius: 5,
-    elevation: 5,
+  },
+  core: {
+    width: s(80),
+    height: s(80),
+    borderRadius: s(40),
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#FFD700',
+    shadowColor: '#FFD700',
+    shadowOpacity: 0.8,
+    shadowRadius: 20,
+    elevation: 15,
+  },
+  coreGradient: {
+    flex: 1,
+  },
+  coreInnerHighlight: {
+    position: 'absolute',
+    top: 10,
+    left: 15,
+    width: 20,
+    height: 10,
+    backgroundColor: 'rgba(255,255,255,0.6)',
+    borderRadius: 10,
+    transform: [{rotate: '-45deg'}]
   },
 
-  /* Trade Card */
-  tradeCard: {
+  /* --- 2️⃣ MIDDLE: STATS --- */
+  statsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: ms(20),
+    marginBottom: vs(15),
+  },
+  glassCard: {
+    width: '48%',
+    height: vs(110),
+    borderRadius: ms(30),
+    overflow: 'hidden',
+    backgroundColor: '#000',
+    position: 'relative',
+  },
+  cardGradient: {
+    flex: 1,
+    padding: ms(15),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cardBorder: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: ms(30),
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.3)',
+  },
+  iconBox: {
+    width: s(36),
+    height: s(36),
+    borderRadius: s(18),
+    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: vs(8),
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.2)',
+  },
+  icon: { fontSize: ms(18) },
+  statLabel: {
+    color: '#8B8B8B',
+    fontSize: ms(11),
+    fontWeight: '600',
+    marginBottom: vs(4),
+  },
+  statValue: {
+    color: '#fff',
+    fontSize: ms(18),
+    fontWeight: '700',
+    textShadowColor: 'rgba(255, 215, 0, 0.3)',
+    textShadowRadius: 5,
+  },
+
+  /* --- 3️⃣ BOTTOM: LIST --- */
+  bottomContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(20, 16, 10, 0.8)',
+    borderTopLeftRadius: ms(35),
+    borderTopRightRadius: ms(35),
+    paddingTop: ms(20),
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255, 215, 0, 0.1)',
+  },
+  listHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderRadius: ms(25),
-    padding: s(16),
-    marginBottom: vs(12),
+    paddingHorizontal: ms(25),
+    marginBottom: vs(15),
+  },
+  listTitle: {
+    color: '#D4AF37',
+    fontSize: ms(14),
+    fontWeight: '800',
+    letterSpacing: 1,
+  },
+  badge: {
+    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: 'rgba(123, 0, 148, 0.5)', // Purple border
+    borderColor: 'rgba(255, 215, 0, 0.3)',
   },
-  amount: {
-    fontSize: ms(18),
+  badgeText: {
+    color: '#FFD700',
+    fontSize: ms(10),
     fontWeight: '700',
-    color: '#fff',
-    marginBottom: vs(4),
   },
-  trendContainer: {
+
+  /* Rig Card */
+  scrollContent: {
+    paddingHorizontal: ms(20),
+    paddingBottom: vs(30),
+  },
+  rigCard: {
+    borderRadius: ms(30),
+    marginBottom: vs(15),
+    shadowColor: '#FFD700',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  rigInner: {
+    padding: ms(16),
+    borderRadius: ms(30),
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.15)',
+  },
+  rigHeader: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: vs(12),
   },
-  liveAmount: {
-    fontSize: ms(14),
+  rigIdBox: {
+    width: s(30),
+    height: s(30),
+    borderRadius: s(15),
+    backgroundColor: '#332200',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#FFD700',
+  },
+  rigIdText: {
+    color: '#FFD700',
     fontWeight: 'bold',
   },
-
-  /* Buttons */
-  endButton: {
-    borderRadius: ms(25), // Pill shape
-    paddingVertical: vs(8),
-    paddingHorizontal: s(20),
-    shadowColor: '#ff00d4',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.4,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  endText: {
+  rigName: {
     color: '#fff',
+    fontSize: ms(14),
     fontWeight: '700',
-    fontSize: ms(13),
-    textTransform: 'uppercase',
+  },
+  rigTemp: {
+    color: '#FF4500',
+    fontSize: ms(10),
+  },
+  investedAmt: {
+    color: '#D4AF37',
+    fontSize: ms(16),
+    fontWeight: '700',
   },
 
-  /* Empty States */
-  emptyContainer: {
+  /* Liquid Bar */
+  progressSection: {
+    marginBottom: vs(15),
+  },
+  progressLabel: {
+    color: '#666',
+    fontSize: ms(10),
+  },
+  progressValue: {
+    color: '#FFD700',
+    fontSize: ms(10),
+    fontWeight: '700',
+  },
+  liquidTrack: {
+    height: vs(10),
+    backgroundColor: '#111',
+    borderRadius: 10,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#333',
+    position: 'relative',
+  },
+  liquidFill: {
+    height: '100%',
+    borderRadius: 10,
+  },
+  liquidShine: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: '50%',
+    borderRadius: 10,
+  },
+
+  /* Footer */
+  rigFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: vs(30),
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.05)',
+    paddingTop: vs(12),
   },
-  noTrades: {
-    color: 'rgba(255,255,255,0.4)',
+  yieldLabel: {
+    color: '#888',
+    fontSize: ms(9),
+    marginBottom: 2,
+  },
+  yieldValue: {
+    color: '#fff',
     fontSize: ms(16),
-    fontWeight: '500',
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
+  actionBtn: {
+    backgroundColor: '#B8860B',
+    paddingVertical: vs(8),
+    paddingHorizontal: s(18),
+    borderRadius: ms(20),
+    shadowColor: '#FFD700',
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+  },
+  actionBtnText: {
+    color: '#000',
+    fontSize: ms(10),
+    fontWeight: '800',
+  },
+  emptyState: { alignItems: 'center', marginTop: vs(30) },
+  emptyText: { color: '#555' },
 });

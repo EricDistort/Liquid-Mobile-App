@@ -91,9 +91,9 @@ export default function DepositScreen() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [warningMessage, setWarningMessage] = useState('Loading instructions...');
 
-  // Theme Constants
-  const THEME_GRADIENT = ['#7b0094ff', '#ff00d4ff'];
-  const DISABLED_GRADIENT = ['#4a4a4aff', '#2b2b2bff'];
+  // --- 🎨 GOLD FOUNDRY THEME ---
+  const THEME_GRADIENT = ['#FFD700', '#B8860B']; // Gold -> Bronze
+  const DISABLED_GRADIENT = ['#4a4a4a', '#2b2b2b']; // Grey
 
   // 1. Fetch Company Wallet & User's Fixed Address
   const fetchInitialData = async () => {
@@ -247,9 +247,9 @@ export default function DepositScreen() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'approved': return '#00e676';
-      case 'pending': return '#ffb300';
-      case 'rejected': return '#ff4d4d';
+      case 'approved': return '#00ff88'; // Green
+      case 'pending': return '#FFD700'; // Gold
+      case 'rejected': return '#ff4d4d'; // Red
       default: return '#aaa';
     }
   };
@@ -284,7 +284,12 @@ export default function DepositScreen() {
 
   return (
     <ScreenWrapper>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="light-content" backgroundColor="#000" />
+      {/* 🎨 CHANGED: Gold Foundry Gradient */}
+      <LinearGradient
+         colors={['#000000', '#1a1005', '#241808']}
+         style={{flex: 1}}
+      >
       <SafeAreaView style={styles.safeArea}>
         
         {showSuccess && (
@@ -336,7 +341,7 @@ export default function DepositScreen() {
                 <TextInput
                   style={[
                       styles.input,
-                      fixedSenderAddress ? { opacity: 0.5, backgroundColor: 'rgba(255,255,255,0.05)' } : {}
+                      fixedSenderAddress ? { opacity: 0.5, backgroundColor: 'rgba(255, 215, 0, 0.05)' } : {}
                   ]}
                   placeholder="Sender Wallet Address"
                   value={txHash}
@@ -358,9 +363,9 @@ export default function DepositScreen() {
                   style={styles.submitBtn}
                 >
                   {loading ? (
-                    <ActivityIndicator color="#fff" size="small" />
+                    <ActivityIndicator color="#000" size="small" />
                   ) : (
-                    <Text style={styles.submitBtnText}>
+                    <Text style={[styles.submitBtnText, hasPending ? {color: '#888'} : {color: '#000'}]}>
                       {hasPending ? 'Pending Deposit Active' : 'Confirm Deposit'}
                     </Text>
                   )}
@@ -373,7 +378,7 @@ export default function DepositScreen() {
           <View style={styles.historyContainer}>
             <Text style={styles.historyHeader}>Recent History</Text>
             {loadingDeposits ? (
-              <ActivityIndicator color="#ff00d4" style={{ marginTop: 20 }} />
+              <ActivityIndicator color="#FFD700" style={{ marginTop: 20 }} />
             ) : (
               <FlatList
                 data={deposits}
@@ -391,6 +396,7 @@ export default function DepositScreen() {
 
         </KeyboardAvoidingView>
       </SafeAreaView>
+      </LinearGradient>
     </ScreenWrapper>
   );
 }
@@ -411,18 +417,24 @@ const styles = StyleSheet.create({
   },
   successLottie: { width: s(300), height: s(300) },
   topSection: { marginBottom: vs(20) },
+  
+  // 🎨 CHANGED: Title Color
   screenTitle: {
     fontSize: ms(24),
     fontWeight: '800',
-    color: '#fff',
+    color: '#FFD700', // Gold
     marginBottom: vs(15),
     letterSpacing: 0.5,
     marginTop: vs(15),
   },
+  
+  // 🎨 CHANGED: Card Background/Border
   formContainer: {
     backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: ms(20),
     padding: s(15),
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.1)', // Gold Tint
   },
   qrRow: { flexDirection: 'row', alignItems: 'center', marginBottom: vs(15) },
   qrWrapper: {
@@ -435,9 +447,14 @@ const styles = StyleSheet.create({
   },
   qrImage: { width: '100%', height: '100%' },
   warningBox: { flex: 1, justifyContent: 'center' },
-  warningText: { color: '#ffb300', fontWeight: '700', fontSize: ms(12), marginBottom: vs(2) },
+  
+  // 🎨 CHANGED: Warning Text Color
+  warningText: { color: '#FFD700', fontWeight: '700', fontSize: ms(12), marginBottom: vs(2) },
   warningDesc: { color: 'rgba(255,255,255,0.6)', fontSize: ms(11), lineHeight: ms(15) },
+  
   inputWrapper: { marginBottom: vs(12) },
+  
+  // 🎨 CHANGED: Wallet Box Colors
   walletBox: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -445,28 +462,34 @@ const styles = StyleSheet.create({
     borderRadius: ms(20),
     paddingHorizontal: s(15),
     height: vs(45),
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.3)', // Gold Border
   },
-  walletText: { color: '#fff', flex: 1, fontSize: ms(13), marginRight: s(10) },
+  walletText: { color: '#FFD700', flex: 1, fontSize: ms(13), marginRight: s(10) },
+  
+  // 🎨 CHANGED: Copy Button Colors
   copyText: {
-    color: '#ff00d4',
+    color: '#FFD700',
     fontWeight: '700',
     fontSize: ms(12),
-    backgroundColor: 'rgba(255, 0, 212, 0.1)',
+    backgroundColor: 'rgba(255, 215, 0, 0.1)',
     paddingHorizontal: s(10),
     paddingVertical: vs(5),
     borderRadius: ms(14),
     borderWidth: 0.5,
-    borderColor: '#ff00d4',
+    borderColor: '#FFD700',
   },
+  
+  // 🎨 CHANGED: Input Colors
   input: {
     backgroundColor: '#000',
     borderRadius: ms(20),
     height: vs(45),
     paddingHorizontal: s(15),
-    color: '#fff',
+    color: '#FFD700',
     fontSize: ms(14),
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.15)',
+    borderColor: 'rgba(255, 215, 0, 0.3)',
   },
   submitBtn: {
     height: vs(48),
@@ -476,10 +499,14 @@ const styles = StyleSheet.create({
     marginTop: vs(5),
     width: '100%',
   },
-  submitBtnText: { color: '#fff', fontSize: ms(15), fontWeight: 'bold', letterSpacing: 0.5 },
+  submitBtnText: { color: '#000', fontSize: ms(15), fontWeight: 'bold', letterSpacing: 0.5 },
+  
   historyContainer: { flex: 1 },
-  historyHeader: { fontSize: ms(18), fontWeight: '700', color: '#fff', marginBottom: vs(10) },
+  // 🎨 CHANGED: Header Color
+  historyHeader: { fontSize: ms(18), fontWeight: '700', color: '#FFD700', marginBottom: vs(10) },
   listContent: { paddingBottom: vs(200) },
+  
+  // 🎨 CHANGED: History Card Colors
   historyCard: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -489,11 +516,12 @@ const styles = StyleSheet.create({
     padding: s(12),
     marginBottom: vs(8),
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.05)',
+    borderColor: 'rgba(255, 215, 0, 0.1)',
   },
   historyLeft: { flexDirection: 'column' },
   historyAmount: { color: '#fff', fontSize: ms(16), fontWeight: 'bold', marginBottom: vs(2) },
   historyDate: { color: 'rgba(255,255,255,0.4)', fontSize: ms(11) },
+  
   statusBadge: {
     paddingVertical: vs(4),
     paddingHorizontal: s(8),

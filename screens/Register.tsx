@@ -29,7 +29,6 @@ import ScreenWrapper from '../utils/ScreenWrapper';
 const { width, height } = Dimensions.get('window');
 
 // --- GENERIC POP BUTTON COMPONENT ---
-// Reusable wrapper to apply the pop effect to ANY content
 const PopButton = ({
   onPress,
   children,
@@ -85,16 +84,17 @@ export default function Register() {
   const [referrerAcc, setReferrerAcc] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // 🎨 GOLD FOUNDRY THEME COLORS
+  const THEME_GRADIENT = ['#FFD700', '#B8860B'];
+
   const handleRegister = async () => {
-    // 1. Client-side Check (Instant)
     if (!username.trim() || !email.trim() || !password.trim() || !mobile.trim() || !referrerAcc.trim())
       return Alert.alert('Missing Details', 'All fields are required.');
 
     setLoading(true);
-    const startTime = Date.now(); // Start Timer
+    const startTime = Date.now();
 
     try {
-      // 2. Validate Referrer (Backend)
       const { data: refUser } = await supabase
         .from('users')
         .select('account_number')
@@ -102,14 +102,12 @@ export default function Register() {
         .maybeSingle();
       
       if (!refUser) {
-        // Enforce min duration before error
         await enforceMinDuration(startTime);
         setLoading(false);
         setTimeout(() => Alert.alert('Invalid Referrer', 'The referrer account number does not exist.'), 100);
         return;
       }
 
-      // 3. Insert User (Backend)
       const { data: insertedUser, error: insertError } = await supabase
         .from('users')
         .insert([
@@ -132,26 +130,21 @@ export default function Register() {
         throw insertError;
       }
 
-      // 4. Success - Enforce min duration
       await enforceMinDuration(startTime);
-
       setLoading(false);
       setUser(insertedUser);
       navigation.replace('Main');
 
     } catch (error: any) {
-      // 5. Error - Enforce min duration
       await enforceMinDuration(startTime);
-      
       setLoading(false);
       setTimeout(() => Alert.alert('Registration Failed', error.message), 100);
     }
   };
 
-  // Helper to wait for the remaining time of the 3s window
   const enforceMinDuration = async (startTime: number) => {
     const elapsed = Date.now() - startTime;
-    const remaining = Math.max(0, 3000 - elapsed); // 3000ms = 3 seconds
+    const remaining = Math.max(0, 3000 - elapsed);
     if (remaining > 0) {
       await new Promise(resolve => setTimeout(resolve, remaining));
     }
@@ -159,18 +152,17 @@ export default function Register() {
 
   return (
     <ScreenWrapper>
-      <StatusBar barStyle="light-content" backgroundColor="#050505" />
+      <StatusBar barStyle="light-content" backgroundColor="#000" />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.mainContainer}>
           
-          {/* Subtle Background Glows */}
+          {/* 🎨 Ambient Gold Background Glows */}
           <LinearGradient
-            colors={['rgba(123, 0, 148, 0.4)', 'transparent']}
+            colors={['rgba(184, 134, 11, 0.3)', 'transparent']}
             style={styles.topGlow}
           />
           <View style={styles.bottomGlow} />
 
-          {/* Loading Overlay */}
           {loading && (
             <View style={styles.loadingOverlay}>
               <LottieView
@@ -193,20 +185,18 @@ export default function Register() {
                 bounces={false}
               >
                 
-                {/* Compact Header */}
                 <View style={styles.header}>
                   <Text style={styles.titleOutline}>Start</Text>
-                  <Text style={styles.titleFilled}>Trading</Text>
-                  <Text style={styles.subtitle}>Create your secure account.</Text>
+                  <Text style={styles.titleFilled}>Mining</Text>
+                  <Text style={styles.subtitle}>Initialize your secure vault.</Text>
                 </View>
 
-                {/* Compact Form Fields */}
                 <View style={styles.formSection}>
                   
                   <View style={styles.inputContainer}>
                     <Text style={styles.label}>USERNAME</Text>
                     <TextInput
-                      placeholder="e.g. CryptoKing"
+                      placeholder="e.g. MinerOne"
                       style={styles.input}
                       value={username}
                       onChangeText={setUsername}
@@ -266,25 +256,23 @@ export default function Register() {
 
                   <View style={styles.spacer} />
 
-                  {/* CREATE ACCOUNT BUTTON with Pop Effect */}
                   <PopButton onPress={handleRegister} disabled={loading} style={{ width: '100%' }}>
                     <LinearGradient
-                      colors={['#7b0094ff', '#ff00d4ff']}
+                      colors={THEME_GRADIENT}
                       start={{ x: 0, y: 0 }}
                       end={{ x: 1, y: 0 }}
                       style={styles.gradientButton}
                     >
-                      <Text style={styles.btnText}>CREATE ACCOUNT</Text>
+                      <Text style={styles.btnText}>CREATE VAULT</Text>
                     </LinearGradient>
                   </PopButton>
 
-                  {/* SIGN IN LINK with Pop Effect */}
                   <PopButton 
                     onPress={() => navigation.goBack()} 
                     style={styles.loginLink}
                   >
                     <Text style={styles.loginText}>
-                      Already have an account? <Text style={styles.loginHighlight}>Sign In</Text>
+                      Already registered? <Text style={styles.loginHighlight}>Sign In</Text>
                     </Text>
                   </PopButton>
 
@@ -302,10 +290,9 @@ export default function Register() {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#050505', // Deepest Black
+    backgroundColor: '#000',
   },
   
-  /* Ambient Effects */
   topGlow: {
     position: 'absolute',
     top: -height * 0.15,
@@ -317,18 +304,18 @@ const styles = StyleSheet.create({
   },
   bottomGlow: {
     position: 'absolute',
-    bottom: vs(-100), // Scalable
-    right: s(-50),    // Scalable
-    width: s(200),    // Scalable
-    height: s(200),   // Scalable
-    borderRadius: s(100), // Scalable
-    backgroundColor: '#ff00d4',
+    bottom: vs(-100),
+    right: s(-50),
+    width: s(200),
+    height: s(200),
+    borderRadius: s(100),
+    backgroundColor: '#B8860B', // Bronze glow
     opacity: 0.08,
     transform: [{ scale: 1.5 }],
   },
   loadingOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 1)', // Solid black for clean view
+    backgroundColor: 'rgba(0, 0, 0, 1)',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 999,
@@ -338,7 +325,6 @@ const styles = StyleSheet.create({
     height: s(300),
   },
 
-  /* Scroll Layout - Compacted */
   scrollContent: {
     flexGrow: 1,
     paddingHorizontal: s(24),
@@ -346,7 +332,6 @@ const styles = StyleSheet.create({
     paddingBottom: vs(20),
   },
 
-  /* Header Typography - Compacted */
   header: {
     marginBottom: vs(15),
     marginTop: vs(10),
@@ -355,7 +340,7 @@ const styles = StyleSheet.create({
     fontSize: ms(32),
     fontWeight: '300',
     color: 'transparent',
-    textShadowColor: 'rgba(255,255,255,0.3)',
+    textShadowColor: 'rgba(255,215,0,0.3)', // Gold shadow
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 1,
     letterSpacing: 2,
@@ -374,7 +359,6 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
 
-  /* Form - Compacted Spacing */
   formSection: {
     width: '100%',
   },
@@ -383,8 +367,8 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: ms(10),
-    fontWeight: '700',
-    color: '#ff00d4', 
+    fontWeight: '800',
+    color: '#FFD700', // Metallic Gold
     marginBottom: vs(4),
     letterSpacing: 1,
     textTransform: 'uppercase',
@@ -397,10 +381,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: ms(16),
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
+    borderColor: 'rgba(255, 215, 0, 0.1)', // Gold tint border
   },
 
-  /* Actions */
   spacer: {
     height: vs(10),
   },
@@ -409,15 +392,15 @@ const styles = StyleSheet.create({
     borderRadius: ms(22),
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#ff00d4',
+    shadowColor: '#FFD700',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
+    shadowOpacity: 0.2,
     shadowRadius: 10,
     elevation: 8,
     marginTop: vs(5),
   },
   btnText: {
-    color: '#fff',
+    color: '#000', // Black text on gold button
     fontSize: ms(14),
     fontWeight: '900',
     letterSpacing: 2,
@@ -432,7 +415,7 @@ const styles = StyleSheet.create({
     fontSize: ms(14),
   },
   loginHighlight: {
-    color: '#fff',
+    color: '#FFD700',
     fontWeight: '700',
   },
 });

@@ -26,7 +26,7 @@ import {
 } from 'react-native-size-matters';
 
 const { width } = Dimensions.get('window');
-const cardWidth = width / 2 - s(24); // Adjusted for better spacing
+const cardWidth = width / 2 - s(24);
 
 // --- POP BUTTON COMPONENT ---
 const PopButton = ({ onPress, children, style, disabled }: any) => {
@@ -73,8 +73,8 @@ export default function StoreScreen({ navigation }: any) {
   const [location, setLocation] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Theme Gradient
-  const THEME_GRADIENT = ['#7b0094ff', '#ff00d4ff'];
+  // 🎨 CHANGED: Gold Foundry Gradient
+  const THEME_GRADIENT = ['#FFD700', '#B8860B'];
 
   useEffect(() => {
     fetchProducts();
@@ -130,7 +130,6 @@ export default function StoreScreen({ navigation }: any) {
 
   const renderItem = ({ item }: any) => (
     <View style={styles.cardContainer}>
-      {/* Gradient Border Wrapper */}
       <LinearGradient
         colors={THEME_GRADIENT}
         start={{ x: 0, y: 0 }}
@@ -138,7 +137,6 @@ export default function StoreScreen({ navigation }: any) {
         style={styles.gradientBorder}
       >
         <View style={styles.cardInner}>
-          {/* Product Image */}
           <View style={styles.imageContainer}>
             <Image
               source={{ uri: item.image_url }}
@@ -147,7 +145,6 @@ export default function StoreScreen({ navigation }: any) {
             />
           </View>
 
-          {/* Product Info */}
           <View style={styles.cardContent}>
             <Text style={styles.name} numberOfLines={1}>
               {item.name}
@@ -155,7 +152,6 @@ export default function StoreScreen({ navigation }: any) {
             <Text style={styles.price}>${item.price}</Text>
           </View>
 
-          {/* Claim Button with Pop Effect */}
           <PopButton
             onPress={() => handleBuyPress(item)}
             style={styles.buyBtnContainer}
@@ -177,124 +173,122 @@ export default function StoreScreen({ navigation }: any) {
   return (
     <ScreenWrapper>
       <StatusBar barStyle="light-content" />
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.container}>
-          {/* Header */}
-          <View style={styles.header}>
-            <View>
-              <Text style={styles.title}>Store</Text>
-              <Text style={styles.subtitle}>Redeem your rewards</Text>
-            </View>
-            <PopButton
-              onPress={() => navigation.navigate('OrderList')}
-              style={styles.historyBtn}
-            >
-              <Text style={styles.orderList}>My Orders</Text>
-            </PopButton>
-          </View>
-
-          {/* Product Grid */}
-          <FlatList
-            data={products}
-            renderItem={renderItem}
-            keyExtractor={item => item.id.toString()}
-            numColumns={2}
-            columnWrapperStyle={styles.columnWrapper}
-            contentContainerStyle={styles.listContent}
-            showsVerticalScrollIndicator={false}
-          />
-
-          {/* Purchase Modal */}
-          <Modal visible={!!selectedProduct} transparent animationType="fade">
-            <View style={styles.modalOverlay}>
-              {/* Tap background to close */}
-              <Pressable
-                style={styles.modalBackdrop}
-                onPress={() => setSelectedProduct(null)}
-              />
-
-              <View style={styles.modalContent}>
-                <LinearGradient
-                  colors={['#1a1a1a', '#0d0d0d']}
-                  style={styles.modalCard}
-                >
-                  {selectedProduct && (
-                    <>
-                      {/* Modal Header */}
-                      <View style={styles.modalHeader}>
-                        <Text style={styles.modalTitle}>Confirm Claim</Text>
-                        <PopButton onPress={() => setSelectedProduct(null)}>
-                          <Text style={styles.closeIcon}>✕</Text>
-                        </PopButton>
-                      </View>
-
-                      {/* Product Summary */}
-                      <View style={styles.productSummary}>
-                        <Image
-                          source={{ uri: selectedProduct.image_url }}
-                          style={styles.modalImage}
-                        />
-                        <View style={styles.summaryText}>
-                          <Text style={styles.summaryName}>
-                            {selectedProduct.name}
-                          </Text>
-                          <Text style={styles.summaryPrice}>
-                            ${selectedProduct.price}
-                          </Text>
-                        </View>
-                      </View>
-
-                      <View style={styles.divider} />
-
-                      {/* Inputs */}
-                      <Text style={styles.inputLabel}>Mobile Number</Text>
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Enter contact number"
-                        placeholderTextColor="rgba(255,255,255,0.3)"
-                        value={mobileNumber}
-                        onChangeText={setMobileNumber}
-                        keyboardType="phone-pad"
-                      />
-
-                      <Text style={styles.inputLabel}>Delivery Address</Text>
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Enter full address"
-                        placeholderTextColor="rgba(255,255,255,0.3)"
-                        value={location}
-                        onChangeText={setLocation}
-                      />
-
-                      {/* Confirm Button with Pop Effect */}
-                      <PopButton
-                        onPress={confirmPurchase}
-                        disabled={loading}
-                        style={styles.confirmBtnContainer}
-                      >
-                        <LinearGradient
-                          colors={THEME_GRADIENT}
-                          start={{ x: 0, y: 0 }}
-                          end={{ x: 1, y: 0 }}
-                          style={styles.buyNowBtn}
-                        >
-                          {loading ? (
-                            <ActivityIndicator color="#fff" size="small" />
-                          ) : (
-                            <Text style={styles.buyNowText}>
-                              Confirm & Claim
-                            </Text>
-                          )}
-                        </LinearGradient>
-                      </PopButton>
-                    </>
-                  )}
-                </LinearGradient>
+      {/* 🌑 Background: Gold Foundry Gradient */}
+      <LinearGradient
+        colors={['#000000', '#1a1005', '#241808']}
+        style={{ flex: 1 }}
+      >
+        <SafeAreaView style={styles.safeArea}>
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <View>
+                <Text style={styles.title}>Store</Text>
+                <Text style={styles.subtitle}>Redeem your rewards</Text>
               </View>
+              <PopButton
+                onPress={() => navigation.navigate('OrderList')}
+                style={styles.historyBtn}
+              >
+                <Text style={styles.orderList}>My Orders</Text>
+              </PopButton>
             </View>
-          </Modal>
-        </View>
-      </SafeAreaView>
+
+            <FlatList
+              data={products}
+              renderItem={renderItem}
+              keyExtractor={item => item.id.toString()}
+              numColumns={2}
+              columnWrapperStyle={styles.columnWrapper}
+              contentContainerStyle={styles.listContent}
+              showsVerticalScrollIndicator={false}
+            />
+
+            <Modal visible={!!selectedProduct} transparent animationType="fade">
+              <View style={styles.modalOverlay}>
+                <Pressable
+                  style={styles.modalBackdrop}
+                  onPress={() => setSelectedProduct(null)}
+                />
+
+                <View style={styles.modalContent}>
+                  <LinearGradient
+                    colors={['#1a140d', '#000000']}
+                    style={styles.modalCard}
+                  >
+                    {selectedProduct && (
+                      <>
+                        <View style={styles.modalHeader}>
+                          <Text style={styles.modalTitle}>Confirm Claim</Text>
+                          <PopButton onPress={() => setSelectedProduct(null)}>
+                            <Text style={styles.closeIcon}>✕</Text>
+                          </PopButton>
+                        </View>
+
+                        <View style={styles.productSummary}>
+                          <Image
+                            source={{ uri: selectedProduct.image_url }}
+                            style={styles.modalImage}
+                          />
+                          <View style={styles.summaryText}>
+                            <Text style={styles.summaryName}>
+                              {selectedProduct.name}
+                            </Text>
+                            <Text style={styles.summaryPrice}>
+                              ${selectedProduct.price}
+                            </Text>
+                          </View>
+                        </View>
+
+                        <View style={styles.divider} />
+
+                        <Text style={styles.inputLabel}>Mobile Number</Text>
+                        <TextInput
+                          style={styles.input}
+                          placeholder="Enter contact number"
+                          placeholderTextColor="rgba(255,255,255,0.3)"
+                          value={mobileNumber}
+                          onChangeText={setMobileNumber}
+                          keyboardType="phone-pad"
+                        />
+
+                        <Text style={styles.inputLabel}>Delivery Address</Text>
+                        <TextInput
+                          style={styles.input}
+                          placeholder="Enter full address"
+                          placeholderTextColor="rgba(255,255,255,0.3)"
+                          value={location}
+                          onChangeText={setLocation}
+                        />
+
+                        <PopButton
+                          onPress={confirmPurchase}
+                          disabled={loading}
+                          style={styles.confirmBtnContainer}
+                        >
+                          <LinearGradient
+                            colors={THEME_GRADIENT}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 0 }}
+                            style={styles.buyNowBtn}
+                          >
+                            {loading ? (
+                              <ActivityIndicator color="#000" size="small" />
+                            ) : (
+                              <Text style={styles.buyNowText}>
+                                Confirm & Claim
+                              </Text>
+                            )}
+                          </LinearGradient>
+                        </PopButton>
+                      </>
+                    )}
+                  </LinearGradient>
+                </View>
+              </View>
+            </Modal>
+          </View>
+        </SafeAreaView>
+      </LinearGradient>
     </ScreenWrapper>
   );
 }
@@ -317,24 +311,25 @@ const styles = StyleSheet.create({
   title: {
     fontSize: ms(28),
     fontWeight: '800',
-    color: '#fff',
+    color: '#D4AF37', // Gold
     letterSpacing: 0.5,
   },
   subtitle: {
     color: 'rgba(255,255,255,0.5)',
     fontSize: ms(12),
   },
+  // 🎨 CHANGED: History Button Colors
   historyBtn: {
     paddingVertical: vs(6),
     paddingHorizontal: s(12),
-    backgroundColor: 'rgba(255, 0, 212, 0.1)',
+    backgroundColor: 'rgba(255, 215, 0, 0.1)',
     borderRadius: ms(20),
     borderWidth: 1,
-    borderColor: 'rgba(255, 0, 212, 0.3)',
+    borderColor: 'rgba(255, 215, 0, 0.3)',
   },
   orderList: {
     fontSize: ms(12),
-    color: '#ff00d4',
+    color: '#FFD700',
     fontWeight: '700',
   },
 
@@ -350,7 +345,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     marginBottom: vs(16),
     width: cardWidth,
-    shadowColor: '#ff00d4',
+    shadowColor: '#FFD700',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 8,
@@ -358,11 +353,11 @@ const styles = StyleSheet.create({
   },
   gradientBorder: {
     borderRadius: ms(16),
-    //padding: 1, // Thin border
+    padding: 1, // Visual border
   },
   cardInner: {
-    backgroundColor: '#121212',
-    borderRadius: ms(15), // Slightly smaller than border
+    backgroundColor: '#0a0a0a',
+    borderRadius: ms(15),
     padding: s(8),
     alignItems: 'center',
   },
@@ -393,9 +388,10 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: s(4),
   },
+  // 🎨 CHANGED: Price Color
   price: {
     fontSize: ms(13),
-    color: '#ff00d4',
+    color: '#FFD700',
     fontWeight: '800',
   },
   buyBtnContainer: {
@@ -408,9 +404,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  // 🎨 CHANGED: Buy Text Color
   buyText: {
-    color: '#fff',
-    fontWeight: '700',
+    color: '#000',
+    fontWeight: '800',
     fontSize: ms(12),
     textTransform: 'uppercase',
   },
@@ -420,7 +417,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.8)',
+    backgroundColor: 'rgba(0,0,0,0.85)',
   },
   modalBackdrop: {
     position: 'absolute',
@@ -437,7 +434,7 @@ const styles = StyleSheet.create({
     borderRadius: ms(20),
     padding: s(20),
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    borderColor: 'rgba(255, 215, 0, 0.2)',
   },
   modalHeader: {
     flexDirection: 'row',
@@ -448,10 +445,10 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: ms(18),
     fontWeight: '800',
-    color: '#fff',
+    color: '#FFD700',
   },
   closeIcon: {
-    color: 'rgba(255,255,255,0.5)',
+    color: '#FFD700',
     fontSize: ms(20),
     fontWeight: 'bold',
   },
@@ -481,8 +478,9 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: vs(2),
   },
+  // 🎨 CHANGED: Summary Price Color
   summaryPrice: {
-    color: '#ff00d4',
+    color: '#FFD700',
     fontSize: ms(16),
     fontWeight: '800',
   },
@@ -505,7 +503,7 @@ const styles = StyleSheet.create({
     marginBottom: vs(15),
     backgroundColor: '#000',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.15)',
+    borderColor: 'rgba(255, 215, 0, 0.15)',
     color: '#fff',
     paddingHorizontal: s(15),
     paddingVertical: vs(10),
@@ -522,9 +520,10 @@ const styles = StyleSheet.create({
     borderRadius: ms(12),
     alignItems: 'center',
   },
+  // 🎨 CHANGED: Buy Now Text Color
   buyNowText: {
-    color: '#fff',
-    fontWeight: '800',
+    color: '#000',
+    fontWeight: '900',
     fontSize: ms(16),
     letterSpacing: 0.5,
   },

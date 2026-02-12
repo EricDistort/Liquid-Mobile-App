@@ -61,14 +61,17 @@ export default function TransactionListScreen() {
   const { user } = useUser();
   const navigation = useNavigation<any>();
 
-  // We will store mixed data here (Transactions + Feeds + Products)
   const [mixedData, setMixedData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
-  const THEME_GRADIENT = ['#7b0094ff', '#ff00d4ff'];
-  const FEED_GRADIENT = ['#00c6ff', '#0072ff'];
-  const PRODUCT_GRADIENT = ['#FFD700', '#FF8C00']; // Gold/Orange for Products
+  // --- 🎨 FOUNDRY THEME PALETTES ---
+  // Gold for Transactions
+  const THEME_GRADIENT = ['#FFD700', '#B8860B']; 
+  // Bronze/Orange for Feeds
+  const FEED_GRADIENT = ['#cd7f32', '#8B4513']; 
+  // Dark Gold for Products
+  const PRODUCT_GRADIENT = ['#DAA520', '#B8860B']; 
 
   const fetchData = async () => {
     if (!user?.account_number) return;
@@ -96,10 +99,10 @@ export default function TransactionListScreen() {
         .select('id, title, banner_url, created_at')
         .order('created_at', { ascending: false });
 
-      // 3. 🆕 Fetch Products (Corrected 'name' column)
+      // 3. Fetch Products
       const { data: prodData, error: prodError } = await supabase
         .from('products')
-        .select('id, name, image_url, price, created_at') // 👈 Changed title to name
+        .select('id, name, image_url, price, created_at')
         .order('created_at', { ascending: false });
 
       if (txError) console.error(txError);
@@ -157,17 +160,17 @@ export default function TransactionListScreen() {
           }
           style={{ marginBottom: vs(12) }}
         >
+          {/* Card Container simulating a dark metal plate */}
           <View style={styles.cardContainer}>
-            <View style={styles.cardBg}>
+            <LinearGradient
+              colors={['#1c140d', '#000000']} // Dark Foundry Gradient
+              style={styles.cardGradient}
+            >
               <View style={styles.cardContent}>
-                <LinearGradient
-                  colors={THEME_GRADIENT}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.iconContainer}
-                >
+                {/* Icon Container */}
+                <View style={styles.iconBox}>
                   <Text style={styles.iconText}>{isSent ? '↗' : '↙'}</Text>
-                </LinearGradient>
+                </View>
 
                 <View style={styles.textColumn}>
                   <Text style={styles.username} numberOfLines={1}>
@@ -182,7 +185,8 @@ export default function TransactionListScreen() {
                   <Text
                     style={[
                       styles.amount,
-                      { color: isSent ? '#ff1100' : '#15ff00' },
+                      // Green/Red logic kept, but styled for dark mode
+                      { color: isSent ? '#FF4500' : '#00ff88' }, 
                     ]}
                   >
                     {isSent ? '-' : '+'}${Math.abs(item.amount)}
@@ -195,7 +199,7 @@ export default function TransactionListScreen() {
                   </Text>
                 </View>
               </View>
-            </View>
+            </LinearGradient>
           </View>
         </PopCard>
       );
@@ -213,7 +217,10 @@ export default function TransactionListScreen() {
           style={{ marginBottom: vs(12) }}
         >
           <View style={styles.cardContainer}>
-            <View style={[styles.cardBg, styles.feedCardBg]}>
+             <LinearGradient
+              colors={['#241808', '#000000']}
+              style={styles.cardGradient}
+            >
               <View style={styles.cardContent}>
                 <View style={styles.feedMediaContainer}>
                   {item.banner_url ? (
@@ -241,9 +248,8 @@ export default function TransactionListScreen() {
                   <Text style={styles.feedTitle} numberOfLines={1}>
                     {item.title}
                   </Text>
-                  <Text style={[styles.dateText, { color: '#ff00ea' }]}>
+                  <Text style={[styles.dateText, { color: '#cd7f32' }]}>
                     {new Date(item.created_at).toLocaleDateString()} • News
-                    Update
                   </Text>
                 </View>
 
@@ -251,7 +257,7 @@ export default function TransactionListScreen() {
                   <Text style={styles.arrowIndicator}>›</Text>
                 </View>
               </View>
-            </View>
+            </LinearGradient>
           </View>
         </PopCard>
       );
@@ -265,7 +271,10 @@ export default function TransactionListScreen() {
           style={{ marginBottom: vs(12) }}
         >
           <View style={styles.cardContainer}>
-            <View style={[styles.cardBg, styles.productCardBg]}>
+            <LinearGradient
+              colors={['#2e2008', '#000000']} // Slightly lighter gold/black
+              style={styles.cardGradient}
+            >
               <View style={styles.cardContent}>
                 {/* Product Image/Icon */}
                 <View style={styles.feedMediaContainer}>
@@ -297,10 +306,10 @@ export default function TransactionListScreen() {
 
                 {/* Price */}
                 <View style={styles.amountColumn}>
-                  <Text style={styles.arrowIndicator}>›</Text>
+                   <Text style={[styles.amount, {color: '#FFD700'}]}>${item.price}</Text>
                 </View>
               </View>
-            </View>
+            </LinearGradient>
           </View>
         </PopCard>
       );
@@ -309,61 +318,70 @@ export default function TransactionListScreen() {
 
   return (
     <ScreenWrapper>
-      <SafeAreaView style={styles.safeArea}>
-        <StatusBar barStyle="light-content" />
-        <View style={styles.container}>
-          <View style={styles.headerContainer}>
-            <Text style={styles.headerTitle}>Activity</Text>
-            <Text style={styles.headerSubtitle}>
-              Transactions, News & Store
-            </Text>
-            <LinearGradient
-              colors={THEME_GRADIENT}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={styles.headerLine}
-            />
-          </View>
-
-          {loading && !refreshing ? (
-            <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#ff00d4" />
+      {/* 🌑 Background: Deep Bronze/Black */}
+      <LinearGradient
+        colors={['#000000', '#1a1005', '#241808']}
+        style={styles.background}
+      >
+        <SafeAreaView style={styles.safeArea}>
+          <StatusBar barStyle="light-content" backgroundColor="#000" />
+          <View style={styles.container}>
+            
+            {/* Header */}
+            <View style={styles.headerContainer}>
+              <Text style={styles.headerTitle}>LOGS</Text>
+              <Text style={styles.headerSubtitle}>
+                LEDGER, INTEL & SUPPLY
+              </Text>
+              <LinearGradient
+                colors={THEME_GRADIENT}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.headerLine}
+              />
             </View>
-          ) : (
-            <FlatList
-              data={mixedData}
-              keyExtractor={item => `${item.type}-${item.id}`}
-              renderItem={renderItem}
-              contentContainerStyle={styles.listContent}
-              showsVerticalScrollIndicator={false}
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                  tintColor="#ff00d4"
-                  colors={['#ff00d4', '#7b0094']}
-                  progressBackgroundColor="#1a1a1a"
-                />
-              }
-              ListEmptyComponent={
-                <View style={styles.emptyContainer}>
-                  <Text style={styles.emptyIcon}>📂</Text>
-                  <Text style={styles.emptyText}>No activity yet</Text>
-                </View>
-              }
-            />
-          )}
-        </View>
-      </SafeAreaView>
+
+            {loading && !refreshing ? (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#FFD700" />
+              </View>
+            ) : (
+              <FlatList
+                data={mixedData}
+                keyExtractor={item => `${item.type}-${item.id}`}
+                renderItem={renderItem}
+                contentContainerStyle={styles.listContent}
+                showsVerticalScrollIndicator={false}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    tintColor="#FFD700"
+                    colors={['#FFD700', '#B8860B']}
+                    progressBackgroundColor="#1c140d"
+                  />
+                }
+                ListEmptyComponent={
+                  <View style={styles.emptyContainer}>
+                    <Text style={styles.emptyIcon}>📂</Text>
+                    <Text style={styles.emptyText}>LEDGER EMPTY</Text>
+                  </View>
+                }
+              />
+            )}
+          </View>
+        </SafeAreaView>
+      </LinearGradient>
     </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
+  background: { flex: 1 },
   safeArea: { flex: 1 },
   container: {
     flex: 1,
-    paddingHorizontal: s(10),
+    paddingHorizontal: s(16),
   },
 
   /* Header */
@@ -372,23 +390,22 @@ const styles = StyleSheet.create({
     marginBottom: vs(20),
   },
   headerTitle: {
-    //fontFamily: 'Orbitron-Bold',
     fontSize: ms(28),
     fontWeight: '800',
-    color: '#fff',
-    letterSpacing: 1,
-    //textTransform: 'uppercase',
+    color: '#D4AF37', // Metallic Gold
+    letterSpacing: 2,
   },
   headerSubtitle: {
-    //fontFamily: 'Orbitron-Regular',
-    fontSize: ms(12),
-    color: 'rgba(255,255,255,0.5)',
+    fontSize: ms(10),
+    color: '#8B8B8B', // Grey
     marginTop: vs(4),
     marginBottom: vs(10),
+    letterSpacing: 1,
+    fontWeight: '600',
   },
   headerLine: {
     height: vs(3),
-    width: s(60),
+    width: s(40),
     borderRadius: ms(2),
   },
 
@@ -402,41 +419,39 @@ const styles = StyleSheet.create({
   },
 
   /* Card Base */
-  cardContainer: {},
-  cardBg: {
-    backgroundColor: '#1a1a1a98',
-    borderRadius: ms(20),
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.05)',
+  cardContainer: {
+    borderRadius: ms(25), // Rounded corners
+    shadowColor: '#FFD700',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
   },
-  feedCardBg: {
-    backgroundColor: 'rgba(163, 0, 155, 0.11)',
+  cardGradient: {
+    borderRadius: ms(25),
     borderWidth: 1,
-    borderColor: 'rgba(255, 0, 170, 0.16)',
-  },
-  // Product Card Style
-  productCardBg: {
-    backgroundColor: 'rgba(50, 20, 0, 0.3)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.3)',
+    borderColor: 'rgba(255, 215, 0, 0.15)', // Subtle gold border
   },
   cardContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: s(15),
+    padding: s(16),
   },
 
   /* Transaction Icons */
-  iconContainer: {
+  iconBox: {
     width: ms(42),
     height: ms(42),
-    borderRadius: ms(12),
+    borderRadius: ms(21), // Circular
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: s(12),
+    backgroundColor: 'rgba(255, 215, 0, 0.1)', // Gold tint bg
+    borderWidth: 1,
+    borderColor: 'rgba(255, 215, 0, 0.2)',
   },
   iconText: {
-    color: '#fff',
+    color: '#FFD700',
     fontSize: ms(20),
     fontWeight: 'bold',
   },
@@ -445,10 +460,12 @@ const styles = StyleSheet.create({
   feedMediaContainer: {
     width: ms(42),
     height: ms(42),
-    borderRadius: ms(8),
+    borderRadius: ms(12),
     marginRight: s(12),
     overflow: 'hidden',
     position: 'relative',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
   },
   feedImage: {
     width: '100%',
@@ -467,7 +484,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 2,
     right: 2,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: 'rgba(0,0,0,0.8)',
     borderRadius: 4,
     width: 12,
     height: 12,
@@ -481,14 +498,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   username: {
-    //fontFamily: 'Orbitron-Bold',
     fontSize: ms(14),
     fontWeight: '700',
     color: '#fff',
     marginBottom: vs(2),
   },
   feedTitle: {
-    //fontFamily: 'Orbitron-Medium',
     fontSize: ms(13),
     fontWeight: 'bold',
     color: '#fff',
@@ -496,7 +511,7 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: ms(10),
-    color: 'rgba(255,255,255,0.4)',
+    color: '#888',
     fontWeight: '500',
   },
 
@@ -504,20 +519,19 @@ const styles = StyleSheet.create({
   amountColumn: {
     alignItems: 'flex-end',
     justifyContent: 'center',
-    minWidth: s(60),
+    minWidth: s(70),
   },
   amount: {
-    //fontFamily: 'Orbitron-Bold',
     fontSize: ms(14),
     fontWeight: '700',
     marginBottom: vs(2),
   },
   timeText: {
     fontSize: ms(10),
-    color: 'rgba(255,255,255,0.3)',
+    color: '#666',
   },
   arrowIndicator: {
-    color: 'rgba(255,255,255,0.3)',
+    color: '#FFD700',
     fontSize: ms(24),
     fontWeight: '300',
     marginTop: -4,
@@ -534,8 +548,9 @@ const styles = StyleSheet.create({
     marginBottom: vs(10),
   },
   emptyText: {
-    //fontFamily: 'Orbitron-Regular',
-    color: '#fff',
+    color: '#D4AF37',
     fontSize: ms(14),
+    letterSpacing: 2,
+    fontWeight: '700',
   },
 });

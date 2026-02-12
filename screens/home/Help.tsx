@@ -59,8 +59,8 @@ export default function SupportScreen() {
   const [loading, setLoading] = useState(true);
   const flatListRef = useRef<FlatList>(null);
 
-  // Theme Constants
-  const THEME_GRADIENT = ['#7b0094ff', '#ff00d4ff'];
+  // 🎨 GOLD FOUNDRY GRADIENT
+  const THEME_GRADIENT = ['#FFD700', '#B8860B'];
 
   // 1. Initialize Chat
   useEffect(() => {
@@ -215,8 +215,12 @@ export default function SupportScreen() {
 
   return (
     <ScreenWrapper>
-      <View style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor="#050505" />
+      {/* 🌑 Background: Deep Bronze/Black Gradient */}
+      <LinearGradient
+        colors={['#000000', '#1a1005', '#241808']}
+        style={styles.container}
+      >
+        <StatusBar barStyle="light-content" backgroundColor="#000" />
 
         {/* --- HEADER --- */}
         <View style={styles.headerContainer}>
@@ -226,8 +230,8 @@ export default function SupportScreen() {
                 style={styles.headerLine}
             />
             <View style={styles.headerContent}>
-                <Text style={styles.headerTitle}>Live Support</Text>
-                {loading && <ActivityIndicator size="small" color="#ff00d4" style={{marginLeft: 10}} />}
+                <Text style={styles.headerTitle}>LIVE SUPPORT</Text>
+                {loading && <ActivityIndicator size="small" color="#FFD700" style={{marginLeft: 10}} />}
             </View>
         </View>
 
@@ -250,7 +254,7 @@ export default function SupportScreen() {
               ListEmptyComponent={
                   !loading ? (
                     <View style={styles.emptyContainer}>
-                        <Text style={styles.emptyText}>How can we help you today?</Text>
+                        <Text style={styles.emptyText}>SECURE LINE ACTIVE</Text>
                     </View>
                   ) : null
               }
@@ -264,7 +268,7 @@ export default function SupportScreen() {
                 style={styles.input}
                 value={input}
                 onChangeText={setInput}
-                placeholder="Type a message..."
+                placeholder="Transmitting message..."
                 placeholderTextColor="rgba(255,255,255,0.3)"
                 returnKeyType="send"
                 onSubmitEditing={sendMessage}
@@ -284,7 +288,7 @@ export default function SupportScreen() {
             </View>
           </View>
         </KeyboardAvoidingView>
-      </View>
+      </LinearGradient>
     </ScreenWrapper>
   );
 }
@@ -292,14 +296,13 @@ export default function SupportScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#050505',
   },
 
   /* HEADER */
   headerContainer: {
     paddingTop: vs(20),
     paddingBottom: vs(10),
-    backgroundColor: '#050505',
+    backgroundColor: 'transparent',
     zIndex: 10,
   },
   headerLine: {
@@ -318,8 +321,8 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: ms(20),
     fontWeight: '900',
-    color: '#fff',
-    letterSpacing: 0.5,
+    color: '#D4AF37', // Metallic Gold
+    letterSpacing: 1,
     textTransform: 'uppercase',
   },
 
@@ -333,8 +336,10 @@ const styles = StyleSheet.create({
       opacity: 0.5
   },
   emptyText: {
-      color: '#fff',
-      fontSize: ms(14)
+      color: '#D4AF37', // Gold text
+      fontSize: ms(14),
+      fontWeight: '700',
+      letterSpacing: 2,
   },
 
   /* BUBBLES */
@@ -345,14 +350,14 @@ const styles = StyleSheet.create({
     maxWidth: '80%',
   },
   userBubble: {
-    backgroundColor: '#3a0047',
+    backgroundColor: '#332200', // Dark Gold/Brown
     alignSelf: 'flex-end',
     borderBottomRightRadius: 2,
     borderWidth: 1,
-    borderColor: '#ff00d4',
+    borderColor: '#FFD700', // Gold Border
   },
   adminBubble: {
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#1a1a1a', // Dark Obsidian
     alignSelf: 'flex-start',
     borderBottomLeftRadius: 2,
     borderWidth: 1,
@@ -364,15 +369,15 @@ const styles = StyleSheet.create({
     lineHeight: ms(20),
   },
   adminText: {
-    color: '#eee',
+    color: '#ccc',
   },
 
   /* INPUT AREA */
   inputWrapper: {
     padding: s(15),
-    backgroundColor: '#000000',
-   
-    borderRadius: ms(30),
+    backgroundColor: 'rgba(0, 0, 0, 0)', // Slightly transparent black
+    //borderTopWidth: 1,
+    //borderTopColor: 'rgba(255, 215, 0, 0.1)',
   },
   inputRow: {
     flexDirection: 'row',
@@ -387,7 +392,7 @@ const styles = StyleSheet.create({
     marginRight: s(10),
     color: '#fff',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
+    borderColor: 'rgba(255, 215, 0, 0.2)', // Gold tint border
     fontSize: ms(14),
   },
   sendButton: {
@@ -396,14 +401,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: s(25),
-    shadowColor: '#ff00d4',
+    shadowColor: '#FFD700',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.3,
     shadowRadius: 5,
     elevation: 5,
   },
   sendButtonText: {
-    color: '#fff',
+    color: '#000', // Black arrow on Gold button
     fontSize: ms(18),
     fontWeight: 'bold',
     marginBottom: 2,
