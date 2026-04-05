@@ -65,13 +65,13 @@ export default function TransactionListScreen() {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
-  // --- 🎨 FOUNDRY THEME PALETTES ---
-  // Gold for Transactions
-  const THEME_GRADIENT = ['#FFD700', '#B8860B']; 
-  // Bronze/Orange for Feeds
-  const FEED_GRADIENT = ['#cd7f32', '#8B4513']; 
-  // Dark Gold for Products
-  const PRODUCT_GRADIENT = ['#DAA520', '#B8860B']; 
+  // --- 🎨 FOUNDRY THEME PALETTES (Modified to Neon Green) ---
+  // Green for Transactions
+  const THEME_GRADIENT = ['#03310b', '#00d435'];
+  // Bronze/Orange for Feeds (Left this one somewhat distinct but complementary)
+  const FEED_GRADIENT = ['#008000', '#0a1a10'];
+  // Dark Green for Products
+  const PRODUCT_GRADIENT = ['#00ff40', '#03310b'];
 
   const fetchData = async () => {
     if (!user?.account_number) return;
@@ -163,7 +163,7 @@ export default function TransactionListScreen() {
           {/* Card Container simulating a dark metal plate */}
           <View style={styles.cardContainer}>
             <LinearGradient
-              colors={['#1c140d', '#000000']} // Dark Foundry Gradient
+              colors={['#082415', '#000000']} // Dark Green Gradient
               style={styles.cardGradient}
             >
               <View style={styles.cardContent}>
@@ -185,8 +185,8 @@ export default function TransactionListScreen() {
                   <Text
                     style={[
                       styles.amount,
-                      // Green/Red logic kept, but styled for dark mode
-                      { color: isSent ? '#FF4500' : '#00ff88' }, 
+                      // Adjusted for neon green theme
+                      { color: isSent ? '#FF4500' : '#00ff40' },
                     ]}
                   >
                     {isSent ? '-' : '+'}${Math.abs(item.amount)}
@@ -217,8 +217,8 @@ export default function TransactionListScreen() {
           style={{ marginBottom: vs(12) }}
         >
           <View style={styles.cardContainer}>
-             <LinearGradient
-              colors={['#241808', '#000000']}
+            <LinearGradient
+              colors={['#0a1a10', '#000000']}
               style={styles.cardGradient}
             >
               <View style={styles.cardContent}>
@@ -248,7 +248,7 @@ export default function TransactionListScreen() {
                   <Text style={styles.feedTitle} numberOfLines={1}>
                     {item.title}
                   </Text>
-                  <Text style={[styles.dateText, { color: '#cd7f32' }]}>
+                  <Text style={[styles.dateText, { color: '#00ff40' }]}>
                     {new Date(item.created_at).toLocaleDateString()} • News
                   </Text>
                 </View>
@@ -272,7 +272,7 @@ export default function TransactionListScreen() {
         >
           <View style={styles.cardContainer}>
             <LinearGradient
-              colors={['#2e2008', '#000000']} // Slightly lighter gold/black
+              colors={['#082415', '#000000']}
               style={styles.cardGradient}
             >
               <View style={styles.cardContent}>
@@ -299,14 +299,16 @@ export default function TransactionListScreen() {
                   <Text style={styles.feedTitle} numberOfLines={1}>
                     {item.name}
                   </Text>
-                  <Text style={[styles.dateText, { color: '#FFD700' }]}>
+                  <Text style={[styles.dateText, { color: '#00ff40' }]}>
                     New Arrival • Store
                   </Text>
                 </View>
 
                 {/* Price */}
                 <View style={styles.amountColumn}>
-                   <Text style={[styles.amount, {color: '#FFD700'}]}>${item.price}</Text>
+                  <Text style={[styles.amount, { color: '#00ff40' }]}>
+                    ${item.price}
+                  </Text>
                 </View>
               </View>
             </LinearGradient>
@@ -318,21 +320,18 @@ export default function TransactionListScreen() {
 
   return (
     <ScreenWrapper>
-      {/* 🌑 Background: Deep Bronze/Black */}
+      {/* 🌑 Background: Deep Green/Black */}
       <LinearGradient
-        colors={['#000000', '#1a1005', '#241808']}
+        colors={['#000000', '#0a1a10', '#082415']}
         style={styles.background}
       >
         <SafeAreaView style={styles.safeArea}>
           <StatusBar barStyle="light-content" backgroundColor="#000" />
           <View style={styles.container}>
-            
             {/* Header */}
             <View style={styles.headerContainer}>
               <Text style={styles.headerTitle}>LOGS</Text>
-              <Text style={styles.headerSubtitle}>
-                LEDGER, INTEL & SUPPLY
-              </Text>
+              <Text style={styles.headerSubtitle}>LEDGER, INTEL & SUPPLY</Text>
               <LinearGradient
                 colors={THEME_GRADIENT}
                 start={{ x: 0, y: 0 }}
@@ -343,7 +342,7 @@ export default function TransactionListScreen() {
 
             {loading && !refreshing ? (
               <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#FFD700" />
+                <ActivityIndicator size="large" color="#00ff40" />
               </View>
             ) : (
               <FlatList
@@ -356,8 +355,8 @@ export default function TransactionListScreen() {
                   <RefreshControl
                     refreshing={refreshing}
                     onRefresh={onRefresh}
-                    tintColor="#FFD700"
-                    colors={['#FFD700', '#B8860B']}
+                    tintColor="#00ff40"
+                    colors={['#00ff40', '#00d435']}
                     progressBackgroundColor="#1c140d"
                   />
                 }
@@ -392,7 +391,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: ms(28),
     fontWeight: '800',
-    color: '#D4AF37', // Metallic Gold
+    color: '#00ff40', // Neon Green
     letterSpacing: 2,
   },
   headerSubtitle: {
@@ -421,7 +420,7 @@ const styles = StyleSheet.create({
   /* Card Base */
   cardContainer: {
     borderRadius: ms(25), // Rounded corners
-    shadowColor: '#FFD700',
+    shadowColor: '#00ff40',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
@@ -430,7 +429,7 @@ const styles = StyleSheet.create({
   cardGradient: {
     borderRadius: ms(25),
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.15)', // Subtle gold border
+    borderColor: 'rgba(0, 255, 64, 0.15)', // Subtle green border
   },
   cardContent: {
     flexDirection: 'row',
@@ -446,12 +445,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: s(12),
-    backgroundColor: 'rgba(255, 215, 0, 0.1)', // Gold tint bg
+    backgroundColor: 'rgba(0, 255, 64, 0.1)', // Green tint bg
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.2)',
+    borderColor: 'rgba(0, 255, 64, 0.2)',
   },
   iconText: {
-    color: '#FFD700',
+    color: '#00ff40',
     fontSize: ms(20),
     fontWeight: 'bold',
   },
@@ -531,7 +530,7 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   arrowIndicator: {
-    color: '#FFD700',
+    color: '#00ff40',
     fontSize: ms(24),
     fontWeight: '300',
     marginTop: -4,
@@ -548,7 +547,7 @@ const styles = StyleSheet.create({
     marginBottom: vs(10),
   },
   emptyText: {
-    color: '#D4AF37',
+    color: '#00ff40',
     fontSize: ms(14),
     letterSpacing: 2,
     fontWeight: '700',

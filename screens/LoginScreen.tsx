@@ -94,8 +94,8 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // 🎨 GOLD FOUNDRY GRADIENT
-  const THEME_GRADIENT = ['#FFD700', '#B8860B'];
+  // 🎨 NEON GREEN GRADIENT
+  const THEME_GRADIENT = ['#03310b', '#00d435'];
 
   const navigateToApp = (userData: any) => {
     setUser(userData);
@@ -103,7 +103,7 @@ export default function Login() {
   };
 
   const handleLogin = async () => {
-    Keyboard.dismiss(); 
+    Keyboard.dismiss();
 
     if (!accountNumber.trim() || !password.trim())
       return Alert.alert('Missing Details', 'Please fill in all fields.');
@@ -157,10 +157,9 @@ export default function Login() {
       <StatusBar barStyle="light-content" backgroundColor="#000" />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.mainContainer}>
-          
-          {/* 🎨 Ambient Gold Background Glows */}
+          {/* 🎨 Ambient Neon Green Background Glows */}
           <LinearGradient
-            colors={['rgba(184, 134, 11, 0.3)', 'transparent']}
+            colors={['rgba(0, 255, 64, 0.3)', 'transparent']}
             style={styles.topGlow}
           />
           <View style={styles.bottomGlow} />
@@ -291,7 +290,7 @@ const styles = StyleSheet.create({
     width: s(200),
     height: s(200),
     borderRadius: s(100),
-    backgroundColor: '#B8860B', // Bronze glow
+    backgroundColor: '#00b436', // Neon green glow
     opacity: 0.08,
     transform: [{ scale: 1.5 }],
   },
@@ -317,7 +316,7 @@ const styles = StyleSheet.create({
     fontSize: ms(42),
     fontWeight: '300',
     color: 'transparent',
-    textShadowColor: 'rgba(255,215,0,0.3)', // Gold glow
+    textShadowColor: 'rgba(0,255,64,0.3)', // Green glow
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 1,
     letterSpacing: 2,
@@ -326,12 +325,12 @@ const styles = StyleSheet.create({
   titleFilled: {
     fontSize: ms(42),
     fontWeight: '900',
-    color: '#fff',
+    color: '#d3ffc7',
     letterSpacing: 2,
   },
   subtitle: {
     fontSize: ms(14),
-    color: 'rgba(255,255,255,0.5)',
+    color: 'rgba(205, 255, 195, 0.58)',
     marginTop: vs(5),
     fontWeight: '400',
   },
@@ -344,7 +343,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: ms(10),
     fontWeight: '800',
-    color: '#FFD700', // Metallic Gold
+    color: '#00ff40', // Neon Green
     marginBottom: vs(8),
     letterSpacing: 1,
     textTransform: 'uppercase',
@@ -357,7 +356,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: ms(16),
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.1)', // Gold tint border
+    borderColor: 'rgba(0, 255, 64, 0.15)', // Green tint border
   },
   spacer: {
     height: vs(10),
@@ -367,7 +366,7 @@ const styles = StyleSheet.create({
     borderRadius: ms(25),
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#FFD700',
+    shadowColor: '#00ff40',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.2,
     shadowRadius: 15,
@@ -375,7 +374,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   btnText: {
-    color: '#000', // High contrast text on gold button
+    color: '#d3ffc7', // High contrast text on green button
     fontSize: ms(16),
     fontWeight: '900',
     letterSpacing: 2,
@@ -390,7 +389,7 @@ const styles = StyleSheet.create({
     fontSize: ms(14),
   },
   registerHighlight: {
-    color: '#FFD700',
+    color: '#00ff40',
     fontWeight: '700',
   },
 });

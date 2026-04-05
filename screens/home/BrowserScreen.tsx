@@ -1,148 +1,283 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
+  Text,
   StyleSheet,
+  FlatList,
   ActivityIndicator,
-  TouchableOpacity,
   SafeAreaView,
   StatusBar,
-  Text,
+  Image,
 } from 'react-native';
-import { WebView } from 'react-native-webview';
-import { useNavigation, useRoute } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
+import { supabase } from '../../utils/supabaseClient';
+import ScreenWrapper from '../../utils/ScreenWrapper';
 import {
   scale as s,
   verticalScale as vs,
   moderateScale as ms,
 } from 'react-native-size-matters';
 
-export default function BrowserScreen() {
-  const navigation = useNavigation();
-  const route = useRoute<any>();
+export default function LeaderboardScreen() {
+  const [leaderboard, setLeaderboard] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const url = route.params?.url || 'https://santrx.com/login';
-  const title = route.params?.title || 'Browser';
+  const fetchLeaderboard = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('fake_leaderboard')
+        .select('name, image, amount')
+        .order('amount', { ascending: false });
 
-  const [isLoading, setIsLoading] = useState(true);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-
-  // 🛑 FAIL-SAFE: Force stop loading after 8 seconds max
-  useEffect(() => {
-    timerRef.current = setTimeout(() => {
-      setIsLoading(false);
-    }, 8000);
-
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
-  }, []);
-
-  const handleLoadStart = () => {
-    setIsLoading(true);
-    // Restart fail-safe timer on new navigation
-    if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => setIsLoading(false), 8000);
+      if (error) throw error;
+      setLeaderboard(data || []);
+    } catch (err) {
+      console.error('Error fetching leaderboard:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleLoadEnd = () => {
-    setIsLoading(false);
-    if (timerRef.current) clearTimeout(timerRef.current);
+  useEffect(() => {
+    fetchLeaderboard();
+  }, []);
+
+  const renderHeader = () => (
+    <View style={styles.headerContainer}>
+      <Image
+        source={require('../homeMedia/leaderboard.png')}
+        style={styles.bannerImage}
+        resizeMode="contain"
+      />
+      <LinearGradient
+        colors={['transparent', 'transparent']}
+        style={styles.bannerGradient}
+      />
+    </View>
+  );
+
+  const renderItem = ({ item, index }: { item: any; index: number }) => {
+    const rankColor = '#00ff40';
+    const cardBackground = ['#05120a', '#000000'];
+
+    return (
+      <View style={styles.cardContainer}>
+        <LinearGradient
+          colors={cardBackground}
+          style={styles.cardGradient}
+        >
+          <View style={styles.cardContent}>
+            <View style={styles.rankBox}>
+              <Text style={[styles.rankText, { color: rankColor }]}>
+                #{index + 1}
+              </Text>
+            </View>
+
+            <View style={styles.avatarContainer}>
+              {item.image ? (
+                <Image source={{ uri: item.image }} style={styles.avatar} />
+              ) : (
+                <View style={styles.avatarPlaceholder}>
+                  <Text style={styles.avatarPlaceholderText}>
+                    {item.name?.charAt(0).toUpperCase()}
+                  </Text>
+                </View>
+              )}
+            </View>
+
+            <View style={styles.textColumn}>
+              <Text style={styles.username} numberOfLines={1}>
+                {item.name}
+              </Text>
+              <Text style={styles.amount}>
+                ${Number(item.amount).toLocaleString()}
+              </Text>
+            </View>
+
+            <View style={styles.arrowColumn}>
+              <Text style={styles.upArrow}>▲</Text>
+            </View>
+          </View>
+        </LinearGradient>
+      </View>
+    );
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#000" />
+    <ScreenWrapper>
+      <LinearGradient colors={['#000000', '#0a1a10']} style={styles.background}>
+        <SafeAreaView style={styles.safeArea}>
+          <StatusBar barStyle="light-content" backgroundColor="#000" />
 
-      {/* 2️⃣ WebView */}
-      <View style={styles.webViewContainer}>
-        <WebView
-          key={url} // Forces a fresh instance if URL changes
-          source={{ uri: url }}
-          // Load Handlers
-          onLoadStart={handleLoadStart}
-          onLoadEnd={handleLoadEnd}
-          onError={handleLoadEnd}
-          onHttpError={handleLoadEnd}
-          onNavigationStateChange={navState => {
-            // If page is done loading, stop spinner
-            if (!navState.loading) handleLoadEnd();
-          }}
-          style={{ flex: 1, backgroundColor: '#000' }}
-          containerStyle={{ backgroundColor: '#000' }}
-          // Performance & JS Settings
-          javaScriptEnabled={true}
-          domStorageEnabled={true}
-          startInLoadingState={false} // We handle the loader manually
-        />
+          {renderHeader()}
 
-        {/* 3️⃣ Floating Loader */}
-        {isLoading && (
-          <View style={styles.loadingOverlay}>
-            <ActivityIndicator size="large" color="#ff00d4" />
-          </View>
-        )}
-      </View>
-    </View>
+          {loading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#00ff40" />
+            </View>
+          ) : (
+            <View style={styles.fixedListWrapper}>
+              <FlatList
+                data={leaderboard}
+                keyExtractor={(_, index) => index.toString()}
+                renderItem={renderItem}
+                contentContainerStyle={styles.listContent}
+                showsVerticalScrollIndicator={false}
+              />
+            </View>
+          )}
+        </SafeAreaView>
+      </LinearGradient>
+    </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  background: { flex: 1 },
+  safeArea: { flex: 1 },
+  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+
+  fixedListWrapper: {
     flex: 1,
-    backgroundColor: '#000',
+    width: '100%',
+    paddingHorizontal: s(16),
   },
-  safeArea: {
-    backgroundColor: '#000',
-    zIndex: 10,
+
+  headerContainer: {
+    marginBottom: vs(16),
+    marginTop: vs(40),
   },
-  header: {
-    height: vs(50),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: s(15),
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 0, 212, 0.2)',
-    backgroundColor: '#000',
+  bannerImage: {
+    width: '100%',
+    height: vs(160),
+  },
+  bannerGradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: vs(80),
+    backgroundColor: 'transparent',
+  },
+  headerTextContainer: {
+    position: 'absolute',
+    bottom: vs(10),
+    left: s(16),
   },
   headerTitle: {
+    fontSize: ms(28),
+    fontWeight: '900',
+    color: '#00ff40',
+    letterSpacing: 2,
+  },
+  headerSubtitle: {
+    fontSize: ms(10),
     color: '#fff',
-    fontSize: ms(16),
-    fontWeight: 'bold',
-    letterSpacing: 0.5,
-    maxWidth: '60%',
+    marginTop: vs(2),
+    marginBottom: vs(8),
+    letterSpacing: 1,
+    fontWeight: '700',
   },
-  backButtonContainer: {
-    shadowColor: '#ff00d4',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
+  headerLine: {
+    height: vs(3),
+    width: s(60),
+    borderRadius: ms(2),
+  },
+
+  listContent: {
+    paddingBottom: vs(100),
+  },
+
+  cardContainer: {
+    marginTop: vs(15),
+    borderRadius: ms(20),
+    shadowColor: '#00ff40',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    overflow: 'visible',
+  },
+  cardGradient: {
+    borderRadius: ms(20),
+    borderWidth: 1,
+    borderColor: 'rgba(0, 255, 64, 0.1)',
+    overflow: 'visible',
+  },
+  cardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: vs(7),
+    paddingHorizontal: s(16),
+  },
+
+  rankBox: {
+    width: s(40),
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  rankText: {
+    fontSize: ms(20),
+    fontWeight: '900',
+  },
+
+  avatarContainer: {
+    marginRight: s(12),
+    marginTop: -vs(25),
     elevation: 5,
+    zIndex: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
-  backButton: {
-    width: s(36),
-    height: s(36),
-    borderRadius: s(18),
+  avatar: {
+    width: ms(56),
+    height: ms(56),
+    borderRadius: ms(28),
+   
+    backgroundColor: 'transparent',
+    resizeMode: 'contain',
+  },
+  avatarPlaceholder: {
+    width: ms(56),
+    height: ms(56),
+    borderRadius: ms(28),
+    backgroundColor: '#03310b',
+    borderWidth: 2,
+    borderColor: '#00ff40',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  backText: {
-    color: '#fff',
+  avatarPlaceholderText: {
+    color: '#00ff40',
     fontSize: ms(20),
     fontWeight: 'bold',
+  },
+
+  textColumn: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  username: {
+    fontSize: ms(15),
+    fontWeight: '800',
+    color: '#d6ffdc',
     marginBottom: vs(2),
   },
-  webViewContainer: {
-    flex: 1,
-    position: 'relative',
-    marginTop: vs(20),
+  amount: {
+    fontSize: ms(14),
+    fontWeight: 'bold',
+    color: '#00ff40',
   },
-  loadingOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.8)',
+
+  arrowColumn: {
+    alignItems: 'flex-end',
     justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 99,
+    paddingLeft: s(10),
+  },
+  upArrow: {
+    fontSize: ms(18),
+    color: '#00ff40',
   },
 });

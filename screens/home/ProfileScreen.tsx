@@ -79,8 +79,8 @@ export default function ProfileScreen({ navigation }: any) {
   const [referrerName, setReferrerName] = useState('N/A');
   const [referrerAccNum, setReferrerAccNum] = useState<string | null>(null);
 
-  // 🎨 GOLD FOUNDRY GRADIENT
-  const THEME_GRADIENT = ['#FFD700', '#B8860B'];
+  // 🎨 NEON GREEN GRADIENT
+  const THEME_GRADIENT = ['#03310b', '#00d435'];
 
   useEffect(() => {
     fetchFullProfile();
@@ -170,9 +170,9 @@ export default function ProfileScreen({ navigation }: any) {
   return (
     <ScreenWrapper>
       <StatusBar barStyle="light-content" backgroundColor="#000" />
-      {/* 🌑 Background: Deep Bronze/Black Gradient */}
+      {/* 🌑 Background: Deep Green/Black Gradient */}
       <LinearGradient
-        colors={['#000000', '#1a1005', '#241808']}
+        colors={['#000000', '#0a1a10', '#082415']}
         style={{ flex: 1 }}
       >
         <SafeAreaView style={styles.safeArea}>
@@ -188,7 +188,7 @@ export default function ProfileScreen({ navigation }: any) {
               {/* 1. COMPACT HERO SECTION */}
               <View style={styles.heroSection}>
                 <View style={styles.avatarRow}>
-                  {/* 🎨 Avatar Ring: Gold */}
+                  {/* 🎨 Avatar Ring: Neon Green */}
                   <LinearGradient
                     colors={THEME_GRADIENT}
                     style={styles.avatarGradient}
@@ -226,7 +226,7 @@ export default function ProfileScreen({ navigation }: any) {
 
                   <View style={styles.statBox}>
                     <Text style={styles.statLabel}>Referrer Acc</Text>
-                    <Text style={[styles.statValue, { color: '#FFD700' }]}>
+                    <Text style={[styles.statValue, { color: '#00ff40' }]}>
                       {referrerAccNum || 'N/A'}
                     </Text>
                   </View>
@@ -313,7 +313,7 @@ export default function ProfileScreen({ navigation }: any) {
                     style={styles.saveBtn}
                   >
                     {saving || loading ? (
-                      <ActivityIndicator color="#000" size="small" />
+                      <ActivityIndicator color="#fff" size="small" />
                     ) : (
                       <Text style={styles.saveBtnText}>SAVE CHANGES</Text>
                     )}
@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avatar: { width: '100%', height: '100%', borderRadius: s(36) },
-  avatarPlaceholder: { color: '#FFD700', fontSize: ms(24), fontWeight: 'bold' },
+  avatarPlaceholder: { color: '#00ff40', fontSize: ms(24), fontWeight: 'bold' },
   heroInfo: {
     marginLeft: s(18),
     justifyContent: 'center',
@@ -394,7 +394,7 @@ const styles = StyleSheet.create({
     paddingVertical: vs(12),
     paddingHorizontal: s(14),
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.1)', // Subtle Gold Border
+    borderColor: 'rgba(0, 255, 64, 0.1)', // Subtle Green Border
   },
   statLabel: {
     color: '#888',
@@ -418,16 +418,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  // 🎨 CHANGED: Label Color to Gold
+  // 🎨 CHANGED: Label Color to Neon Green
   label: {
-    color: '#FFD700',
+    color: '#00ff40',
     fontSize: ms(10),
     fontWeight: '800',
     marginBottom: vs(8),
     marginLeft: s(2),
     letterSpacing: 0.5,
   },
-  // 🎨 CHANGED: Input Border to Gold Tint
+  // 🎨 CHANGED: Input Border to Green Tint
   input: {
     backgroundColor: '#000',
     borderRadius: ms(12),
@@ -436,7 +436,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: ms(14),
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.2)',
+    borderColor: 'rgba(0, 255, 64, 0.2)',
   },
   requiredInput: {
     borderColor: 'rgba(255, 69, 0, 0.5)', // Red/Orange for required
@@ -451,7 +451,7 @@ const styles = StyleSheet.create({
   /* BUTTON */
   buttonWrapper: {
     marginTop: vs(15),
-    shadowColor: '#FFD700',
+    shadowColor: '#00ff40',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 10,
@@ -469,7 +469,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   saveBtnText: {
-    color: '#000', // Black text on Gold Button
+    color: '#fff', // White text on Green Button
     fontSize: ms(15),
     fontWeight: '900',
     letterSpacing: 1,

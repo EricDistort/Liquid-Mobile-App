@@ -82,7 +82,7 @@ const QuantumSmelter = () => {
       <Animated.View style={[styles.orbitRing, { width: s(180), height: s(180), transform: [{ rotate: rotate1 }] }]}>
         <View style={styles.orbitDot} />
         <LinearGradient
-           colors={['transparent', '#FFD700', 'transparent']}
+           colors={['transparent', '#00ff40', 'transparent']}
            style={styles.ringGradient}
         />
       </Animated.View>
@@ -91,7 +91,7 @@ const QuantumSmelter = () => {
       <Animated.View style={[styles.orbitRing, { width: s(130), height: s(130), transform: [{ rotate: rotate2 }, { scaleX: 0.9 }] }]}>
          <View style={[styles.orbitDot, { bottom: -4, top: undefined }]} />
          <LinearGradient
-           colors={['transparent', '#B8860B', 'transparent']}
+           colors={['transparent', '#008000', 'transparent']}
            style={styles.ringGradient}
         />
       </Animated.View>
@@ -99,7 +99,7 @@ const QuantumSmelter = () => {
       {/* Central Core */}
       <Animated.View style={[styles.core, { transform: [{ scale: pulse }] }]}>
         <LinearGradient
-          colors={['#FFF700', '#FFA500', '#B8860B']}
+          colors={['#7cff7c', '#00ff40', '#008500']}
           style={styles.coreGradient}
         />
         <View style={styles.coreInnerHighlight} />
@@ -112,7 +112,7 @@ const QuantumSmelter = () => {
 const LiquidProgress = ({ progress }: { progress: number }) => (
   <View style={styles.liquidTrack}>
     <LinearGradient
-      colors={['#FFD700', '#B8860B']}
+      colors={['#00FF88', '#008000']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
       style={[styles.liquidFill, { width: `${progress}%` }]}
@@ -212,7 +212,7 @@ export default function FoundryMiningScreen() {
     <ScreenWrapper>
       <StatusBar barStyle="light-content" backgroundColor="#000" />
       <LinearGradient
-        colors={['#000000', '#1a1005', '#241808']} // Deep Bronze/Black
+        colors={['#000000', '#0a1a10', '#082415']} // Deep Green/Black
         style={styles.background}
       >
         <SafeAreaView style={styles.safeArea}>
@@ -232,15 +232,13 @@ export default function FoundryMiningScreen() {
                 colors={['rgba(255,255,255,0.08)', 'rgba(0,0,0,0.5)']}
                 style={styles.cardGradient}
               >
-                <View style={styles.iconBox}>
-                  <Text style={styles.icon}>🏆</Text>
-                </View>
+               
                 <Text style={styles.statLabel}>Total Mined</Text>
                 <Text style={styles.statValue}>
                   ${user?.withdrawal_amount || '0.00'}
                 </Text>
               </LinearGradient>
-              {/* Gold Border Highlight */}
+              {/* Neon Green Border Highlight */}
               <View style={styles.cardBorder} />
             </View>
 
@@ -250,9 +248,7 @@ export default function FoundryMiningScreen() {
                 colors={['rgba(255,255,255,0.08)', 'rgba(0,0,0,0.5)']}
                 style={styles.cardGradient}
               >
-                <View style={styles.iconBox}>
-                  <Text style={styles.icon}>🔱</Text>
-                </View>
+               
                 <Text style={styles.statLabel}>Network Share</Text>
                 <Text style={styles.statValue}>
                   ${user?.level_income || '0.00'}
@@ -274,7 +270,7 @@ export default function FoundryMiningScreen() {
             {loading ? (
               <ActivityIndicator
                 size="large"
-                color="#FFD700"
+                color="#00ff40"
                 style={{ marginTop: 50 }}
               />
             ) : !hasActive ? (
@@ -290,7 +286,7 @@ export default function FoundryMiningScreen() {
                   <View key={item.id} style={styles.rigCard}>
                     {/* Background Glow */}
                     <LinearGradient
-                      colors={['#1c140d', '#000000']}
+                      colors={['#0a1e0f', '#000000']}
                       style={styles.rigInner}
                     >
                       {/* Header */}
@@ -382,7 +378,7 @@ const styles = StyleSheet.create({
     width: s(120),
     height: s(120),
     borderRadius: s(60),
-    backgroundColor: '#FFD700',
+    backgroundColor: '#00ff40',
     opacity: 0.1,
     transform: [{scale: 1.8}],
   },
@@ -390,7 +386,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     borderRadius: s(100),
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.2)',
+    borderColor: 'rgba(0, 255, 64, 0.2)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -406,7 +402,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#FFD700',
+    backgroundColor: '#00ff40',
     shadowColor: '#FFF',
     shadowOpacity: 1,
     shadowRadius: 5,
@@ -417,8 +413,8 @@ const styles = StyleSheet.create({
     borderRadius: s(40),
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: '#FFD700',
-    shadowColor: '#FFD700',
+    borderColor: '#00ff40',
+    shadowColor: '#00ff40',
     shadowOpacity: 0.8,
     shadowRadius: 20,
     elevation: 15,
@@ -446,59 +442,65 @@ const styles = StyleSheet.create({
   },
   glassCard: {
     width: '48%',
-    height: vs(110),
+    height: vs(80),
     borderRadius: ms(30),
     overflow: 'hidden',
     backgroundColor: '#000',
     position: 'relative',
+        shadowColor: '#00ff40',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
   },
   cardGradient: {
     flex: 1,
-    padding: ms(15),
+    padding: ms(10),
     justifyContent: 'center',
     alignItems: 'center',
+    
   },
   cardBorder: {
     ...StyleSheet.absoluteFillObject,
     borderRadius: ms(30),
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.3)',
+    borderColor: 'rgba(0, 255, 64, 0.3)',
   },
   iconBox: {
     width: s(36),
     height: s(36),
     borderRadius: s(18),
-    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+    backgroundColor: 'rgba(0, 255, 64, 0.1)',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: vs(8),
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.2)',
+    borderColor: 'rgba(0, 255, 64, 0.2)',
   },
   icon: { fontSize: ms(18) },
   statLabel: {
-    color: '#8B8B8B',
+    color: '#d1ffd5',
     fontSize: ms(11),
     fontWeight: '600',
     marginBottom: vs(4),
   },
   statValue: {
-    color: '#fff',
+    color: '#1eff00',
     fontSize: ms(18),
     fontWeight: '700',
-    textShadowColor: 'rgba(255, 215, 0, 0.3)',
+    textShadowColor: 'rgba(0, 255, 64, 0.3)',
     textShadowRadius: 5,
   },
 
   /* --- 3️⃣ BOTTOM: LIST --- */
   bottomContainer: {
     flex: 1,
-    backgroundColor: 'rgba(20, 16, 10, 0.8)',
+    backgroundColor: 'rgba(10, 26, 16, 0.8)',
     borderTopLeftRadius: ms(35),
     borderTopRightRadius: ms(35),
     paddingTop: ms(20),
     borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 215, 0, 0.1)',
+    borderTopColor: 'rgba(0, 255, 64, 0.1)',
   },
   listHeader: {
     flexDirection: 'row',
@@ -508,21 +510,21 @@ const styles = StyleSheet.create({
     marginBottom: vs(15),
   },
   listTitle: {
-    color: '#D4AF37',
+    color: '#00ff40',
     fontSize: ms(14),
     fontWeight: '800',
     letterSpacing: 1,
   },
   badge: {
-    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+    backgroundColor: 'rgba(0, 255, 64, 0.1)',
     paddingHorizontal: 10,
     paddingVertical: 3,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.3)',
+    borderColor: 'rgba(0, 255, 64, 0.3)',
   },
   badgeText: {
-    color: '#FFD700',
+    color: '#00ff40',
     fontSize: ms(10),
     fontWeight: '700',
   },
@@ -535,7 +537,7 @@ const styles = StyleSheet.create({
   rigCard: {
     borderRadius: ms(30),
     marginBottom: vs(15),
-    shadowColor: '#FFD700',
+    shadowColor: '#00ff40',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -545,7 +547,7 @@ const styles = StyleSheet.create({
     padding: ms(16),
     borderRadius: ms(30),
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.15)',
+    borderColor: 'rgba(0, 255, 64, 0.15)',
   },
   rigHeader: {
     flexDirection: 'row',
@@ -556,14 +558,14 @@ const styles = StyleSheet.create({
     width: s(30),
     height: s(30),
     borderRadius: s(15),
-    backgroundColor: '#332200',
+    backgroundColor: '#03310b',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#FFD700',
+    borderColor: '#00ff40',
   },
   rigIdText: {
-    color: '#FFD700',
+    color: '#00ff40',
     fontWeight: 'bold',
   },
   rigName: {
@@ -576,7 +578,7 @@ const styles = StyleSheet.create({
     fontSize: ms(10),
   },
   investedAmt: {
-    color: '#D4AF37',
+    color: '#00ff40',
     fontSize: ms(16),
     fontWeight: '700',
   },
@@ -590,7 +592,7 @@ const styles = StyleSheet.create({
     fontSize: ms(10),
   },
   progressValue: {
-    color: '#FFD700',
+    color: '#00ff40',
     fontSize: ms(10),
     fontWeight: '700',
   },
@@ -636,16 +638,16 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   actionBtn: {
-    backgroundColor: '#B8860B',
+    backgroundColor: '#00b436',
     paddingVertical: vs(8),
     paddingHorizontal: s(18),
     borderRadius: ms(20),
-    shadowColor: '#FFD700',
+    shadowColor: '#00ff40',
     shadowOpacity: 0.3,
     shadowRadius: 5,
   },
   actionBtnText: {
-    color: '#000',
+    color: '#fff', // Changed for contrast with Green Button
     fontSize: ms(10),
     fontWeight: '800',
   },

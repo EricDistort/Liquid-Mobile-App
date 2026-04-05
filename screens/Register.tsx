@@ -17,7 +17,11 @@ import {
   Dimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { scale as s, verticalScale as vs, moderateScale as ms } from 'react-native-size-matters';
+import {
+  scale as s,
+  verticalScale as vs,
+  moderateScale as ms,
+} from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
 import LottieView from 'lottie-react-native';
 
@@ -66,7 +70,9 @@ const PopButton = ({
       disabled={disabled}
       style={style}
     >
-      <Animated.View style={{ transform: [{ scale: scaleValue }], width: '100%' }}>
+      <Animated.View
+        style={{ transform: [{ scale: scaleValue }], width: '100%' }}
+      >
         {children}
       </Animated.View>
     </Pressable>
@@ -76,7 +82,7 @@ const PopButton = ({
 export default function Register() {
   const navigation = useNavigation<any>();
   const { setUser } = useUser();
-  
+
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
@@ -84,11 +90,17 @@ export default function Register() {
   const [referrerAcc, setReferrerAcc] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // 🎨 GOLD FOUNDRY THEME COLORS
-  const THEME_GRADIENT = ['#FFD700', '#B8860B'];
+  // 🎨 NEON GREEN THEME COLORS
+  const THEME_GRADIENT = ['#03310b', '#00d435'];
 
   const handleRegister = async () => {
-    if (!username.trim() || !email.trim() || !password.trim() || !mobile.trim() || !referrerAcc.trim())
+    if (
+      !username.trim() ||
+      !email.trim() ||
+      !password.trim() ||
+      !mobile.trim() ||
+      !referrerAcc.trim()
+    )
       return Alert.alert('Missing Details', 'All fields are required.');
 
     setLoading(true);
@@ -100,11 +112,18 @@ export default function Register() {
         .select('account_number')
         .eq('account_number', referrerAcc.trim())
         .maybeSingle();
-      
+
       if (!refUser) {
         await enforceMinDuration(startTime);
         setLoading(false);
-        setTimeout(() => Alert.alert('Invalid Referrer', 'The referrer account number does not exist.'), 100);
+        setTimeout(
+          () =>
+            Alert.alert(
+              'Invalid Referrer',
+              'The referrer account number does not exist.',
+            ),
+          100,
+        );
         return;
       }
 
@@ -125,7 +144,7 @@ export default function Register() {
 
       if (insertError) {
         if (insertError.code === '23505') {
-           throw new Error('Email or Mobile number is already registered.');
+          throw new Error('Email or Mobile number is already registered.');
         }
         throw insertError;
       }
@@ -134,7 +153,6 @@ export default function Register() {
       setLoading(false);
       setUser(insertedUser);
       navigation.replace('Main');
-
     } catch (error: any) {
       await enforceMinDuration(startTime);
       setLoading(false);
@@ -155,10 +173,9 @@ export default function Register() {
       <StatusBar barStyle="light-content" backgroundColor="#000" />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.mainContainer}>
-          
-          {/* 🎨 Ambient Gold Background Glows */}
+          {/* 🎨 Ambient Neon Green Background Glows */}
           <LinearGradient
-            colors={['rgba(184, 134, 11, 0.3)', 'transparent']}
+            colors={['rgba(0, 255, 64, 0.3)', 'transparent']}
             style={styles.topGlow}
           />
           <View style={styles.bottomGlow} />
@@ -179,20 +196,20 @@ export default function Register() {
               behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
               style={{ flex: 1 }}
             >
-              <ScrollView 
+              <ScrollView
                 contentContainerStyle={styles.scrollContent}
                 showsVerticalScrollIndicator={false}
                 bounces={false}
               >
-                
                 <View style={styles.header}>
                   <Text style={styles.titleOutline}>Start</Text>
-                  <Text style={styles.titleFilled}>Mining</Text>
-                  <Text style={styles.subtitle}>Initialize your secure vault.</Text>
+                  <Text style={styles.titleFilled}>Liquidity</Text>
+                  <Text style={styles.subtitle}>
+                    Initialize your Daily Profits.
+                  </Text>
                 </View>
 
                 <View style={styles.formSection}>
-                  
                   <View style={styles.inputContainer}>
                     <Text style={styles.label}>USERNAME</Text>
                     <TextInput
@@ -256,7 +273,11 @@ export default function Register() {
 
                   <View style={styles.spacer} />
 
-                  <PopButton onPress={handleRegister} disabled={loading} style={{ width: '100%' }}>
+                  <PopButton
+                    onPress={handleRegister}
+                    disabled={loading}
+                    style={{ width: '100%' }}
+                  >
                     <LinearGradient
                       colors={THEME_GRADIENT}
                       start={{ x: 0, y: 0 }}
@@ -267,17 +288,16 @@ export default function Register() {
                     </LinearGradient>
                   </PopButton>
 
-                  <PopButton 
-                    onPress={() => navigation.goBack()} 
+                  <PopButton
+                    onPress={() => navigation.goBack()}
                     style={styles.loginLink}
                   >
                     <Text style={styles.loginText}>
-                      Already registered? <Text style={styles.loginHighlight}>Sign In</Text>
+                      Already registered?{' '}
+                      <Text style={styles.loginHighlight}>Sign In</Text>
                     </Text>
                   </PopButton>
-
                 </View>
-
               </ScrollView>
             </KeyboardAvoidingView>
           </SafeAreaView>
@@ -292,7 +312,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
   },
-  
+
   topGlow: {
     position: 'absolute',
     top: -height * 0.15,
@@ -309,7 +329,7 @@ const styles = StyleSheet.create({
     width: s(200),
     height: s(200),
     borderRadius: s(100),
-    backgroundColor: '#B8860B', // Bronze glow
+    backgroundColor: '#00b436', // Neon green glow
     opacity: 0.08,
     transform: [{ scale: 1.5 }],
   },
@@ -340,7 +360,7 @@ const styles = StyleSheet.create({
     fontSize: ms(32),
     fontWeight: '300',
     color: 'transparent',
-    textShadowColor: 'rgba(255,215,0,0.3)', // Gold shadow
+    textShadowColor: 'rgba(0,255,64,0.3)', // Green shadow
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 1,
     letterSpacing: 2,
@@ -349,12 +369,12 @@ const styles = StyleSheet.create({
   titleFilled: {
     fontSize: ms(32),
     fontWeight: '900',
-    color: '#fff',
+    color: '#d3ffc7',
     letterSpacing: 2,
   },
   subtitle: {
     fontSize: ms(13),
-    color: 'rgba(255,255,255,0.5)',
+    color: 'rgba(205, 255, 195, 0.58)',
     marginTop: vs(2),
     fontWeight: '400',
   },
@@ -368,7 +388,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: ms(10),
     fontWeight: '800',
-    color: '#FFD700', // Metallic Gold
+    color: '#00ff40', // Neon Green
     marginBottom: vs(4),
     letterSpacing: 1,
     textTransform: 'uppercase',
@@ -381,7 +401,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: ms(16),
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.1)', // Gold tint border
+    borderColor: 'rgba(0, 255, 64, 0.15)', // Green tint border
   },
 
   spacer: {
@@ -392,7 +412,7 @@ const styles = StyleSheet.create({
     borderRadius: ms(22),
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#FFD700',
+    shadowColor: '#00ff40',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 10,
@@ -400,7 +420,7 @@ const styles = StyleSheet.create({
     marginTop: vs(5),
   },
   btnText: {
-    color: '#000', // Black text on gold button
+    color: '#d3ffc7', // White text on green button
     fontSize: ms(14),
     fontWeight: '900',
     letterSpacing: 2,
@@ -415,7 +435,7 @@ const styles = StyleSheet.create({
     fontSize: ms(14),
   },
   loginHighlight: {
-    color: '#FFD700',
+    color: '#00ff40',
     fontWeight: '700',
   },
 });

@@ -30,14 +30,29 @@ const { width } = Dimensions.get('window');
 const PopButton = ({ onPress, children, style }: any) => {
   const scaleValue = useRef(new Animated.Value(1)).current;
   const handlePressIn = () => {
-    Animated.spring(scaleValue, { toValue: 0.95, useNativeDriver: true }).start();
+    Animated.spring(scaleValue, {
+      toValue: 0.95,
+      useNativeDriver: true,
+    }).start();
   };
   const handlePressOut = () => {
-    Animated.spring(scaleValue, { toValue: 1, friction: 4, tension: 40, useNativeDriver: true }).start();
+    Animated.spring(scaleValue, {
+      toValue: 1,
+      friction: 4,
+      tension: 40,
+      useNativeDriver: true,
+    }).start();
   };
   return (
-    <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut} onPress={onPress} style={style}>
-      <Animated.View style={{ transform: [{ scale: scaleValue }] }}>{children}</Animated.View>
+    <Pressable
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      onPress={onPress}
+      style={style}
+    >
+      <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
+        {children}
+      </Animated.View>
     </Pressable>
   );
 };
@@ -45,14 +60,28 @@ const PopButton = ({ onPress, children, style }: any) => {
 const PopCard = ({ children, style }: any) => {
   const scaleValue = useRef(new Animated.Value(1)).current;
   const handlePressIn = () => {
-    Animated.spring(scaleValue, { toValue: 0.97, useNativeDriver: true }).start();
+    Animated.spring(scaleValue, {
+      toValue: 0.97,
+      useNativeDriver: true,
+    }).start();
   };
   const handlePressOut = () => {
-    Animated.spring(scaleValue, { toValue: 1, friction: 4, tension: 40, useNativeDriver: true }).start();
+    Animated.spring(scaleValue, {
+      toValue: 1,
+      friction: 4,
+      tension: 40,
+      useNativeDriver: true,
+    }).start();
   };
   return (
-    <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut} style={style}>
-      <Animated.View style={{ transform: [{ scale: scaleValue }] }}>{children}</Animated.View>
+    <Pressable
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      style={style}
+    >
+      <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
+        {children}
+      </Animated.View>
     </Pressable>
   );
 };
@@ -63,8 +92,8 @@ export default function FeedScreen() {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
-  // 🎨 GOLD FOUNDRY GRADIENT
-  const THEME_GRADIENT = ['#FFD700', '#B8860B'];
+  // 🎨 NEON GREEN GRADIENT
+  const THEME_GRADIENT = ['#03310b', '#00d435'];
 
   const fetchFeeds = async () => {
     setLoading(true);
@@ -92,13 +121,17 @@ export default function FeedScreen() {
       item.banner_url &&
       (item.banner_url.endsWith('.mp4') || item.banner_url.includes('video'));
 
-    const formattedDate = new Date(item.created_at).toLocaleDateString(undefined, {
-        month: 'short', day: 'numeric'
-    });
+    const formattedDate = new Date(item.created_at).toLocaleDateString(
+      undefined,
+      {
+        month: 'short',
+        day: 'numeric',
+      },
+    );
 
     return (
       <PopCard style={styles.cardContainer}>
-        {/* 🎨 Shadow color adjusted to Bronze */}
+        {/* 🎨 Shadow color adjusted to Green */}
         <View style={styles.cardShadow} />
         <View style={styles.card}>
           <View style={styles.mediaContainer}>
@@ -134,12 +167,13 @@ export default function FeedScreen() {
             </View>
           </View>
           <View style={styles.contentContainer}>
-            {/* 🎨 Accent line updated to Gold Gradient */}
-             <LinearGradient 
-                colors={THEME_GRADIENT}
-                start={{x:0, y:0}} end={{x:1, y:0}}
-                style={styles.accentLine}
-             />
+            {/* 🎨 Accent line updated to Green Gradient */}
+            <LinearGradient
+              colors={THEME_GRADIENT}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={styles.accentLine}
+            />
             <Text style={styles.body} numberOfLines={4}>
               {item.body}
             </Text>
@@ -152,22 +186,22 @@ export default function FeedScreen() {
   return (
     <ScreenWrapper>
       <StatusBar barStyle="light-content" backgroundColor="#000" />
-      {/* 🌑 Background: Gold Foundry Gradient */}
+      {/* 🌑 Background: Deep Green/Black Gradient */}
       <LinearGradient
-        colors={['#000000', '#1a1005', '#241808']}
+        colors={['#000000', '#0a1a10', '#082415']}
         style={{ flex: 1 }}
       >
         <SafeAreaView style={styles.safeArea}>
           <View style={styles.container}>
-            
             {/* Header */}
             <View style={styles.header}>
               <Text style={styles.mainTitle}>Trending News</Text>
-              
+
               <PopButton onPress={() => navigation.navigate('WebinarScreen')}>
                 <LinearGradient
                   colors={THEME_GRADIENT}
-                  start={{x:0, y:0}} end={{x:1, y:0}}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
                   style={styles.webinarButton}
                 >
                   <Text style={styles.webinarText}>Live Webinar</Text>
@@ -177,7 +211,7 @@ export default function FeedScreen() {
 
             {loading && !refreshing ? (
               <View style={styles.loaderContainer}>
-                <ActivityIndicator size="large" color="#FFD700" />
+                <ActivityIndicator size="large" color="#00ff40" />
               </View>
             ) : (
               <FlatList
@@ -186,11 +220,11 @@ export default function FeedScreen() {
                 renderItem={renderItem}
                 showsVerticalScrollIndicator={false}
                 refreshControl={
-                  <RefreshControl 
-                    refreshing={refreshing} 
-                    onRefresh={onRefresh} 
-                    tintColor="#FFD700" 
-                    colors={['#FFD700', '#B8860B']}
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    tintColor="#00ff40"
+                    colors={['#00ff40', '#00d435']}
                     progressBackgroundColor="#1a1a1a"
                   />
                 }
@@ -237,14 +271,14 @@ const styles = StyleSheet.create({
     paddingVertical: vs(6),
     paddingHorizontal: s(12),
     borderRadius: ms(20),
-    shadowColor: '#FFD700',
+    shadowColor: '#00ff40',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 5,
     elevation: 5,
   },
   webinarText: {
-    color: '#000', // Black text on Gold background
+    color: '#fff', // White text on Green background
     fontWeight: '800',
     fontSize: ms(12),
   },
@@ -263,24 +297,24 @@ const styles = StyleSheet.create({
     left: s(15),
     right: s(15),
     bottom: -vs(5),
-    backgroundColor: '#B8860B', // Updated shadow to Bronze
+    backgroundColor: '#00b436', // Updated shadow to Green
     borderRadius: ms(24),
-    opacity: 0.15, 
+    opacity: 0.15,
     transform: [{ scale: 0.95 }],
   },
   card: {
-    backgroundColor: '#0a0a0a', 
+    backgroundColor: '#0a0a0a',
     borderRadius: ms(24),
     overflow: 'hidden',
     elevation: 10,
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.1)',
+    borderColor: 'rgba(0, 255, 64, 0.1)',
   },
 
   /* Media Section */
   mediaContainer: {
     width: '100%',
-    height: vs(240), 
+    height: vs(240),
     position: 'relative',
   },
   media: {
@@ -292,9 +326,9 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    height: '60%', 
+    height: '60%',
   },
-  
+
   /* Date Badge */
   dateBadge: {
     position: 'absolute',
@@ -305,10 +339,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: s(12),
     borderRadius: ms(20),
     borderWidth: 1,
-    borderColor: 'rgba(255,215,0,0.3)',
+    borderColor: 'rgba(0, 255, 64, 0.3)',
   },
   dateText: {
-    color: '#FFD700',
+    color: '#00ff40',
     fontSize: ms(12),
     fontWeight: '700',
   },
@@ -320,7 +354,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     paddingHorizontal: s(20),
-    paddingBottom: vs(10), 
+    paddingBottom: vs(10),
   },
   title: {
     fontSize: ms(22),

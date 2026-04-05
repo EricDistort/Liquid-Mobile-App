@@ -89,8 +89,8 @@ export default function WithdrawalScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // 🎨 CHANGED: Gold Foundry Gradient
-  const THEME_GRADIENT = ['#FFD700', '#B8860B'];
+  // 🎨 CHANGED: Neon Green Gradient
+  const THEME_GRADIENT = ['#03310b', '#00d435'];
 
   const fetchUserBalance = async () => {
     if (!user?.id) return;
@@ -171,9 +171,9 @@ export default function WithdrawalScreen() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'approved':
-        return '#00ff88'; // Green
+        return '#00ff40'; // Neon Green
       case 'pending':
-        return '#FFD700'; // Gold
+        return '#FFD700'; // Yellow/Gold
       case 'rejected':
         return '#FF4500'; // Red
       default:
@@ -294,7 +294,7 @@ export default function WithdrawalScreen() {
             style={styles.submitBtn}
           >
             {loading ? (
-              <ActivityIndicator color="#000" size="small" />
+              <ActivityIndicator color="#fff" size="small" />
             ) : (
               <Text style={styles.btnText}>CONFIRM WITHDRAWAL</Text>
             )}
@@ -312,9 +312,9 @@ export default function WithdrawalScreen() {
   return (
     <ScreenWrapper>
       <StatusBar barStyle="light-content" backgroundColor="#000" />
-      {/* 🌑 Background: Deep Bronze/Black Gradient */}
+      {/* 🌑 Background: Deep Green/Black Gradient */}
       <LinearGradient
-        colors={['#000000', '#1a1005', '#241808']}
+        colors={['#000000', '#0a1a10', '#082415']}
         style={{ flex: 1 }}
       >
         <SafeAreaView style={styles.safeArea}>
@@ -346,8 +346,8 @@ export default function WithdrawalScreen() {
                 <RefreshControl
                   refreshing={refreshing}
                   onRefresh={onRefresh}
-                  tintColor="#FFD700"
-                  colors={['#FFD700', '#B8860B']}
+                  tintColor="#00ff40"
+                  colors={['#00ff40', '#00d435']}
                   progressBackgroundColor="#1a1a1a"
                 />
               }
@@ -358,7 +358,7 @@ export default function WithdrawalScreen() {
                   </View>
                 ) : (
                   <ActivityIndicator
-                    color="#FFD700"
+                    color="#00ff40"
                     style={{ marginTop: 20 }}
                   />
                 )
@@ -396,7 +396,7 @@ const styles = StyleSheet.create({
   pageTitle: {
     fontSize: ms(24),
     fontWeight: '900',
-    color: '#FFD700',
+    color: '#00ff40', // Neon Green
     marginBottom: vs(15),
     letterSpacing: 0.5,
     marginTop: vs(15),
@@ -406,7 +406,7 @@ const styles = StyleSheet.create({
     borderRadius: ms(35),
     padding: s(20),
     marginBottom: vs(20),
-    shadowColor: '#B8860B',
+    shadowColor: '#00ff40',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.3,
     shadowRadius: 12,
@@ -419,7 +419,7 @@ const styles = StyleSheet.create({
   },
   // 🎨 CHANGED: Text Color
   balanceLabel: {
-    color: 'rgba(0,0,0,0.6)', // Darker text on Gold card for readability
+    color: 'rgba(255,255,255,0.6)', // White text on Green card
     fontSize: ms(12),
     fontWeight: '700',
     marginBottom: vs(4),
@@ -427,7 +427,7 @@ const styles = StyleSheet.create({
   },
   // 🎨 CHANGED: Text Color
   balanceValue: {
-    color: '#000', // Black text on Gold card
+    color: '#fff', // White text on Green card
     fontSize: ms(32),
     fontWeight: '800',
   },
@@ -436,13 +436,13 @@ const styles = StyleSheet.create({
     width: s(40),
     height: s(40),
     borderRadius: s(20),
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    backgroundColor: 'rgba(255,255,255,0.1)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   // 🎨 CHANGED: Icon Color
   currencyIcon: {
-    color: '#000',
+    color: '#fff',
     fontSize: ms(20),
     fontWeight: 'bold',
   },
@@ -459,10 +459,10 @@ const styles = StyleSheet.create({
     borderRadius: ms(20),
     height: vs(50),
     paddingHorizontal: s(15),
-    color: '#FFD700',
+    color: '#00ff40', // Neon Green
     fontSize: ms(15),
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.2)',
+    borderColor: 'rgba(0, 255, 64, 0.2)', // Green Border
   },
   amountInputContainer: {
     flexDirection: 'row',
@@ -472,23 +472,23 @@ const styles = StyleSheet.create({
     height: vs(50),
     paddingRight: 0,
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.2)',
+    borderColor: 'rgba(0, 255, 64, 0.2)',
   },
   // 🎨 CHANGED: Max Button Colors
   maxText: {
-    color: '#FFD700',
+    color: '#00ff40', // Neon Green
     fontWeight: '800',
     fontSize: ms(12),
-    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+    backgroundColor: 'rgba(0, 255, 64, 0.1)', // Green tint
     paddingHorizontal: s(10),
     paddingVertical: vs(5),
     borderRadius: ms(14),
     borderWidth: 0.5,
-    borderColor: '#FFD700',
+    borderColor: '#00ff40',
   },
   submitBtnContainer: {
     marginTop: vs(5),
-    shadowColor: '#FFD700',
+    shadowColor: '#00ff40', // Neon Green Shadow
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 5,
@@ -504,7 +504,7 @@ const styles = StyleSheet.create({
   },
   // 🎨 CHANGED: Button Text Color
   btnText: {
-    color: '#000', // Black text on Gold Button
+    color: '#fff', // White text on Green Button
     fontSize: ms(14),
     fontWeight: '900',
     letterSpacing: 1,
@@ -518,7 +518,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: ms(16),
     fontWeight: '700',
-    color: '#FFD700',
+    color: '#00ff40', // Neon Green
     marginRight: s(10),
   },
   line: {
@@ -537,7 +537,7 @@ const styles = StyleSheet.create({
     borderRadius: ms(20),
     padding: s(12),
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.1)',
+    borderColor: 'rgba(0, 255, 64, 0.1)', // Green Border
   },
   historyRow: {
     flexDirection: 'row',

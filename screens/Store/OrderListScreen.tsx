@@ -33,8 +33,8 @@ export default function OrdersScreen() {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // 🎨 GOLD FOUNDRY GRADIENT
-  const THEME_GRADIENT = ['#FFD700', '#B8860B'];
+  // 🎨 NEON GREEN GRADIENT
+  const THEME_GRADIENT = ['#03310b', '#00d435'];
 
   const fetchOrders = async () => {
     if (!user?.id) return;
@@ -64,59 +64,73 @@ export default function OrdersScreen() {
 
   const getLottieByStatus = (status: string) => {
     switch (status) {
-      case 'pending': return pendingAnim;
-      case 'packed': return packedAnim;
-      case 'out for delivery': return outForDeliveryAnim;
-      case 'delivered': return deliveredAnim;
-      default: return pendingAnim;
+      case 'pending':
+        return pendingAnim;
+      case 'packed':
+        return packedAnim;
+      case 'out for delivery':
+        return outForDeliveryAnim;
+      case 'delivered':
+        return deliveredAnim;
+      default:
+        return pendingAnim;
     }
   };
 
   // Helper to determine progress bar height/color
   const getStatusConfig = (status: string) => {
     switch (status) {
-      case 'pending': return { color: '#ffb300', percent: '25%', label: 'Order Placed' };
-      case 'packed': return { color: '#FFD700', percent: '50%', label: 'Packed' };
-      case 'out for delivery': return { color: '#FFA500', percent: '75%', label: 'On The Way' };
-      case 'delivered': return { color: '#00e676', percent: '100%', label: 'Delivered' };
-      default: return { color: '#666', percent: '0%', label: 'Unknown' };
+      case 'pending':
+        return { color: '#ffb300', percent: '25%', label: 'Order Placed' };
+      case 'packed':
+        return { color: '#FFD700', percent: '50%', label: 'Packed' };
+      case 'out for delivery':
+        return { color: '#FFA500', percent: '75%', label: 'On The Way' };
+      case 'delivered':
+        return { color: '#00ff40', percent: '100%', label: 'Delivered' }; // Neon Green for delivered
+      default:
+        return { color: '#666', percent: '0%', label: 'Unknown' };
     }
   };
 
   const renderItem = ({ item }: any) => {
     const config = getStatusConfig(item.status);
-    const formattedDate = new Date(item.created_at).toLocaleDateString(undefined, {
-      month: 'short', day: 'numeric'
-    });
+    const formattedDate = new Date(item.created_at).toLocaleDateString(
+      undefined,
+      {
+        month: 'short',
+        day: 'numeric',
+      },
+    );
 
     return (
       <View style={styles.cardWrapper}>
-        {/* Glow Effect behind card updated to Gold/Bronze */}
+        {/* Glow Effect behind card updated to Green */}
         <LinearGradient
-          colors={['rgba(184, 134, 11, 0.2)', 'transparent']}
+          colors={['rgba(0, 255, 64, 0.2)', 'transparent']}
           start={{ x: 0.5, y: 0 }}
           end={{ x: 0.5, y: 1 }}
           style={styles.cardGlow}
         />
 
         <View style={styles.card}>
-          
           {/* Left Side: Timeline Strip */}
           <View style={styles.timelineContainer}>
             <View style={styles.timelineTrack} />
             <LinearGradient
-              colors={[config.color, '#B8860B']}
+              colors={[config.color, '#03310b']} // Blending to Dark Green
               style={[styles.timelineFill, { height: config.percent }]}
             />
           </View>
 
           {/* Right Side: Content */}
           <View style={styles.contentContainer}>
-            
             {/* Header: Date & Status */}
             <View style={styles.headerRow}>
               <View style={[styles.statusPill, { borderColor: config.color }]}>
-                <View style={[styles.statusDot, { backgroundColor: config.color }]} />
+                <View
+                  style={[styles.statusDot, { backgroundColor: config.color }]}
+                />
                 <Text style={[styles.statusText, { color: config.color }]}>
                   {config.label.toUpperCase()}
                 </Text>
@@ -126,18 +140,18 @@ export default function OrdersScreen() {
 
             {/* Animation Stage */}
             <View style={styles.animationStage}>
-               {/* Spotlight Gradient */}
-               <LinearGradient
-                 colors={[`${config.color}20`, 'transparent']}
-                 style={styles.spotlight}
-               />
-               <LottieView
-                 source={getLottieByStatus(item.status)}
-                 autoPlay
-                 loop
-                 style={styles.lottie}
-                 resizeMode="contain"
-               />
+              {/* Spotlight Gradient */}
+              <LinearGradient
+                colors={[`${config.color}20`, 'transparent']}
+                style={styles.spotlight}
+              />
+              <LottieView
+                source={getLottieByStatus(item.status)}
+                autoPlay
+                loop
+                style={styles.lottie}
+                resizeMode="contain"
+              />
             </View>
 
             {/* Product Details */}
@@ -156,7 +170,9 @@ export default function OrdersScreen() {
               <View style={styles.infoRow}>
                 <View style={styles.infoBox}>
                   <Text style={styles.label}>Location</Text>
-                  <Text style={styles.value} numberOfLines={1}>{item.location}</Text>
+                  <Text style={styles.value} numberOfLines={1}>
+                    {item.location}
+                  </Text>
                 </View>
                 <View style={[styles.infoBox, { alignItems: 'flex-end' }]}>
                   <Text style={styles.label}>Contact</Text>
@@ -164,7 +180,6 @@ export default function OrdersScreen() {
                 </View>
               </View>
             </View>
-
           </View>
         </View>
       </View>
@@ -174,27 +189,27 @@ export default function OrdersScreen() {
   return (
     <ScreenWrapper>
       <StatusBar barStyle="light-content" />
-      {/* 🌑 Background: Gold Foundry Gradient */}
+      {/* 🌑 Background: Deep Green/Black Gradient */}
       <LinearGradient
-        colors={['#000000', '#1a1005', '#241808']}
+        colors={['#000000', '#0a1a10', '#082415']}
         style={{ flex: 1 }}
       >
         <SafeAreaView style={styles.safeArea}>
           <View style={styles.container}>
-            
             {/* Header */}
             <View style={styles.screenHeader}>
               <Text style={styles.title}>Track Orders</Text>
               <LinearGradient
                 colors={THEME_GRADIENT}
-                start={{x:0, y:0}} end={{x:1, y:0}}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
                 style={styles.headerLine}
               />
             </View>
 
             {loading ? (
               <View style={styles.centerContainer}>
-                <ActivityIndicator size="large" color="#FFD700" />
+                <ActivityIndicator size="large" color="#00ff40" />
               </View>
             ) : orders.length === 0 ? (
               <View style={styles.centerContainer}>
@@ -273,7 +288,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(255,215,0,0.1)',
+    borderColor: 'rgba(0, 255, 64, 0.1)', // Green border
     elevation: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 10 },
@@ -362,11 +377,11 @@ const styles = StyleSheet.create({
 
   /* Details Block */
   detailsBlock: {
-    backgroundColor: 'rgba(255,215,0,0.03)',
+    backgroundColor: 'rgba(0, 255, 64, 0.03)', // Subtle green tint
     borderRadius: ms(16),
     padding: s(12),
     borderWidth: 1,
-    borderColor: 'rgba(255,215,0,0.05)',
+    borderColor: 'rgba(0, 255, 64, 0.05)',
   },
   productRow: {
     flexDirection: 'row',
@@ -382,7 +397,7 @@ const styles = StyleSheet.create({
     marginRight: s(10),
   },
   price: {
-    color: '#FFD700', // Changed to Gold
+    color: '#00ff40', // Neon Green
     fontSize: ms(18),
     fontWeight: '800',
   },

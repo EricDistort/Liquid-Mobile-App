@@ -48,10 +48,10 @@ const StoreStack = createNativeStackNavigator();
 const FeedStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// 🎨 CHANGED: Gold Foundry Theme Gradient
-const THEME_GRADIENT = ['#FFD700', '#b8670b'];
+// 🎨 CHANGED: Neon Green Theme Gradient
+const THEME_GRADIENT = ['#03310b', '#00d435'];
 
-// 1️⃣ UPDATED THEME FOR GOLD ACCENTS
+// 1️⃣ UPDATED THEME FOR GREEN ACCENTS
 const MyDarkTheme = {
   ...NavigationDarkTheme,
   colors: {
@@ -59,8 +59,8 @@ const MyDarkTheme = {
     background: '#000000',
     card: '#000000',
     text: '#ffffff',
-    border: '#1a1005',
-    notification: '#FFD700', // Gold notifications
+    border: '#0a1a10',
+    notification: '#00ff40', // Neon green notifications
   },
 };
 
@@ -140,6 +140,10 @@ function HomeStackScreen() {
         name="TransactionDetailsScreen"
         component={TransactionDetailsScreen}
       />
+      <HomeStack.Screen
+        name="TransactionListScreen"
+        component={TransactionListScreen}
+      />
       <HomeStack.Screen name="StoreMain" component={StoreScreen} />
       <HomeStack.Screen name="ProfileScreen" component={ProfileScreen} />
     </HomeStack.Navigator>
@@ -149,15 +153,7 @@ function HomeStackScreen() {
 function FeedStackScreen() {
   return (
     <FeedStack.Navigator screenOptions={globalScreenOptions}>
-      <FeedStack.Screen name="FeedMain" component={TransactionListScreen} />
-      <FeedStack.Screen
-        name="TransactionDetailsScreen"
-        component={TransactionDetailsScreen}
-      />
-      <FeedStack.Screen name="RecieveMoney" component={FeedScreen} />
-      <FeedStack.Screen name="WebinarScreen" component={WebinarScreen} />
-      <FeedStack.Screen name="StoreMain" component={StoreScreen} />
-      <FeedStack.Screen name="OrderList" component={OrderListScreen} />
+      <FeedStack.Screen name="FeedMain" component={BrowserScreen} />
     </FeedStack.Navigator>
   );
 }
@@ -313,7 +309,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: ms(35),
     elevation: 10,
-    shadowColor: '#B8860B', // Bronze shadow
+    shadowColor: '#00ff40', // Neon green shadow
   },
   tabBtnContainer: {
     flex: 1,
@@ -334,15 +330,15 @@ const styles = StyleSheet.create({
   activeIcon: {
     width: s(32),
     height: s(32),
-    tintColor: '#000', // Black icon on gold background looks more premium
+    tintColor: '#bfffaf', // White icon on green background looks good
   },
   inactiveIcon: {
-    tintColor: 'rgba(0, 0, 0, 0.4)', // Dark semi-transparent icons for inactive
+    tintColor: 'rgba(255, 255, 255, 0.25)', // Semi-transparent white icons for inactive
   },
   activeDot: {
     width: s(15),
     height: s(4),
     borderRadius: s(2.5),
-    backgroundColor: '#000', // Black dot on gold
+    backgroundColor: '#bfffaf', // White dot on green
   },
 });

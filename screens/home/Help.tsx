@@ -29,11 +29,19 @@ const PopScaleButton = ({ children, onPress, disabled, style }: any) => {
   const scaleValue = useRef(new Animated.Value(1)).current;
 
   const handlePressIn = () => {
-    Animated.spring(scaleValue, { toValue: 0.9, useNativeDriver: true }).start();
+    Animated.spring(scaleValue, {
+      toValue: 0.9,
+      useNativeDriver: true,
+    }).start();
   };
 
   const handlePressOut = () => {
-    Animated.spring(scaleValue, { toValue: 1, friction: 4, tension: 40, useNativeDriver: true }).start();
+    Animated.spring(scaleValue, {
+      toValue: 1,
+      friction: 4,
+      tension: 40,
+      useNativeDriver: true,
+    }).start();
   };
 
   return (
@@ -59,8 +67,8 @@ export default function SupportScreen() {
   const [loading, setLoading] = useState(true);
   const flatListRef = useRef<FlatList>(null);
 
-  // 🎨 GOLD FOUNDRY GRADIENT
-  const THEME_GRADIENT = ['#FFD700', '#B8860B'];
+  // 🎨 NEON GREEN GRADIENT
+  const THEME_GRADIENT = ['#03310b', '#00d435'];
 
   // 1. Initialize Chat
   useEffect(() => {
@@ -68,7 +76,7 @@ export default function SupportScreen() {
     const initChat = async () => {
       try {
         if (!user) return;
-        
+
         const { data: existingConv, error: fetchError } = await supabase
           .from('conversations')
           .select('id')
@@ -77,7 +85,7 @@ export default function SupportScreen() {
           .maybeSingle();
 
         if (fetchError) throw fetchError;
-        
+
         let convId = existingConv?.id;
 
         if (!convId) {
@@ -103,7 +111,9 @@ export default function SupportScreen() {
     };
 
     initChat();
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+    };
   }, [user]);
 
   // 2. Real-time Subscription
@@ -120,13 +130,13 @@ export default function SupportScreen() {
           table: 'messages',
           filter: `conversation_id=eq.${conversationId}`,
         },
-        (payload) => {
-          setMessages((currentMessages) => {
+        payload => {
+          setMessages(currentMessages => {
             const exists = currentMessages.find(m => m.id === payload.new.id);
             if (exists) return currentMessages;
             return [...currentMessages, payload.new];
           });
-        }
+        },
       )
       .subscribe();
 
@@ -137,14 +147,20 @@ export default function SupportScreen() {
 
   // 3. Auto-Scroll logic
   useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      if (messages.length > 0) {
-        flatListRef.current?.scrollToEnd({ animated: true });
-      }
-    });
-    
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        if (messages.length > 0) {
+          flatListRef.current?.scrollToEnd({ animated: true });
+        }
+      },
+    );
+
     if (messages.length > 0) {
-      setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 200);
+      setTimeout(
+        () => flatListRef.current?.scrollToEnd({ animated: true }),
+        200,
+      );
     }
 
     return () => {
@@ -167,9 +183,9 @@ export default function SupportScreen() {
   // 4. Send Message
   const sendMessage = async () => {
     if (!input.trim() || !conversationId) return;
-    
+
     const msgText = input.trim();
-    setInput(''); 
+    setInput('');
 
     try {
       const { data, error } = await supabase
@@ -188,12 +204,11 @@ export default function SupportScreen() {
       if (error) throw error;
 
       if (data) {
-        setMessages((prev) => [...prev, data]);
+        setMessages(prev => [...prev, data]);
       }
-
     } catch (error) {
       Alert.alert('Error', 'Failed to send message');
-      setInput(msgText); 
+      setInput(msgText);
     }
   };
 
@@ -215,48 +230,59 @@ export default function SupportScreen() {
 
   return (
     <ScreenWrapper>
-      {/* 🌑 Background: Deep Bronze/Black Gradient */}
+      {/* 🌑 Background: Deep Green/Black Gradient */}
       <LinearGradient
-        colors={['#000000', '#1a1005', '#241808']}
+        colors={['#000000', '#0a1a10', '#082415']}
         style={styles.container}
       >
         <StatusBar barStyle="light-content" backgroundColor="#000" />
 
         {/* --- HEADER --- */}
         <View style={styles.headerContainer}>
-            <LinearGradient
-                colors={THEME_GRADIENT}
-                start={{x:0, y:0}} end={{x:1, y:0}}
-                style={styles.headerLine}
-            />
-            <View style={styles.headerContent}>
-                <Text style={styles.headerTitle}>LIVE SUPPORT</Text>
-                {loading && <ActivityIndicator size="small" color="#FFD700" style={{marginLeft: 10}} />}
-            </View>
+          <LinearGradient
+            colors={THEME_GRADIENT}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.headerLine}
+          />
+          <View style={styles.headerContent}>
+            <Text style={styles.headerTitle}>LIVE SUPPORT</Text>
+            {loading && (
+              <ActivityIndicator
+                size="small"
+                color="#00ff40"
+                style={{ marginLeft: 10 }}
+              />
+            )}
+          </View>
         </View>
 
         {/* --- CHAT AREA --- */}
         <KeyboardAvoidingView
           style={{ flex: 1 }}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
         >
           <View style={styles.listContainer}>
             <FlatList
               ref={flatListRef}
               data={messages}
-              keyExtractor={(item) => String(item.id)}
+              keyExtractor={item => String(item.id)}
               renderItem={renderItem}
               contentContainerStyle={{ padding: s(15), paddingBottom: vs(20) }}
               showsVerticalScrollIndicator={false}
-              onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
-              onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })}
+              onContentSizeChange={() =>
+                flatListRef.current?.scrollToEnd({ animated: true })
+              }
+              onLayout={() =>
+                flatListRef.current?.scrollToEnd({ animated: true })
+              }
               ListEmptyComponent={
-                  !loading ? (
-                    <View style={styles.emptyContainer}>
-                        <Text style={styles.emptyText}>SECURE LINE ACTIVE</Text>
-                    </View>
-                  ) : null
+                !loading ? (
+                  <View style={styles.emptyContainer}>
+                    <Text style={styles.emptyText}>SECURE LINE ACTIVE</Text>
+                  </View>
+                ) : null
               }
             />
           </View>
@@ -272,10 +298,13 @@ export default function SupportScreen() {
                 placeholderTextColor="rgba(255,255,255,0.3)"
                 returnKeyType="send"
                 onSubmitEditing={sendMessage}
-                multiline={false} 
+                multiline={false}
               />
               {/* Send Button with Pop Effect */}
-              <PopScaleButton onPress={sendMessage} disabled={loading || !input.trim()}>
+              <PopScaleButton
+                onPress={sendMessage}
+                disabled={loading || !input.trim()}
+              >
                 <LinearGradient
                   colors={THEME_GRADIENT}
                   start={{ x: 0, y: 1 }}
@@ -306,12 +335,12 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   headerLine: {
-      height: 2,
-      width: '30%',
-      alignSelf: 'center',
-      borderRadius: 2,
-      marginBottom: vs(10),
-      opacity: 0.7
+    height: 2,
+    width: '30%',
+    alignSelf: 'center',
+    borderRadius: 2,
+    marginBottom: vs(10),
+    opacity: 0.7,
   },
   headerContent: {
     flexDirection: 'row',
@@ -321,7 +350,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: ms(20),
     fontWeight: '900',
-    color: '#D4AF37', // Metallic Gold
+    color: '#00ff40', // Neon Green
     letterSpacing: 1,
     textTransform: 'uppercase',
   },
@@ -331,15 +360,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   emptyContainer: {
-      alignItems: 'center',
-      marginTop: vs(50),
-      opacity: 0.5
+    alignItems: 'center',
+    marginTop: vs(50),
+    opacity: 0.5,
   },
   emptyText: {
-      color: '#D4AF37', // Gold text
-      fontSize: ms(14),
-      fontWeight: '700',
-      letterSpacing: 2,
+    color: '#00ff40', // Green text
+    fontSize: ms(14),
+    fontWeight: '700',
+    letterSpacing: 2,
   },
 
   /* BUBBLES */
@@ -350,11 +379,11 @@ const styles = StyleSheet.create({
     maxWidth: '80%',
   },
   userBubble: {
-    backgroundColor: '#332200', // Dark Gold/Brown
+    backgroundColor: '#03310b', // Dark Green
     alignSelf: 'flex-end',
     borderBottomRightRadius: 2,
     borderWidth: 1,
-    borderColor: '#FFD700', // Gold Border
+    borderColor: '#00ff40', // Green Border
   },
   adminBubble: {
     backgroundColor: '#1a1a1a', // Dark Obsidian
@@ -377,7 +406,7 @@ const styles = StyleSheet.create({
     padding: s(15),
     backgroundColor: 'rgba(0, 0, 0, 0)', // Slightly transparent black
     //borderTopWidth: 1,
-    //borderTopColor: 'rgba(255, 215, 0, 0.1)',
+    //borderTopColor: 'rgba(0, 255, 64, 0.1)',
   },
   inputRow: {
     flexDirection: 'row',
@@ -392,7 +421,7 @@ const styles = StyleSheet.create({
     marginRight: s(10),
     color: '#fff',
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.2)', // Gold tint border
+    borderColor: 'rgba(0, 255, 64, 0.2)', // Green tint border
     fontSize: ms(14),
   },
   sendButton: {
@@ -401,14 +430,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: s(25),
-    shadowColor: '#FFD700',
+    shadowColor: '#00ff40',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 5,
     elevation: 5,
   },
   sendButtonText: {
-    color: '#000', // Black arrow on Gold button
+    color: '#fff', // White arrow on Green button
     fontSize: ms(18),
     fontWeight: 'bold',
     marginBottom: 2,

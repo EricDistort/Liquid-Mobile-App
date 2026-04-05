@@ -19,16 +19,17 @@ import ScreenWrapper from '../utils/ScreenWrapper';
 
 const { width } = Dimensions.get('window');
 
-// 🎨 CHANGED: Gold Foundry Theme Colors
-const GOLD_METALLIC = '#FFD700';
-const BRONZE_DARK = '#B8860B';
+// 🎨 CHANGED: Neon Green Theme Colors (Matched to HomeScreen)
+const NEON_GREEN = '#00ff40';
+const GREEN_DARK = '#03310b';
+const GREEN_LIGHT = '#00d435';
 
 const slides = [
   {
     id: '1',
-    title: 'Trade & Earn',
-    desc: 'Deposit funds and start trading to earn daily profits.',
-    image: require('./LoginMedia/First.png'),
+    title: 'Liquid Earnings',
+    desc: 'Deposit funds and start Liquid to earn daily profits.',
+    image: require('./LoginMedia/Very.png'),
   },
   {
     id: '2',
@@ -103,9 +104,9 @@ export default function OnboardingScreen({ navigation }: any) {
 
   return (
     <ScreenWrapper>
-      {/* 🌑 Background: Gold Foundry Gradient */}
+      {/* 🌑 Background: Neon Green Gradient */}
       <LinearGradient
-        colors={['#000000', '#1a1005', '#241808']}
+        colors={['#000000', '#0a1a10', '#082415']}
         style={{ flex: 1 }}
       >
         <View style={styles.container}>
@@ -150,7 +151,7 @@ export default function OnboardingScreen({ navigation }: any) {
             {/* Continue Button with Pop Effect */}
             <PopButton onPress={() => navigation.replace('Login')}>
               <LinearGradient
-                colors={[GOLD_METALLIC, BRONZE_DARK]}
+                colors={[GREEN_DARK, GREEN_LIGHT]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.continueBtn}
@@ -188,14 +189,14 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   title: {
-    // 🎨 CHANGED: Title Color to Gold
-    color: GOLD_METALLIC,
+    // 🎨 CHANGED: Title Color to Neon Green
+    color: NEON_GREEN,
     fontSize: ms(28),
     fontWeight: 'bold',
     marginBottom: vs(12),
   },
   desc: {
-    color: '#ffffff93',
+    color: '#baffba9c',
     fontSize: ms(16),
     width: '85%',
     textAlign: 'center',
@@ -215,8 +216,8 @@ const styles = StyleSheet.create({
     marginHorizontal: s(6),
   },
   activeDot: {
-    // 🎨 CHANGED: Active Dot to Gold
-    backgroundColor: GOLD_METALLIC,
+    // 🎨 CHANGED: Active Dot to Neon Green
+    backgroundColor: NEON_GREEN,
     width: ms(24),
     height: ms(8),
     borderRadius: ms(4),
@@ -242,8 +243,8 @@ const styles = StyleSheet.create({
 
   buttonText: {
     textAlign: 'center',
-    // 🎨 CHANGED: Button Text to Black for contrast against Gold
-    color: 'black',
+    // 🎨 CHANGED: Button Text to White for contrast against Green
+    color: '#d3ffc7',
     fontWeight: 'bold',
     fontSize: ms(18),
   },

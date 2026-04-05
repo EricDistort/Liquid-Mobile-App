@@ -16,6 +16,7 @@ import {
   verticalScale as vs,
   moderateScale as ms,
 } from 'react-native-size-matters';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function WebinarScreen({ navigation }: any) {
   const [url, setUrl] = useState<string | null>(null);
@@ -42,7 +43,9 @@ export default function WebinarScreen({ navigation }: any) {
 
         // Set Text Data
         setTitle(data.name || 'Live Webinar');
-        setDescription(data.designation || 'Join us for live trading insights.');
+        setDescription(
+          data.designation || 'Join us for live trading insights.',
+        );
       }
     } catch (err) {
       console.log('Error fetching webinar data:', err);
@@ -57,42 +60,48 @@ export default function WebinarScreen({ navigation }: any) {
   return (
     <ScreenWrapper>
       <StatusBar barStyle="light-content" backgroundColor="#000" />
-      <SafeAreaView style={styles.container}>
-        
-        {/* WebView Container (Meeting Area) */}
-        <View style={styles.webViewContainer}>
-          {url ? (
-            <WebView
-              source={{ uri: url }}
-              startInLoadingState={true}
-              renderLoading={() => (
-                <View style={styles.loaderContainer}>
-                  <ActivityIndicator size="large" color="#ff00d4" />
-                  <Text style={styles.loadingText}>Connecting to Zoom...</Text>
-                </View>
-              )}
-              style={{ flex: 1, backgroundColor: '#000' }}
-              allowsInlineMediaPlayback={true}
-              mediaPlaybackRequiresUserAction={false}
-              javaScriptEnabled={true}
-              domStorageEnabled={true}
-            />
-          ) : (
-            <View style={styles.loaderContainer}>
-               <ActivityIndicator size="large" color="#ff00d4" />
-            </View>
-          )}
-        </View>
+      {/* 🌑 Background: Deep Green/Black Gradient matching theme */}
+      <LinearGradient
+        colors={['#000000', '#0a1a10', '#082415']}
+        style={{ flex: 1 }}
+      >
+        <SafeAreaView style={styles.container}>
+          {/* WebView Container (Meeting Area) */}
+          <View style={styles.webViewContainer}>
+            {url ? (
+              <WebView
+                source={{ uri: url }}
+                startInLoadingState={true}
+                renderLoading={() => (
+                  <View style={styles.loaderContainer}>
+                    <ActivityIndicator size="large" color="#00ff40" />
+                    <Text style={styles.loadingText}>
+                      Connecting to Zoom...
+                    </Text>
+                  </View>
+                )}
+                style={{ flex: 1, backgroundColor: '#000' }}
+                allowsInlineMediaPlayback={true}
+                mediaPlaybackRequiresUserAction={false}
+                javaScriptEnabled={true}
+                domStorageEnabled={true}
+              />
+            ) : (
+              <View style={styles.loaderContainer}>
+                <ActivityIndicator size="large" color="#00ff40" />
+              </View>
+            )}
+          </View>
 
-        {/* 2️⃣ Info Section (Title & Description) */}
-        <View style={styles.infoContainer}>
+          {/* 2️⃣ Info Section (Title & Description) */}
+          <View style={styles.infoContainer}>
             <Text style={styles.infoTitle}>{title}</Text>
             <ScrollView style={styles.descScroll}>
               <Text style={styles.infoDesc}>{description}</Text>
             </ScrollView>
-        </View>
-
-      </SafeAreaView>
+          </View>
+        </SafeAreaView>
+      </LinearGradient>
     </ScreenWrapper>
   );
 }
@@ -100,7 +109,7 @@ export default function WebinarScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: 'transparent',
   },
   /* WebView Area */
   webViewContainer: {
@@ -111,7 +120,8 @@ const styles = StyleSheet.create({
     borderRadius: ms(20),
     overflow: 'hidden',
     alignSelf: 'center',
-    
+    borderWidth: 1,
+    borderColor: 'rgba(0, 255, 64, 0.2)', // Neon Green Border
   },
   loaderContainer: {
     ...StyleSheet.absoluteFillObject,
@@ -121,7 +131,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   loadingText: {
-    color: '#fff',
+    color: '#00ff40', // Neon Green Text
     marginTop: vs(15),
     fontSize: ms(14),
   },
@@ -135,7 +145,7 @@ const styles = StyleSheet.create({
   infoTitle: {
     fontSize: ms(22),
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#00ff40', // Neon Green Title
     marginBottom: vs(10),
     letterSpacing: 0.5,
   },

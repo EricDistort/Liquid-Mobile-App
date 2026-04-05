@@ -96,8 +96,8 @@ export default function DepositScreen() {
     'Loading instructions...',
   );
 
-  // --- 🎨 GOLD FOUNDRY THEME ---
-  const THEME_GRADIENT = ['#FFD700', '#B8860B']; // Gold -> Bronze
+  // --- 🎨 NEON GREEN THEME ---
+  const THEME_GRADIENT = ['#03310b', '#00d435']; // Dark Green -> Neon Green
   const DISABLED_GRADIENT = ['#4a4a4a', '#2b2b2b']; // Grey
 
   // 1. Fetch Company Wallet & User's Fixed Address
@@ -254,7 +254,7 @@ export default function DepositScreen() {
       case 'approved':
         return '#00ff88'; // Green
       case 'pending':
-        return '#FFD700'; // Gold
+        return '#FFD700'; // Yellow/Gold for pending status
       case 'rejected':
         return '#ff4d4d'; // Red
       default:
@@ -296,7 +296,7 @@ export default function DepositScreen() {
     <ScreenWrapper>
       <StatusBar barStyle="light-content" backgroundColor="#000" />
       <LinearGradient
-        colors={['#000000', '#1a1005', '#241808']}
+        colors={['#000000', '#0a1a10', '#082415']}
         style={{ flex: 1 }}
       >
         <SafeAreaView style={styles.safeArea}>
@@ -362,7 +362,7 @@ export default function DepositScreen() {
                       fixedSenderAddress
                         ? {
                             opacity: 0.5,
-                            backgroundColor: 'rgba(255, 215, 0, 0.05)',
+                            backgroundColor: 'rgba(0, 255, 64, 0.05)',
                           }
                         : {},
                     ]}
@@ -386,12 +386,12 @@ export default function DepositScreen() {
                     style={styles.submitBtn}
                   >
                     {loading ? (
-                      <ActivityIndicator color="#000" size="small" />
+                      <ActivityIndicator color="#fff" size="small" />
                     ) : (
                       <Text
                         style={[
                           styles.submitBtnText,
-                          hasPending ? { color: '#888' } : { color: '#000' },
+                          hasPending ? { color: '#888' } : { color: '#fff' },
                         ]}
                       >
                         {hasPending
@@ -407,7 +407,7 @@ export default function DepositScreen() {
             <View style={styles.historyContainer}>
               <Text style={styles.historyHeader}>Recent History</Text>
               {loadingDeposits ? (
-                <ActivityIndicator color="#FFD700" style={{ marginTop: 20 }} />
+                <ActivityIndicator color="#00ff40" style={{ marginTop: 20 }} />
               ) : (
                 <FlatList
                   data={deposits}
@@ -450,7 +450,7 @@ const styles = StyleSheet.create({
   screenTitle: {
     fontSize: ms(24),
     fontWeight: '800',
-    color: '#FFD700', // Gold
+    color: '#00ff40', // Neon Green
     marginBottom: vs(15),
     letterSpacing: 0.5,
     marginTop: vs(15),
@@ -460,7 +460,7 @@ const styles = StyleSheet.create({
     borderRadius: ms(20),
     padding: s(15),
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.1)', // Gold Tint
+    borderColor: 'rgba(0, 255, 64, 0.15)', // Green Tint
   },
   qrRow: { flexDirection: 'row', alignItems: 'center', marginBottom: vs(15) },
   qrWrapper: {
@@ -474,7 +474,7 @@ const styles = StyleSheet.create({
   qrImage: { width: '100%', height: '100%' },
   warningBox: { flex: 1, justifyContent: 'center' },
   warningText: {
-    color: '#FFD700',
+    color: '#00ff40',
     fontWeight: '700',
     fontSize: ms(12),
     marginBottom: vs(2),
@@ -493,34 +493,34 @@ const styles = StyleSheet.create({
     paddingHorizontal: s(15),
     height: vs(45),
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.3)', // Gold Border
+    borderColor: 'rgba(0, 255, 64, 0.3)', // Green Border
   },
   walletText: {
-    color: '#FFD700',
+    color: '#00ff40',
     flex: 1,
     fontSize: ms(13),
     marginRight: s(10),
   },
   copyText: {
-    color: '#FFD700',
+    color: '#00ff40',
     fontWeight: '700',
     fontSize: ms(12),
-    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+    backgroundColor: 'rgba(0, 255, 64, 0.1)',
     paddingHorizontal: s(10),
     paddingVertical: vs(5),
     borderRadius: ms(14),
     borderWidth: 0.5,
-    borderColor: '#FFD700',
+    borderColor: '#00ff40',
   },
   input: {
     backgroundColor: '#000',
     borderRadius: ms(20),
     height: vs(45),
     paddingHorizontal: s(15),
-    color: '#FFD700',
+    color: '#fff',
     fontSize: ms(14),
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.3)',
+    borderColor: 'rgba(0, 255, 64, 0.3)',
   },
   submitBtn: {
     height: vs(48),
@@ -531,7 +531,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   submitBtnText: {
-    color: '#000',
+    color: '#fff',
     fontSize: ms(15),
     fontWeight: 'bold',
     letterSpacing: 0.5,
@@ -540,7 +540,7 @@ const styles = StyleSheet.create({
   historyHeader: {
     fontSize: ms(18),
     fontWeight: '700',
-    color: '#FFD700',
+    color: '#00ff40',
     marginBottom: vs(10),
   },
   listContent: { paddingBottom: vs(200) },
@@ -553,7 +553,7 @@ const styles = StyleSheet.create({
     padding: s(12),
     marginBottom: vs(8),
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.1)',
+    borderColor: 'rgba(0, 255, 64, 0.15)',
   },
   historyLeft: { flexDirection: 'column' },
   historyAmount: {

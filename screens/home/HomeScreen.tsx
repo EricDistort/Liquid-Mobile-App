@@ -150,7 +150,7 @@ export default function HomeScreen({ navigation }: any) {
   return (
     <ScreenWrapper>
       <LinearGradient
-        colors={['#000000', '#1a1005', '#241808']}
+        colors={['#000000', '#0a1a10', '#082415']}
         style={{ flex: 1 }}
       >
         <ScrollView
@@ -159,8 +159,8 @@ export default function HomeScreen({ navigation }: any) {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              tintColor="#FFD700"
-              colors={['#FFD700', '#B8860B']}
+              tintColor="#00FF88"
+              colors={['#00FF88', '#008000']}
               progressBackgroundColor="#1c140d"
             />
           }
@@ -207,7 +207,7 @@ export default function HomeScreen({ navigation }: any) {
             {/* BALANCE SECTION */}
             <View style={styles.secondContainerWrapper}>
               <LinearGradient
-                colors={['#422006', '#ffbf00']}
+                colors={['#03310b', '#00d435']}
                 start={{ x: 0, y: 1 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.gradientCard}
@@ -222,7 +222,7 @@ export default function HomeScreen({ navigation }: any) {
                     <View style={styles.progressBarTrack}>
                       {/* The Glowing Fill */}
                       <LinearGradient
-                        colors={['#FFFFFF', '#FFD700', '#FF8C00']} // White -> Gold -> Orange
+                        colors={['#7cff7c', '#00ff40', '#008500']}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 0 }}
                         style={{
@@ -295,7 +295,7 @@ export default function HomeScreen({ navigation }: any) {
 
               <PopScaleButton
                 onPress={() =>
-                  navigation.navigate('BrowserScreen', {
+                  navigation.navigate('TransactionListScreen', {
                     url: partnerData.url,
                     title: partnerData.name,
                   })
@@ -313,7 +313,7 @@ export default function HomeScreen({ navigation }: any) {
               <View style={styles.sectionHeader}>
                 <Text style={styles.transactionsTitle}>Live Extraction</Text>
                 <LinearGradient
-                  colors={['#FFD700', '#7b009400']}
+                  colors={['#00ff2a', '#00943200']}
                   start={{ x: 0, y: 0.5 }}
                   end={{ x: 1, y: 0.5 }}
                   style={styles.slickLine}
@@ -321,7 +321,7 @@ export default function HomeScreen({ navigation }: any) {
               </View>
 
               {loadingRigs ? (
-                <ActivityIndicator size="small" color="#FFD700" />
+                <ActivityIndicator size="small" color="#00ff40" />
               ) : (
                 <View style={{ width: '100%', height: vs(320) }}>
                   <ScrollView
@@ -342,14 +342,14 @@ export default function HomeScreen({ navigation }: any) {
                         <LinearGradient
                           colors={[
                             'rgba(20, 20, 20, 0.9)',
-                            'rgba(40, 25, 5, 0.95)',
+                            'rgba(10, 30, 15, 0.95)',
                           ]}
                           style={styles.miningCardInner}
                         >
                           {/* Rig Info */}
                           <View style={styles.rigInfoLeft}>
                             <View style={styles.rigIconBox}>
-                              <Text style={{ fontSize: 20 }}>⚒️</Text>
+                              <Text style={{ fontSize: 20 }}>🟢</Text>
                             </View>
                             <View>
                               <Text style={styles.rigName}>{rig.name}</Text>
@@ -384,7 +384,7 @@ export default function HomeScreen({ navigation }: any) {
                         </LinearGradient>
                         <View style={styles.progressBarBg}>
                           <LinearGradient
-                            colors={['#FFD700', '#B8860B']}
+                            colors={['#00ff37', '#008000']}
                             style={{
                               width: `${(rig.temp / 100) * 100}%`,
                               height: '100%',
@@ -415,22 +415,22 @@ const styles = StyleSheet.create({
     marginTop: vs(25),
   },
   userInfo: { flex: 1 },
-  name: { fontSize: ms(18), fontWeight: 'bold', color: '#FFD700' },
+  name: { fontSize: ms(18), fontWeight: 'bold', color: '#00ff40' },
   accountNumber: { fontSize: ms(14), color: '#ffffff49', marginTop: vs(2) },
   editButton: { padding: ms(8) },
   editImage: { width: s(30), height: s(30) },
 
   // Avatar Styles
   avatarContainer: {
-    width: s(60),
-    height: s(60),
-    borderRadius: ms(50),
-    marginRight: s(12),
+    width: s(70),
+    height: s(70),
+
+    marginRight: s(6),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
   },
-  avatarImage: { width: '100%', height: '100%', borderRadius: ms(50) },
+  avatarImage: { width: '100%', height: '100%' },
 
   secondContainerWrapper: {
     width: '92%',
@@ -440,12 +440,12 @@ const styles = StyleSheet.create({
     marginTop: vs(10),
     borderRadius: ms(50),
     backgroundColor: '#000',
-    shadowColor: '#B8860B',
+    shadowColor: '#00b100',
     shadowOffset: { width: 0, height: vs(4) },
     shadowOpacity: 1,
     shadowRadius: ms(10),
     elevation: 10,
-    borderColor: '#fffb00',
+    borderColor: '#00ff40',
     borderWidth: ms(1),
   },
   gradientCard: {
@@ -469,9 +469,9 @@ const styles = StyleSheet.create({
   balanceAmount: {
     fontSize: ms(52),
     fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: vs(5), // Reduced margin to fit Progress Bar without moving buttons
-    textShadowColor: 'rgba(255, 215, 0, 0.6)',
+    color: '#d0ffc4',
+    marginBottom: vs(5),
+    textShadowColor: 'rgba(0, 255, 42, 0.6)',
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 15,
   },
@@ -488,7 +488,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
     borderRadius: ms(10),
     borderWidth: 1,
-    borderColor: 'rgba(255,215,0,0.3)',
+    borderColor: 'rgba(0, 255, 21, 0.31)',
     overflow: 'hidden',
     marginBottom: vs(4),
   },
@@ -509,26 +509,39 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    marginBottom: vs(-10), // Kept exactly as requested
+    marginBottom: vs(-10),
   },
-  imageButton: { justifyContent: 'center', alignItems: 'center', flex: 1 },
-  buttonIcon: { width: s(55), height: s(50), resizeMode: 'contain' },
-  buttonLabel: { fontSize: ms(12), color: '#fff', textAlign: 'center' },
+  imageButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
+  buttonIcon: {
+    width: s(50),
+    height: s(50),
+    resizeMode: 'contain',
+    backgroundColor: '#0a1a10',
+    borderRadius: ms(100),
+    borderWidth: 2,
+    borderColor: 'rgba(0, 255, 64, 0.32)',
+  },
+  buttonLabel: { fontSize: ms(12), color: '#a5ff93', textAlign: 'center' },
 
   withdrawableText: {
     marginTop: vs(10),
     marginBottom: vs(3),
     fontSize: ms(13),
-    color: '#8a7c00',
+    color: '#00b436',
     textAlign: 'center',
-    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+    backgroundColor: 'rgba(0, 255, 136, 0.1)',
     paddingHorizontal: s(10),
     paddingVertical: vs(2),
     borderRadius: ms(20),
     borderWidth: 0.5,
-    borderColor: '#FFD700',
+    borderColor: '#00ff40',
   },
-  boldAmount: { fontWeight: 'bold', fontSize: ms(16), color: '#FFD700' },
+  boldAmount: { fontWeight: 'bold', fontSize: ms(16), color: '#00ff40' },
 
   thirdContainer: {
     width: '98%',
@@ -545,7 +558,7 @@ const styles = StyleSheet.create({
   transactionsTitle: {
     fontSize: ms(18),
     fontWeight: 'bold',
-    color: '#FFD700',
+    color: '#00ff40',
   },
   slickLine: {
     flex: 1,
@@ -562,7 +575,7 @@ const styles = StyleSheet.create({
     width: '100%',
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.15)',
+    borderColor: 'rgba(0, 255, 64, 0.15)',
   },
   miningCardInner: {
     flexDirection: 'row',
@@ -580,20 +593,20 @@ const styles = StyleSheet.create({
     width: s(36),
     height: s(36),
     borderRadius: ms(10),
-    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+    backgroundColor: 'rgba(0, 255, 34, 0.1)',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: s(8),
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.2)',
+    borderColor: 'rgba(0, 255, 42, 0.2)',
   },
   rigName: {
-    color: '#fff',
+    color: '#bbffb2',
     fontWeight: '700',
     fontSize: ms(12),
   },
   rigStatus: {
-    color: '#00ff88',
+    color: '#00ff40',
     fontSize: ms(9),
     fontWeight: '600',
     marginTop: 2,
@@ -621,16 +634,16 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   yieldLabel: {
-    color: '#FFD700',
+    color: '#b3ff9c',
     fontSize: ms(9),
     fontWeight: '800',
     marginBottom: 2,
   },
   yieldValue: {
-    color: '#fff',
+    color: '#00ff40',
     fontSize: ms(16),
     fontWeight: '700',
-    textShadowColor: 'rgba(255, 215, 0, 0.5)',
+    textShadowColor: 'rgba(0, 255, 76, 0.5)',
     textShadowRadius: 5,
   },
   progressBarBg: {

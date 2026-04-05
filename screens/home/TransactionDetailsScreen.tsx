@@ -28,9 +28,9 @@ export default function TransactionDetailsScreen() {
   if (!transaction) return null;
 
   const isSent = transaction.sender_acc === user.account_number;
-  
-  // 🎨 CHANGED: Gold Foundry Palette
-  const THEME_GRADIENT = ['#FFD700', '#B8860B']; 
+
+  // 🎨 CHANGED: Neon Green Palette
+  const THEME_GRADIENT = ['#03310b', '#00d435'];
 
   // Formatted Data
   const formattedDate = new Date(transaction.created_at).toLocaleDateString();
@@ -45,9 +45,9 @@ export default function TransactionDetailsScreen() {
 
   return (
     <ScreenWrapper>
-      {/* 🌑 Screen Background: Deep Bronze/Black */}
+      {/* 🌑 Screen Background: Deep Green/Black */}
       <LinearGradient
-        colors={['#000000', '#1a1005', '#241808']}
+        colors={['#000000', '#0a1a10', '#082415']}
         style={{ flex: 1 }}
       >
         <StatusBar
@@ -59,7 +59,7 @@ export default function TransactionDetailsScreen() {
           {/* 1️⃣ TOP CONTAINER (Animation Only) */}
           <View style={styles.topContainer}>
             <LinearGradient
-              colors={['rgba(212, 175, 55, 0.2)', 'transparent']}
+              colors={['rgba(0, 255, 64, 0.2)', 'transparent']}
               style={styles.glowBackground}
               start={{ x: 0.5, y: 0.5 }}
               end={{ x: 0.5, y: 1 }}
@@ -91,7 +91,7 @@ export default function TransactionDetailsScreen() {
                   style={[
                     styles.amountText,
                     // 🎨 CHANGED: Using theme colors for amount
-                    { color: isSent ? '#FF4500' : '#00ff88' },
+                    { color: isSent ? '#FF4500' : '#00ff40' },
                   ]}
                 >
                   {isSent ? '-' : '+'}${Math.abs(transaction.amount).toFixed(2)}
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: ms(30),
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.1)',
+    borderColor: 'rgba(0, 255, 64, 0.1)',
   },
   gradientLine: {
     height: vs(3),
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     marginBottom: vs(25),
   },
   statusText: {
-    color: '#D4AF37', // Gold text
+    color: '#00ff40', // Neon Green text
     fontSize: ms(12),
     fontWeight: '700',
     letterSpacing: 2,
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   valueMono: {
-    color: '#FFD700', // Gold Ref ID
+    color: '#00ff40', // Neon Green Ref ID
     fontSize: ms(14),
     //fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
     fontWeight: '600',
