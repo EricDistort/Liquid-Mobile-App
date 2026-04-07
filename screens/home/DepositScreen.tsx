@@ -15,6 +15,7 @@ import {
   Animated,
   Pressable,
   Keyboard,
+  Modal,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import LottieView from 'lottie-react-native';
@@ -265,7 +266,9 @@ export default function DepositScreen() {
   const renderHistoryItem = ({ item }: { item: any }) => (
     <View style={styles.historyCard}>
       <View style={styles.historyLeft}>
-        <Text style={styles.historyAmount}>${item.amount || 0}</Text>
+        <Text style={styles.historyAmount}>
+          {item.status === 'pending' ? '$Amount' : `$${item.amount || 0}`}
+        </Text>
         <Text style={styles.historyDate}>
           {new Date(item.created_at).toLocaleDateString()} •{' '}
           {new Date(item.created_at).toLocaleTimeString([], {
@@ -300,10 +303,15 @@ export default function DepositScreen() {
         style={{ flex: 1 }}
       >
         <SafeAreaView style={styles.safeArea}>
-          {showSuccess && (
+          <Modal
+            visible={showSuccess}
+            transparent={true}
+            animationType="fade"
+            statusBarTranslucent={true}
+          >
             <View style={styles.successOverlay}>
               <LottieView
-                source={require('../homeMedia/Success.json')}
+                source={require('../homeMedia/Latesuccess.json')}
                 autoPlay
                 loop={false}
                 onAnimationFinish={() => setShowSuccess(false)}
@@ -311,7 +319,7 @@ export default function DepositScreen() {
                 resizeMode="contain"
               />
             </View>
-          )}
+          </Modal>
 
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -445,7 +453,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  successLottie: { width: s(300), height: s(300) },
+  successLottie: { width: s(500), height: s(500) },
   topSection: { marginBottom: vs(20) },
   screenTitle: {
     fontSize: ms(24),
@@ -480,7 +488,7 @@ const styles = StyleSheet.create({
     marginBottom: vs(2),
   },
   warningDesc: {
-    color: 'rgba(255,255,255,0.6)',
+    color: 'rgba(218, 255, 217, 0.6)',
     fontSize: ms(11),
     lineHeight: ms(15),
   },
@@ -557,12 +565,12 @@ const styles = StyleSheet.create({
   },
   historyLeft: { flexDirection: 'column' },
   historyAmount: {
-    color: '#fff',
+    color: '#0fff2f',
     fontSize: ms(16),
     fontWeight: 'bold',
     marginBottom: vs(2),
   },
-  historyDate: { color: 'rgba(255,255,255,0.4)', fontSize: ms(11) },
+  historyDate: { color: 'rgba(216, 255, 218, 0.4)', fontSize: ms(11) },
   statusBadge: {
     paddingVertical: vs(4),
     paddingHorizontal: s(8),

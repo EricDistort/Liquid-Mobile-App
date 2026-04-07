@@ -62,10 +62,7 @@ export default function LeaderboardScreen() {
 
     return (
       <View style={styles.cardContainer}>
-        <LinearGradient
-          colors={cardBackground}
-          style={styles.cardGradient}
-        >
+        <LinearGradient colors={cardBackground} style={styles.cardGradient}>
           <View style={styles.cardContent}>
             <View style={styles.rankBox}>
               <Text style={[styles.rankText, { color: rankColor }]}>
@@ -235,7 +232,7 @@ const styles = StyleSheet.create({
     width: ms(56),
     height: ms(56),
     borderRadius: ms(28),
-   
+
     backgroundColor: 'transparent',
     resizeMode: 'contain',
   },
@@ -262,13 +259,13 @@ const styles = StyleSheet.create({
   username: {
     fontSize: ms(15),
     fontWeight: '800',
-    color: '#d6ffdc',
+    color: '#0fff2f',
     marginBottom: vs(2),
   },
   amount: {
     fontSize: ms(14),
     fontWeight: 'bold',
-    color: '#00ff40',
+    color: '#c0ffc9ce',
   },
 
   arrowColumn: {

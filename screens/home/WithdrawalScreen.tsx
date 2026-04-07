@@ -15,6 +15,7 @@ import {
   RefreshControl,
   Animated,
   Pressable,
+  Modal,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import LottieView from 'lottie-react-native';
@@ -318,10 +319,15 @@ export default function WithdrawalScreen() {
         style={{ flex: 1 }}
       >
         <SafeAreaView style={styles.safeArea}>
-          {showSuccess && (
+          <Modal
+            visible={showSuccess}
+            transparent={true}
+            animationType="fade"
+            statusBarTranslucent={true}
+          >
             <View style={styles.successOverlay}>
               <LottieView
-                source={require('../homeMedia/Success.json')}
+                source={require('../homeMedia/Latesuccess.json')}
                 autoPlay
                 loop={false}
                 onAnimationFinish={() => setShowSuccess(false)}
@@ -329,41 +335,46 @@ export default function WithdrawalScreen() {
                 resizeMode="contain"
               />
             </View>
-          )}
+          </Modal>
 
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : undefined}
             style={styles.container}
           >
-            <FlatList
-              data={withdrawals}
-              keyExtractor={item => item.id.toString()}
-              renderItem={renderHistoryItem}
-              contentContainerStyle={styles.listContent}
-              showsVerticalScrollIndicator={false}
-              ListHeaderComponent={renderHeader()}
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                  tintColor="#00ff40"
-                  colors={['#00ff40', '#00d435']}
-                  progressBackgroundColor="#1a1a1a"
-                />
-              }
-              ListEmptyComponent={
-                !loadingWithdrawals ? (
-                  <View style={styles.emptyState}>
-                    <Text style={styles.emptyText}>No transactions found</Text>
-                  </View>
-                ) : (
-                  <ActivityIndicator
-                    color="#00ff40"
-                    style={{ marginTop: 20 }}
+            {renderHeader()}
+
+            <View style={styles.historyContainer}>
+              <FlatList
+                data={withdrawals}
+                keyExtractor={item => item.id.toString()}
+                renderItem={renderHistoryItem}
+                contentContainerStyle={styles.listContent}
+                showsVerticalScrollIndicator={false}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    tintColor="#00ff40"
+                    colors={['#00ff40', '#00d435']}
+                    progressBackgroundColor="#1a1a1a"
                   />
-                )
-              }
-            />
+                }
+                ListEmptyComponent={
+                  !loadingWithdrawals ? (
+                    <View style={styles.emptyState}>
+                      <Text style={styles.emptyText}>
+                        No transactions found
+                      </Text>
+                    </View>
+                  ) : (
+                    <ActivityIndicator
+                      color="#00ff40"
+                      style={{ marginTop: 20 }}
+                    />
+                  )
+                }
+              />
+            </View>
           </KeyboardAvoidingView>
         </SafeAreaView>
       </LinearGradient>
@@ -376,6 +387,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  historyContainer: {
+    flex: 1,
+  },
   successOverlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0, 0, 0, 1)',
@@ -384,8 +398,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   successLottie: {
-    width: s(300),
-    height: s(300),
+    width: s(500),
+    height: s(500),
   },
   headerContainer: {
     paddingHorizontal: s(20),
@@ -427,7 +441,7 @@ const styles = StyleSheet.create({
   },
   // 🎨 CHANGED: Text Color
   balanceValue: {
-    color: '#fff', // White text on Green card
+    color: '#d5ffcd', // White text on Green card
     fontSize: ms(32),
     fontWeight: '800',
   },
@@ -504,7 +518,7 @@ const styles = StyleSheet.create({
   },
   // 🎨 CHANGED: Button Text Color
   btnText: {
-    color: '#fff', // White text on Green Button
+    color: '#c3ffc1', // White text on Green Button
     fontSize: ms(14),
     fontWeight: '900',
     letterSpacing: 1,
@@ -527,7 +541,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.1)',
   },
   listContent: {
-    paddingBottom: vs(20),
+    paddingBottom: vs(200), // Reduced from 200 to 20 since it's now in a fixed height container
   },
   // 🎨 CHANGED: Card Background/Border
   historyCard: {
@@ -545,13 +559,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   historyAmount: {
-    color: '#fff',
+    color: '#0fff2f',
     fontSize: ms(16),
     fontWeight: '700',
     marginBottom: vs(2),
   },
   historyDate: {
-    color: 'rgba(255,255,255,0.4)',
+    color: 'rgba(216, 255, 218, 0.4)',
     fontSize: ms(11),
   },
   statusBadge: {

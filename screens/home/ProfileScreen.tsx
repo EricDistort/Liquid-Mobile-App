@@ -263,7 +263,7 @@ export default function ProfileScreen({ navigation }: any) {
                 <View style={styles.spacer} />
 
                 {/* SENDER WALLET ADDRESS INPUT */}
-                <Text style={styles.label}>SENDER WALLET ADDRESS</Text>
+                <Text style={styles.label}>WALLET ADDRESS</Text>
                 <TextInput
                   style={styles.input}
                   value={senderWallet}

@@ -84,7 +84,6 @@ export default function Register() {
   const { setUser } = useUser();
 
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
   const [referrerAcc, setReferrerAcc] = useState('');
@@ -96,7 +95,6 @@ export default function Register() {
   const handleRegister = async () => {
     if (
       !username.trim() ||
-      !email.trim() ||
       !password.trim() ||
       !mobile.trim() ||
       !referrerAcc.trim()
@@ -132,7 +130,6 @@ export default function Register() {
         .insert([
           {
             username: username.trim(),
-            email: email.trim(),
             password: password.trim(),
             mobile: mobile.trim(),
             balance: 0,
@@ -144,7 +141,7 @@ export default function Register() {
 
       if (insertError) {
         if (insertError.code === '23505') {
-          throw new Error('Email or Mobile number is already registered.');
+          throw new Error('Mobile number is already registered.');
         }
         throw insertError;
       }
@@ -183,7 +180,7 @@ export default function Register() {
           {loading && (
             <View style={styles.loadingOverlay}>
               <LottieView
-                source={require('./LoginMedia/Loading.json')}
+                source={require('./LoginMedia/loadinglatest.json')}
                 autoPlay
                 loop
                 style={styles.loadingAnimation}
@@ -213,7 +210,7 @@ export default function Register() {
                   <View style={styles.inputContainer}>
                     <Text style={styles.label}>USERNAME</Text>
                     <TextInput
-                      placeholder="e.g. MinerOne"
+                      placeholder="Type Name Here"
                       style={styles.input}
                       value={username}
                       onChangeText={setUsername}
@@ -223,22 +220,9 @@ export default function Register() {
                   </View>
 
                   <View style={styles.inputContainer}>
-                    <Text style={styles.label}>EMAIL</Text>
-                    <TextInput
-                      placeholder="name@domain.com"
-                      style={styles.input}
-                      value={email}
-                      onChangeText={setEmail}
-                      placeholderTextColor="rgba(255,255,255,0.2)"
-                      autoCapitalize="none"
-                      keyboardType="email-address"
-                    />
-                  </View>
-
-                  <View style={styles.inputContainer}>
                     <Text style={styles.label}>MOBILE</Text>
                     <TextInput
-                      placeholder="+1 234 567 890"
+                      placeholder="1234567890"
                       style={styles.input}
                       value={mobile}
                       onChangeText={setMobile}
@@ -260,9 +244,9 @@ export default function Register() {
                   </View>
 
                   <View style={styles.inputContainer}>
-                    <Text style={styles.label}>REFERRER CODE</Text>
+                    <Text style={styles.label}>REFERRER ACCOUNT</Text>
                     <TextInput
-                      placeholder="123456"
+                      placeholder="Referrer's Account Number"
                       style={styles.input}
                       value={referrerAcc}
                       onChangeText={setReferrerAcc}
@@ -431,7 +415,7 @@ const styles = StyleSheet.create({
     padding: s(5),
   },
   loginText: {
-    color: 'rgba(255,255,255,0.5)',
+    color: 'rgba(216, 255, 218, 0.4)',
     fontSize: ms(14),
   },
   loginHighlight: {

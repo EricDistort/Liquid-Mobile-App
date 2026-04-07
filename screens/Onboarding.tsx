@@ -41,7 +41,7 @@ const slides = [
     id: '3',
     title: 'Level Income',
     desc: 'Invite friends and earn commissions up to 10 levels deep.',
-    image: require('./LoginMedia/Second.png'),
+    image: require('./LoginMedia/Second.png'), 
   },
 ];
 
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   dot: {
     width: ms(8),
     height: ms(8),
-    backgroundColor: '#333',
+    backgroundColor: '#275a27',
     borderRadius: ms(4),
     marginHorizontal: s(6),
   },

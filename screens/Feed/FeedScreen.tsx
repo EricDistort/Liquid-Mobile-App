@@ -196,17 +196,6 @@ export default function FeedScreen() {
             {/* Header */}
             <View style={styles.header}>
               <Text style={styles.mainTitle}>Trending News</Text>
-
-              <PopButton onPress={() => navigation.navigate('WebinarScreen')}>
-                <LinearGradient
-                  colors={THEME_GRADIENT}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  style={styles.webinarButton}
-                >
-                  <Text style={styles.webinarText}>Live Webinar</Text>
-                </LinearGradient>
-              </PopButton>
             </View>
 
             {loading && !refreshing ? (
@@ -242,7 +231,7 @@ const styles = StyleSheet.create({
   safeArea: { flex: 1 },
   container: {
     flex: 1,
-    paddingHorizontal: s(16),
+    paddingHorizontal: s(10),
   },
   loaderContainer: {
     flex: 1,
@@ -261,7 +250,7 @@ const styles = StyleSheet.create({
   mainTitle: {
     fontSize: ms(28),
     fontWeight: '800',
-    color: '#fff',
+    color: '#0fff2f',
     letterSpacing: -1,
   },
   /* Webinar Button Styles */
@@ -278,7 +267,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   webinarText: {
-    color: '#fff', // White text on Green background
+    color: '#d6ffdc', // Green text on Green background
     fontWeight: '800',
     fontSize: ms(12),
   },
@@ -359,7 +348,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: ms(22),
     fontWeight: '800',
-    color: '#fff',
+    color: '#0fff2f',
     lineHeight: ms(28),
     textShadowColor: 'rgba(0,0,0,0.75)',
     textShadowOffset: { width: 0, height: 2 },
@@ -380,7 +369,7 @@ const styles = StyleSheet.create({
   },
   body: {
     fontSize: ms(14),
-    color: 'rgba(255,255,255,0.7)',
+    color: 'rgba(216, 255, 218, 0.4)',
     lineHeight: ms(22),
     fontWeight: '400',
   },

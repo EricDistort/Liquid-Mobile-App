@@ -102,7 +102,7 @@ export default function HomeScreen({ navigation }: any) {
     setLoadingRigs(true);
     const rigs = Array.from({ length: 11 }).map((_, index) => ({
       id: index + 1,
-      name: `EXC-${100 + index}`,
+      name: `SER-${100 + index}`,
       hashRate: (Math.random() * (150 - 80) + 80).toFixed(1),
       temp: Math.floor(Math.random() * (85 - 60) + 60),
       yield: (Math.random() * (0.05 - 0.01) + 0.01).toFixed(4),
@@ -256,7 +256,7 @@ export default function HomeScreen({ navigation }: any) {
                         onPress: () => navigation.navigate('StoreMain'),
                       },
                       {
-                        name: 'Webinar',
+                        name: 'Social',
                         icon: require('../homeMedia/recieve.webp'),
                         onPress: () => navigation.navigate('RecieveMoney'),
                       },
@@ -303,7 +303,7 @@ export default function HomeScreen({ navigation }: any) {
               >
                 <Text style={styles.withdrawableText}>
                   {' '}
-                  <Text style={styles.boldAmount}>{partnerData.name}</Text>
+                  <Text style={styles.boldAmount}>Logs</Text>
                 </Text>
               </PopScaleButton>
             </View>
@@ -311,7 +311,7 @@ export default function HomeScreen({ navigation }: any) {
             {/* Live Mining Operations Section */}
             <View style={styles.thirdContainer}>
               <View style={styles.sectionHeader}>
-                <Text style={styles.transactionsTitle}>Live Extraction</Text>
+                <Text style={styles.transactionsTitle}>Running Nodes</Text>
                 <LinearGradient
                   colors={['#00ff2a', '#00943200']}
                   start={{ x: 0, y: 0.5 }}
@@ -352,7 +352,7 @@ export default function HomeScreen({ navigation }: any) {
                               <Text style={{ fontSize: 20 }}>🟢</Text>
                             </View>
                             <View>
-                              <Text style={styles.rigName}>{rig.name}</Text>
+                              <Text style={styles.rigName}>SERVER</Text>
                               <Text style={styles.rigStatus}>
                                 ● {rig.status}
                               </Text>
@@ -360,7 +360,7 @@ export default function HomeScreen({ navigation }: any) {
                           </View>
                           {/* Tech Stats */}
                           <View style={styles.rigStats}>
-                            <Text style={styles.statLabel}>HASHRATE</Text>
+                            <Text style={styles.statLabel}>THERMAL</Text>
                             <Text style={styles.statValue}>
                               {rig.hashRate} TH/s
                             </Text>
@@ -378,7 +378,7 @@ export default function HomeScreen({ navigation }: any) {
                           </View>
                           {/* Yield */}
                           <View style={styles.rigYieldBox}>
-                            <Text style={styles.yieldLabel}>YIELD (OZ)</Text>
+                            <Text style={styles.yieldLabel}>CAPTURE</Text>
                             <Text style={styles.yieldValue}>{rig.yield}</Text>
                           </View>
                         </LinearGradient>

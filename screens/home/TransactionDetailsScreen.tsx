@@ -65,7 +65,7 @@ export default function TransactionDetailsScreen() {
               end={{ x: 0.5, y: 1 }}
             />
             <LottieView
-              source={require('../homeMedia/Success.json')}
+              source={require('../homeMedia/Latesuccess.json')}
               autoPlay
               loop
               style={styles.lottie}
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
 
   /* ---------------- BOTTOM CONTAINER (40%) ---------------- */
   bottomContainer: {
-    height: '40%',
+    height: '100%',
     width: '100%',
     backgroundColor: '#0a0a0a', // Deep Obsidian
     borderTopLeftRadius: ms(30),
@@ -234,12 +234,12 @@ const styles = StyleSheet.create({
     marginBottom: vs(2),
   },
   value: {
-    color: '#fff',
+    color: '#00ff15',
     fontSize: ms(15),
     fontWeight: '700',
   },
   valueMono: {
-    color: '#00ff40', // Neon Green Ref ID
+    color: '#c1ffd0', // Neon Green Ref ID
     fontSize: ms(14),
     //fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
     fontWeight: '600',

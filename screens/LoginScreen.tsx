@@ -168,7 +168,7 @@ export default function Login() {
           {loading && (
             <View style={styles.loadingOverlay}>
               <LottieView
-                source={require('./LoginMedia/Loading.json')}
+                source={require('./LoginMedia/loadinglatest.json')}
                 autoPlay
                 loop
                 style={styles.loadingAnimation}
@@ -192,7 +192,7 @@ export default function Login() {
                     <Text style={styles.titleOutline}>Welcome</Text>
                     <Text style={styles.titleFilled}>Back</Text>
                     <Text style={styles.subtitle}>
-                      Sign in to access your vault.
+                      Sign in to access your Liquid.
                     </Text>
                   </View>
 
@@ -201,7 +201,7 @@ export default function Login() {
                     <View style={styles.inputContainer}>
                       <Text style={styles.label}>ACCOUNT NUMBER</Text>
                       <TextInput
-                        placeholder="e.g. 12345678"
+                        placeholder="12345678"
                         style={styles.input}
                         value={accountNumber}
                         onChangeText={setAccountNumber}
@@ -385,7 +385,7 @@ const styles = StyleSheet.create({
     padding: s(10),
   },
   registerText: {
-    color: 'rgba(255,255,255,0.5)',
+    color: 'rgba(217, 255, 216, 0.5)',
     fontSize: ms(14),
   },
   registerHighlight: {

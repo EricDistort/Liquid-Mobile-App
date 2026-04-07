@@ -233,7 +233,7 @@ export default function FoundryMiningScreen() {
                 style={styles.cardGradient}
               >
                
-                <Text style={styles.statLabel}>Total Mined</Text>
+                <Text style={styles.statLabel}>Balance</Text>
                 <Text style={styles.statValue}>
                   ${user?.withdrawal_amount || '0.00'}
                 </Text>
@@ -249,7 +249,7 @@ export default function FoundryMiningScreen() {
                 style={styles.cardGradient}
               >
                
-                <Text style={styles.statLabel}>Network Share</Text>
+                <Text style={styles.statLabel}>Network</Text>
                 <Text style={styles.statValue}>
                   ${user?.level_income || '0.00'}
                 </Text>
@@ -261,7 +261,7 @@ export default function FoundryMiningScreen() {
           {/* 3️⃣ BOTTOM CONTAINER: ACTIVE RIGS (Scrollable) */}
           <View style={styles.bottomContainer}>
             <View style={styles.listHeader}>
-              <Text style={styles.listTitle}>ACTIVE CRUCIBLES</Text>
+              <Text style={styles.listTitle}>RUNNING LIQUIDITY</Text>
               <View style={styles.badge}>
                 <Text style={styles.badgeText}>{investments.length}</Text>
               </View>
@@ -296,7 +296,7 @@ export default function FoundryMiningScreen() {
                         </View>
                         <View style={{ flex: 1, paddingLeft: 10 }}>
                           <Text style={styles.rigName}>
-                            Smelter Unit-{100 + index}
+                            Shreded Diposit
                           </Text>
                           <Text style={styles.rigTemp}>
                             {item.temp}°F • Molten
@@ -314,7 +314,7 @@ export default function FoundryMiningScreen() {
                             marginBottom: 5,
                           }}
                         >
-                          <Text style={styles.progressLabel}>Chamber Fill</Text>
+                          <Text style={styles.progressLabel}>Optimal Income Flow</Text>
                           <Text style={styles.progressValue}>
                             {item.progress.toFixed(0)}%
                           </Text>
@@ -325,7 +325,7 @@ export default function FoundryMiningScreen() {
                       {/* Footer */}
                       <View style={styles.rigFooter}>
                         <View>
-                          <Text style={styles.yieldLabel}>GOLD VALUE</Text>
+                          <Text style={styles.yieldLabel}>APPROXIMATE</Text>
                           <Text style={styles.yieldValue}>
                             ${item.currentValue.toFixed(4)}
                           </Text>
@@ -442,7 +442,7 @@ const styles = StyleSheet.create({
   },
   glassCard: {
     width: '48%',
-    height: vs(80),
+    height: vs(70),
     borderRadius: ms(30),
     overflow: 'hidden',
     backgroundColor: '#000',
@@ -479,7 +479,7 @@ const styles = StyleSheet.create({
   },
   icon: { fontSize: ms(18) },
   statLabel: {
-    color: '#d1ffd5',
+    color: '#a3ffa3',
     fontSize: ms(11),
     fontWeight: '600',
     marginBottom: vs(4),
@@ -531,8 +531,8 @@ const styles = StyleSheet.create({
 
   /* Rig Card */
   scrollContent: {
-    paddingHorizontal: ms(20),
-    paddingBottom: vs(30),
+    paddingHorizontal: ms(10),
+    paddingBottom: vs(200),
   },
   rigCard: {
     borderRadius: ms(30),
@@ -569,7 +569,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   rigName: {
-    color: '#fff',
+    color: '#a4ff92',
     fontSize: ms(14),
     fontWeight: '700',
   },
@@ -627,7 +627,7 @@ const styles = StyleSheet.create({
     paddingTop: vs(12),
   },
   yieldLabel: {
-    color: '#888',
+    color: '#a4ffa1',
     fontSize: ms(9),
     marginBottom: 2,
   },

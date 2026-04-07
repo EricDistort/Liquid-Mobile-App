@@ -9,7 +9,7 @@ const SplashScreen = () => {
     <View style={styles.container}>
       <LottieView
         // Replace with your actual Lottie JSON file path
-        source={require('./screens/LoginMedia/Loading.json')}
+        source={require('./screens/LoginMedia/loadinglatest.json')}
         autoPlay
         loop
         speed={1}

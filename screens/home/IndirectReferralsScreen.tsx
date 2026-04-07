@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
 
   /* List */
   scroll: { width: '100%' },
-  scrollContent: { paddingBottom: vs(40) },
+  scrollContent: { paddingBottom: vs(200) },
 
   /* Card */
   cardContainer: {

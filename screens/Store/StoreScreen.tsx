@@ -384,14 +384,14 @@ const styles = StyleSheet.create({
   name: {
     fontSize: ms(13),
     fontWeight: '700',
-    color: '#fff',
+    color: '#0fff2f',
     flex: 1,
     marginRight: s(4),
   },
   // 🎨 CHANGED: Price Color
   price: {
     fontSize: ms(13),
-    color: '#00ff40', // Neon Green
+    color: '#d6ffdc', // Neon Green
     fontWeight: '800',
   },
   buyBtnContainer: {

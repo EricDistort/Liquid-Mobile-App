@@ -499,18 +499,18 @@ const styles = StyleSheet.create({
   username: {
     fontSize: ms(14),
     fontWeight: '700',
-    color: '#fff',
+    color: '#0fff2f',
     marginBottom: vs(2),
   },
   feedTitle: {
     fontSize: ms(13),
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#00ff22',
     marginBottom: vs(2),
   },
   dateText: {
     fontSize: ms(10),
-    color: '#888',
+    color: 'rgba(216, 255, 218, 0.4)',
     fontWeight: '500',
   },
 
