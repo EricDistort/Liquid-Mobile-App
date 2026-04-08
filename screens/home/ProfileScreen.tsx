@@ -271,7 +271,6 @@ export default function ProfileScreen({ navigation }: any) {
                   placeholder="Paste your wallet address"
                   placeholderTextColor="rgba(255,255,255,0.3)"
                 />
-
                 <View style={styles.spacer} />
 
                 {/* New Password */}
